@@ -84,11 +84,11 @@
 
                 {{-- Tombol --}}
                 <div class="text-end">
+                     <a href="{{ route('jenisarsip.index') }}" class="btn btn-secondary">
+                            <i class="bi bi-arrow-left-circle"></i> Kembali
+                        </a>
                     <button type="submit" class="btn btn-primary me-2">
                         <i class="bi bi-save"></i> Simpan
-                    </button>
-                    <button type="reset" class="btn btn-secondary">
-                        <i class="bi bi-arrow-clockwise"></i> Reset
                     </button>
                 </div>
             </form>
