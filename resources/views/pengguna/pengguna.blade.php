@@ -33,8 +33,8 @@
         @endforeach
     </table>
 
-    {{-- <div class="d-flex justify-content-center">
+    <div class="d-flex justify-content-center">
         {{ $penggunas->links('pagination::bootstrap-5') }}
-    </div> --}}
+    </div>
 
 @endsection
