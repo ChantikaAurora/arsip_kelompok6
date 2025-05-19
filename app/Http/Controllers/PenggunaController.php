@@ -8,16 +8,29 @@ use Illuminate\Support\facades\DB;
 
 class PenggunaController extends Controller
 {
-    public function index(Request $request)
+   public function index(Request $request)
     {
-        $search = $request->input('search');
-        $pengguna = Pengguna::when($search, function($query) use ($search) {
-            return $query->where('name', 'like', "%{$search}%")
-                         ->orWhere('email', 'like', "%{$search}%");
-        })->paginate(10);
+        // Awalnya buat query builder dari model Pengguna
+        $pengguna = Pengguna::query();
+
+        if ($request->has('search')) {
+            $search = $request->input('search');
+
+            // Validasi: hanya huruf dan spasi
+            if (!preg_match("/^[a-zA-Z\s]+$/", $search)) {
+                return redirect()->back()->with('search_error', 'Data yang Anda masukkan tidak valid!');
+            }
+
+            // Gunakan query builder yang sudah disimpan di $pengguna
+            $pengguna->where('name', 'like', "%{$search}%");
+        }
+
+        // Pagination (10 item per halaman)
+        $pengguna = $pengguna->paginate(10);
 
         return view('pengguna.index', compact('pengguna'));
     }
+
 
     public function create()
     {

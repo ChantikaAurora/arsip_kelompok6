@@ -1,7 +1,8 @@
 @extends('tampilan.main')
 @section('content')
+
 <div class="container mt-4">
-    <h2>Edit Pengguna</h2>
+    <h3 class="mb-3">Edit Data Penggguna</h3>
     <form action="{{ route('pengguna.update', $pengguna->id) }}" method="POST">
         @csrf
         @method('PUT')

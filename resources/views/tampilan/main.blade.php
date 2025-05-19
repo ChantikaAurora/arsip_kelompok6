@@ -8,11 +8,13 @@
   <!-- plugins:css -->
   <link rel="stylesheet" href="{{ asset('assets/vendors/feather/feather.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/vendors/ti-icons/css/themify-icons.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.5.5/css/simple-line-icons.min.css">
   <link rel="stylesheet" href="{{ asset('assets/vendors/css/vendor.bundle.base.css') }}">
   <!-- endinject -->
 
   <!-- Plugin css for this page -->
   <link rel="stylesheet" href="{{ asset('assets/vendors/datatables.net-bs4/dataTables.bootstrap4.css') }}">
+  <link rel="stylesheet" href="{{ asset('assets/vendors/ti-icons/css/themify-icons.css') }}">
   <link rel="stylesheet" type="text/css" href="{{ asset('assets/js/select.dataTables.min.css') }}">
   <!-- End plugin css for this page -->
 
@@ -21,6 +23,7 @@
   <!-- endinject -->
 
   <link rel="shortcut icon" href="{{ asset('images/favicon.png') }}" />
+
 </head>
 <body>
   <div class="container-scroller">
@@ -133,49 +136,44 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#form-elements">
-              <i class="icon-columns menu-icon"></i>
+            <a class="nav-link" href="{{ route('suratmasuk.index') }}">
+              <i class="icon-envelope-letter menu-icon"></i>
               <span class="menu-title">Surat Masuk</span>
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#charts">
-              <i class="icon-bar-graph menu-icon"></i>
+              <i class="icon-envelope-open menu-icon"></i>
               <span class="menu-title">Surat Keluar</span>
             </a>
           </li>
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="collapse" href="#dokumen" role="button"
+            aria-expanded="false" aria-controls="dokumen">
+            <i class="icon-chart menu-icon"></i>
+            <span class="menu-title">Dokumen Lainnya</span>
+            <i class="menu-arrow"></i>
+          </a>
+          <div class="collapse" id="dokumen">
+            <ul class="nav flex-column sub-menu">
+              <li class="nav-item"> <a class="nav-link" href="#">Proposal Penelitian</a></li>
+              <li class="nav-item"> <a class="nav-link" href="#">Laporan Penelitian</a></li>
+              <li class="nav-item"> <a class="nav-link" href="#">Anggaran Penelitian</a></li>
+            </ul>
+          </div>
+        </li>
+
           <li class="nav-item">
-            <a class="nav-link" href="#tables">
-              <i class="icon-grid-2 menu-icon"></i>
-              <span class="menu-title">Dokumen Lainnya</span>
-              <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="tables">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="pages/tables/basic-table.html">Proposal Penelitian</a></li>
-                <li class="nav-item"> <a class="nav-link" href="pages/tables/basic-table.html">Laporan Penelitian</a></li>
-                <li class="nav-item"> <a class="nav-link" href="pages/tables/basic-table.html">Anggaran Penelitian</a></li>
-              </ul>
-            </div>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#icons">
-              <i class="icon-contract menu-icon"></i>
+            <a class="nav-link " href="{{ route('jenisarsip.index') }}">
+              <i class="icon-tag menu-icon"></i>
               <span class="menu-title">Jenis Arsip</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#auth">
-              <i class="icon-paper menu-icon"></i>
+            <a class="nav-link " href="#">
+              <i class="icon-doc menu-icon"></i>
               <span class="menu-title">Log Aktivitas</span>
-              <i class="menu-arrow"></i>
             </a>
-            <div class="collapse" id="auth">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="pages/samples/login.html"> Login </a></li>
-                <li class="nav-item"> <a class="nav-link" href="pages/samples/register.html"> Register </a></li>
-              </ul>
-            </div>
           </li>
         </ul>
       </nav>
@@ -212,5 +210,6 @@
   <script src="{{ asset('assets/js/dashboard.js') }}"></script>
   <script src="{{ asset('assets/js/Chart.roundedBarCharts.js') }}"></script>
   <!-- End custom js for this page-->
+
 </body>
 </html>
