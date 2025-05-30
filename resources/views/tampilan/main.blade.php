@@ -157,6 +157,13 @@
           <div class="collapse" id="dokumen">
             <ul class="nav flex-column sub-menu">
               <li class="nav-item"> <a class="nav-link" href="#">Proposal Penelitian</a></li>
+              <li class="nav-item"> <a class="nav-link" href="{{ route ('laporan_penelitian.index') }}">Laporan Penelitian</a></li>
+              <li class="nav-item"> <a class="nav-link" href="{{ route('anggaran_penelitian.index') }}">Anggaran Penelitian</a></li>
+               <li class="nav-item">
+                <a class="nav-link" href="{{ route('proposal.index') }}">
+                  <span class="menu-title">Proposal Penelitian</span>
+                </a>
+              </li>
               <li class="nav-item"> <a class="nav-link" href="#">Laporan Penelitian</a></li>
               <li class="nav-item"> <a class="nav-link" href="#">Anggaran Penelitian</a></li>
             </ul>
@@ -169,12 +176,21 @@
               <span class="menu-title">Jenis Arsip</span>
             </a>
           </li>
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <a class="nav-link " href="#">
               <i class="icon-doc menu-icon"></i>
               <span class="menu-title">Log Aktivitas</span>
             </a>
-          </li>
+          </li> -->
+              <li class="nav-item">
+                <a class="nav-link" href="{{ route('log.index') }}">
+                <i class="icon-doc menu-icon"></i>
+               <span class="menu-title">Log Aktivitas</span>
+              </a>
+            </li>
+
+
+         
         </ul>
       </nav>
 
