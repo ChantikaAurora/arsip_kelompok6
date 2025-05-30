@@ -16,7 +16,7 @@
             <div class="alert alert-danger">
                 <strong>Oops!</strong> Ada beberapa kesalahan pada input Anda. Silakan periksa kembali.
                 <ul class="mb-0 mt-2">
-                    @foreach ($errors->all() as $error)
+                    @foreach ($errors as $error)
                         <li>{{ $error }}</li>
                     @endforeach
                 </ul>
@@ -33,12 +33,12 @@
                     <div class="mb-3 row">
                         <label class="col-sm-2 col-form-label font-weight-normal ">Jenis</label>
                         <div class="col-sm-10">
-                            <input 
-                                type="text" 
+                            <input
+                                type="text"
                                 id="jenis"
-                                name="jenis" 
-                                class="form-control @error('jenis') is-invalid @enderror" 
-                                value="{{ old('jenis') }}" 
+                                name="jenis"
+                                class="form-control @error('jenis') is-invalid @enderror"
+                                value="{{ old('jenis') }}"
                                 placeholder="Contoh: Pendidikan, Keuangan, dll"
                             >
                             @error('jenis')
@@ -51,10 +51,10 @@
                     <div class="mb-3 row">
                         <label class="col-sm-2 col-form-label font-weight-normal ">Keterangan</label>
                         <div class="col-sm-10">
-                            <textarea 
+                            <textarea
                                 id="keterangan"
-                                name="keterangan" 
-                                class="form-control @error('keterangan') is-invalid @enderror" 
+                                name="keterangan"
+                                class="form-control @error('keterangan') is-invalid @enderror"
                                 rows="3"
                                 placeholder="Tambahkan deskripsi atau penjelasan singkat terkait jenis arsip ini"
                             >{{ old('keterangan') }}</textarea>

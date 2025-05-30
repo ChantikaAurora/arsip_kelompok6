@@ -14,15 +14,16 @@ Route::get('/home', function () {
 
 Route::resource('/pengguna', PenggunaController::class);
 Route::resource('jenisarsip', JenisArsipController::class);
-// Route::resource('suratmasuk', SuratMasukController::class);
-
+Route::resource('suratmasuk', SuratMasukController::class);
+Route::get('/suratmasuk/{id}/download', [SuratMasukController::class, 'download'])->name('suratmasuk.download');
+Route::get('/suratmasuk/{id}', [SuratMasukController::class, 'show'])->name('suratmasuk.detail');
 
 Route::get('/', [LoginController::class,'login'])->name('auth.login');
 Route::post('/',[LoginController::class,'authenticate']);
 
-Route::post('/logout', function () {
-    Auth::logout();
-    request()->session()->invalidate();
-    request()->session()->regenerateToken();
-    return redirect('/');
-})->name('logout');
+// Route::post('/logout', function () {
+//     Auth::logout();
+//     request()->session()->invalidate();
+//     request()->session()->regenerateToken();
+//     return redirect('/');
+// })->name('logout');

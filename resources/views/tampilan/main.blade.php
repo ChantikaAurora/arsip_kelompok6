@@ -136,7 +136,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="{{ route('suratmasuk.index') }}">
               <i class="icon-envelope-letter menu-icon"></i>
               <span class="menu-title">Surat Masuk</span>
             </a>
