@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class JenisArsip extends Model
 {
     protected $fillable = ['jenis', 'keterangan'];
-<<<<<<< HEAD
 
 
     public function suratKeluars() {
@@ -17,11 +16,10 @@ class JenisArsip extends Model
     public function suratMasuks()
     {
         return $this->hasMany(SuratMasuk::class, 'jenis');
-=======
+    }
     public function proposals()
     {
         return $this->hasMany(Proposal::class, 'jenis');
->>>>>>> nurman
     }
 
 }
