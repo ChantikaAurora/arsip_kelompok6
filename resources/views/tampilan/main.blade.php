@@ -156,16 +156,16 @@
           </a>
           <div class="collapse" id="dokumen">
             <ul class="nav flex-column sub-menu">
-              <li class="nav-item"> <a class="nav-link" href="#">Proposal Penelitian</a></li>
+              <li class="nav-item"> <a class="nav-link" href="{{ route('proposal.index') }}">Proposal Penelitian</a></li>
               <li class="nav-item"> <a class="nav-link" href="{{ route ('laporan_penelitian.index') }}">Laporan Penelitian</a></li>
               <li class="nav-item"> <a class="nav-link" href="{{ route('anggaran_penelitian.index') }}">Anggaran Penelitian</a></li>
-               <li class="nav-item">
-                <a class="nav-link" href="{{ route('proposal.index') }}">
+               {{-- <li class="nav-item">
+                <a class="nav-link" href="#">
                   <span class="menu-title">Proposal Penelitian</span>
                 </a>
               </li>
               <li class="nav-item"> <a class="nav-link" href="#">Laporan Penelitian</a></li>
-              <li class="nav-item"> <a class="nav-link" href="#">Anggaran Penelitian</a></li>
+              <li class="nav-item"> <a class="nav-link" href="#">Anggaran Penelitian</a></li> --}}
             </ul>
           </div>
         </li>
@@ -190,7 +190,7 @@
             </li>
 
 
-         
+
         </ul>
       </nav>
 

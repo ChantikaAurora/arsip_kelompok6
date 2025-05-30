@@ -8,6 +8,8 @@ use App\Http\Controllers\JenisArsipController;
 use App\Http\Controllers\SuratKeluarController;
 use App\Http\Controllers\SuratMasukController;
 use App\Http\Controllers\ProposalController;
+use App\Http\Controllers\LaporanPenelitianController;
+use App\Http\Controllers\AnggaranPenelitianController;
 use App\Http\Controllers\LogAktivitasController;
 
 // Halaman utama

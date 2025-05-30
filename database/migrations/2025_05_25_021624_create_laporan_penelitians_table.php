@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('judul_penelitian');
             $table->string('peneliti');
-            $table->string('jurusan', ['TI', 'AN']);
+            $table->string('jurusan');
             $table->year('tahun_penelitian');
             $table->date('tanggal_laporan_diterima')->nullable();
             $table->enum('status_laporan', ['proses', 'selesai'])->default('proses');
