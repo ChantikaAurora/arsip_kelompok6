@@ -47,7 +47,7 @@ class PenggunaController extends Controller
 
         Pengguna::create($request->all());
 
-        return redirect()->route('pengguna.index')->with('success', 'Pengguna ditambahkan!');
+        return redirect()->route('pengguna.index')->with('success', 'Pengguna berhasil ditambahkan!');
     }
 
     public function edit(Pengguna $pengguna)
@@ -65,12 +65,12 @@ class PenggunaController extends Controller
 
         $pengguna->update($request->all());
 
-        return redirect()->route('pengguna.index')->with('success', 'Pengguna diperbarui!');
+        return redirect()->route('pengguna.index')->with('success', 'Data pengguna berhasil diperbarui');
     }
 
     public function destroy(Pengguna $pengguna)
     {
         $pengguna->delete();
-        return redirect()->route('pengguna.index')->with('success', 'Pengguna dihapus!');
+        return redirect()->route('pengguna.index')->with('success', 'Pengguna berhasil dihapus!');
     }
 }

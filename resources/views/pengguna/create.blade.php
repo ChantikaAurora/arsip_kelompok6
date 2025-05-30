@@ -15,7 +15,7 @@
         <div class="alert alert-danger">
             <strong>Oops!</strong> Ada beberapa kesalahan pada input Anda:
             <ul class="mb-0 mt-2">
-                @foreach ($errors->all() as $error)
+                @foreach ($errors as $error)
                     <li>{{ $error }}</li>
                 @endforeach
             </ul>
@@ -30,13 +30,13 @@
 
                 {{-- Nama --}}
                 <div class="mb-3 row">
-                    <label class="col-sm-2 col-form-label font-weight-normal ">Nama Lengkap</label>
+                    <label class="col-sm-2 col-form-label font-weight-normal ">Nama Lengkap :</label>
                     <div class="col-sm-10">
-                        <input 
-                            type="text" 
-                            name="name" 
-                            class="form-control @error('name') is-invalid @enderror" 
-                            value="{{ old('name') }}" 
+                        <input
+                            type="text"
+                            name="name"
+                            class="form-control @error('name') is-invalid @enderror"
+                            value="{{ old('name') }}"
                             placeholder="Masukkan nama lengkap"
                         >
                         @error('name')
@@ -47,13 +47,13 @@
 
                 {{-- Email --}}
                 <div class="mb-3 row">
-                    <label class="col-sm-2 col-form-label fw-semibold font-weight-normal">Email</label>
+                    <label class="col-sm-2 col-form-label fw-semibold font-weight-normal">Email :</label>
                     <div class="col-sm-10">
-                        <input 
-                            type="email" 
-                            name="email" 
-                            class="form-control @error('email') is-invalid @enderror" 
-                            value="{{ old('email') }}" 
+                        <input
+                            type="email"
+                            name="email"
+                            class="form-control @error('email') is-invalid @enderror"
+                            value="{{ old('email') }}"
                             placeholder="Masukkan email pengguna"
                         >
                         @error('email')
@@ -64,11 +64,11 @@
 
                 {{-- Role --}}
                 <div class="mb-4 row">
-                    <label class="col-sm-2 col-form-label fw-semibold">Role</label>
+                    <label class="col-sm-2 col-form-label fw-semibold">Role :</label>
                     <div class="col-sm-10">
-                        <select 
-                            name="role" 
-                            class="form-select @error('role') is-invalid @enderror"
+                        <select
+                            name="role"
+                            class="form-control @error('role') is-invalid @enderror"
                         >
                             <option value="" disabled {{ old('role') ? '' : 'selected' }}>-- Pilih Role --</option>
                             <option value="superuser" {{ old('role') == 'superuser' ? 'selected' : '' }}>Superuser</option>
@@ -84,7 +84,7 @@
 
                 {{-- Tombol --}}
                 <div class="text-end">
-                     <a href="{{ route('jenisarsip.index') }}" class="btn btn-secondary">
+                     <a href="{{ route('pengguna.index') }}" class="btn btn-secondary">
                             <i class="bi bi-arrow-left-circle"></i> Kembali
                         </a>
                     <button type="submit" class="btn btn-primary me-2">
