@@ -31,6 +31,10 @@ Route::post('/logout', function () {
 Route::resource('/pengguna', PenggunaController::class);
 
 // Jenis Arsip
+
+// Pengguna dan Jenis Arsip
+Route::resource('/pengguna', PenggunaController::class);
+
 Route::resource('jenisarsip', JenisArsipController::class);
 
 // Surat Masuk
@@ -46,6 +50,16 @@ Route::get('/suratkeluar/download/{id}', [SuratKeluarController::class, 'downloa
 Route::resource('proposal', ProposalController::class);
 Route::get('/proposal/{id}/download', [ProposalController::class, 'download'])->name('proposal.download');
 Route::get('/proposal/{id}', [ProposalController::class, 'show'])->name('proposal.show');
+
+Route::resource('/proposal', ProposalController::class);
+Route::get('/proposal/{id}/download', [ProposalController::class, 'download'])->name('proposal.download');
+Route::get('/proposal/{id}', [ProposalController::class, 'show'])->name('proposal.show');
+
+// Penelitian
+Route::resource('anggaran_penelitian', AnggaranPenelitianController::class);
+Route::resource('laporan_penelitian', LaporanPenelitianController::class);
+Route::get('/laporan-penelitian/download/{id}', [LaporanPenelitianController::class, 'download'])->name('laporan_penelitian.download');
+Route::get('/anggaran-penelitian/download/{id}', [AnggaranPenelitianController::class, 'download'])->name('anggaran_penelitian.download');
 
 // Log Aktivitas
 Route::get('/logaktivitas', [LogAktivitasController::class, 'index'])->name('log.index');
