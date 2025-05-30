@@ -142,7 +142,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#charts">
+            <a class="nav-link" href="/suratkeluar">
               <i class="icon-envelope-open menu-icon"></i>
               <span class="menu-title">Surat Keluar</span>
             </a>

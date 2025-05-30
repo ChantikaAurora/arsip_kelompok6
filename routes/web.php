@@ -4,8 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PenggunaController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\JenisArsipController;
-use App\Http\Controllers\SuratMasukController;
-
+use App\Http\Controllers\SuratKeluarController;
 
 Route::get('/home', function () {
     return view('welcome');
@@ -19,6 +18,14 @@ Route::resource('jenisarsip', JenisArsipController::class);
 
 Route::get('/', [LoginController::class,'login'])->name('auth.login');
 Route::post('/',[LoginController::class,'authenticate']);
+
+Route::resource('/suratkeluar', SuratKeluarController::class);
+Route::get('/suratkeluar/download/{id}', [SuratKeluarController::class, 'download'])->name('suratkeluar.download');
+
+
+
+
+
 
 Route::post('/logout', function () {
     Auth::logout();
