@@ -7,21 +7,19 @@ use Illuminate\Database\Eloquent\Model;
 class JenisArsip extends Model
 {
     protected $fillable = ['jenis', 'keterangan'];
-<<<<<<< HEAD
 
-
-    public function suratKeluars() {
-    return $this->hasMany(SuratKeluar::class, 'jenis'); // foreign key di surat_keluars
+    public function suratKeluars()
+    {
+        return $this->hasMany(SuratKeluar::class, 'jenis'); // foreign key di surat_keluars
     }
 
     public function suratMasuks()
     {
-        return $this->hasMany(SuratMasuk::class, 'jenis');
-=======
-    public function proposals()
-    {
-        return $this->hasMany(Proposal::class, 'jenis');
->>>>>>> nurman
+        return $this->hasMany(SuratMasuk::class, 'jenis'); // foreign key di surat_masuks
     }
 
+    public function proposals()
+    {
+        return $this->hasMany(Proposal::class, 'jenis'); // foreign key di proposals
+    }
 }
