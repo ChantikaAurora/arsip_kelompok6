@@ -11,6 +11,7 @@ use App\Http\Controllers\ProposalController;
 use App\Http\Controllers\LogAktivitasController;
 use App\Http\Controllers\AnggaranPenelitianController;
 use App\Http\Controllers\LaporanPenelitianController;
+use App\Http\Controllers\RegisterController;
 
 // Halaman utama
 Route::get('/home', function () {
@@ -26,6 +27,10 @@ Route::post('/logout', function () {
     request()->session()->regenerateToken();
     return redirect('/');
 })->name('logout');
+
+// Registrasi
+Route::get('/register', [RegisterController::class, 'create'])->name('auth.register.create');
+Route::post('/register', [RegisterController::class, 'store'])->name('auth.register.store');
 
 // Pengguna & Jenis Arsip
 Route::resource('pengguna', PenggunaController::class);
