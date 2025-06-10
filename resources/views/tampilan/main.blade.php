@@ -4,11 +4,37 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>Skydash Admin</title>
+  <style>
+  /* Fix sidebar di sisi kiri */
+  .sidebar {
+    position: fixed;
+    top: 70px; /* Sesuaikan dengan tinggi navbar kamu */
+    left: 0;
+    width: 250px; /* Sesuaikan dengan lebar sidebar kamu */
+    height: calc(100vh - 70px); /* Tinggi penuh layar dikurangi navbar */
+    overflow-y: auto;
+    z-index: 1000;
+  }
+
+  /* Atur konten agar tidak tertutupi sidebar */
+  .main-panel {
+    margin-left: 250px; /* Sesuaikan dengan lebar sidebar */
+    width: calc(100% - 250px);
+  }
+
+  /* Pastikan wrapper tetap fleksibel */
+  .page-body-wrapper {
+    padding-top: 70px; /* Sesuaikan dengan tinggi navbar */
+  }
+</style>
+
 
   <!-- plugins:css -->
   <link rel="stylesheet" href="{{ asset('assets/vendors/feather/feather.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/vendors/ti-icons/css/themify-icons.css') }}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.5.5/css/simple-line-icons.min.css">
+  <link href="https://cdn.materialdesignicons.com/5.4.55/css/materialdesignicons.min.css" rel="stylesheet">
+
   <link rel="stylesheet" href="{{ asset('assets/vendors/css/vendor.bundle.base.css') }}">
   <!-- endinject -->
 
@@ -118,9 +144,16 @@
         </button>
       </div>
     </nav>
+
+
+
+
+
+
     <!-- partial -->
     <div class="container-fluid page-body-wrapper">
       <!-- partial:partials/_sidebar.html -->
+<<<<<<< HEAD
       <nav class="sidebar sidebar-offcanvas" id="sidebar">
         <ul class="nav">
           <li class="nav-item">
@@ -187,6 +220,9 @@
         </ul>
       </nav>
 
+     
+    @include('tampilan.sidebar')
+
       <!-- Main content -->
       <div class="main-panel">
         <div class="content-wrapper">
@@ -194,7 +230,12 @@
         </div>
       </div>
     </div>
+
+
+    
   </div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 
   <!-- plugins:js -->
   <script src="{{ asset('assets/vendors/js/vendor.bundle.base.js') }}"></script>
@@ -219,6 +260,7 @@
   <script src="{{ asset('assets/js/dashboard.js') }}"></script>
   <script src="{{ asset('assets/js/Chart.roundedBarCharts.js') }}"></script>
   <!-- End custom js for this page-->
+
 
 </body>
 </html>

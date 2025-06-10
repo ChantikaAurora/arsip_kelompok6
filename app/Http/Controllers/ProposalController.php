@@ -9,22 +9,26 @@ use Illuminate\Support\Facades\Storage;
 
 class ProposalController extends Controller
 {
-
     public function index(Request $request)
-    {
-        $search = $request->input('search');
+{
+    $search = $request->input('search');
 
-        $proposal = Proposal::with('jenisArsip')
-            ->when($search, function ($query, $search) {
-                $query->where('judul', 'like', "%{$search}%")
+    $proposal = Proposal::with('jenisArsip')
+        ->when($search, function ($query, $search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('judul', 'like', "%{$search}%")
                     ->orWhere('peneliti', 'like', "%{$search}%")
-                    ->orWhere('jurusan', 'like', "%{$search}%");
-            })
-            ->orderBy('created_at', 'desc')
-            ->get();
+                    ->orWhere('jurusan', 'like', "%{$search}%")
+                    // ->orWhere('tahun_pengajuan', 'like', "%{$search}%")
+                    ->orWhere('tanggal_pengajuan', 'like', "%{$search}%");
+            });
+        })
+        ->orderBy('created_at', 'desc')
+        ->get();
 
-        return view('proposal.index', compact('proposal'));
-    }
+    return view('proposal.index', compact('proposal'));
+}
+
 
     public function create()
     {
@@ -39,7 +43,7 @@ class ProposalController extends Controller
             'peneliti'          => 'required|string|max:255',
             'jurusan'           => 'required|string|max:255',
             'jenis'             => 'required|exists:jenis_arsips,id',
-            'tahun_pengajuan'   => 'required|integer',
+            // 'tahun_pengajuan'   => 'required|integer',
             'status'            => 'required|string|max:100',
             'tanggal_pengajuan' => 'required|date',
             'dana_diajukan'     => 'required|numeric',
@@ -73,7 +77,7 @@ class ProposalController extends Controller
             'peneliti'          => 'required|string|max:255',
             'jurusan'           => 'required|string|max:255',
             'jenis'             => 'required|integer',
-            'tahun_pengajuan'   => 'required|integer',
+            // 'tahun_pengajuan'   => 'required|integer',
             'status'            => 'required|string|max:100',
             'tanggal_pengajuan' => 'required|date',
             'dana_diajukan'     => 'required|numeric',

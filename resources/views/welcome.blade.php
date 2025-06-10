@@ -1,4 +1,13 @@
-@extends('tampilan.main')
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- <title>Document</title> -->
+</head>
+<body>
+  @extends('tampilan.main')
+   @yield('scripts')
 
 @section('content')
  <!-- partial -->
@@ -35,11 +44,12 @@
                   <div class="weather-info">
                     <div class="d-flex">
                       <div>
-                        <h2 class="mb-0 font-weight-normal"><i class="icon-sun mr-2"></i>31<sup>C</sup></h2>
+                        <!-- <h2 class="mb-0 font-weight-normal"><i class="icon-sun mr-2"></i>31<sup>C</sup></h2> -->
+                         <h2 class="mb-0 font-weight-normal"><i class="icon-sun mr-2"></i><span id="temperature">--</span><sup>°C</sup></h2>
                       </div>
                       <div class="ml-2">
-                        <h4 class="location font-weight-normal">Bangalore</h4>
-                        <h6 class="font-weight-normal">India</h6>
+                        <h4 class="location font-weight-normal" id="city">Memuat...</h4>
+                        <h6 class="font-weight-normal" id="country">Memuat...</h6>
                       </div>
                     </div>
                   </div>
@@ -51,41 +61,65 @@
                 <div class="col-md-6 mb-4 stretch-card transparent">
                   <div class="card card-tale">
                     <div class="card-body">
-                      <p class="mb-4">Today’s Bookings</p>
-                      <p class="fs-30 mb-2">4006</p>
-                      <p>10.00% (30 days)</p>
+                      <!-- <p class="mb-4">Pengguna</p> -->
+                         <p class="mb-4"><i class="mdi mdi-account mr-2"></i>Pengguna</p>
+
+                       <p class="fs-30 mb-2">{{ $totalPengguna }}</p>
+                      <!-- <p class="fs-30 mb-2">4006</p> -->
+                      <!-- <p>10.00% (30 days)</p> -->
                     </div>
                   </div>
                 </div>
                 <div class="col-md-6 mb-4 stretch-card transparent">
                   <div class="card card-dark-blue">
                     <div class="card-body">
-                      <p class="mb-4">Total Bookings</p>
-                      <p class="fs-30 mb-2">61344</p>
-                      <p>22.00% (30 days)</p>
+                      <!-- <p class="mb-4">Surat Masuk</p> -->
+                      <p class="mb-4"><i class="mdi mdi-email-receive mr-2"></i>Surat Masuk</p>
+                      <!-- <p class="fs-30 mb-2">61344</p> -->
+                       <p class="fs-30 mb-2">{{ number_format($totalSuratMasuk) }}</p>
+
+                      <!-- <p>22.00% (30 days)</p> -->
                     </div>
                   </div>
                 </div>
               </div>
               <div class="row">
+
                 <div class="col-md-6 mb-4 mb-lg-0 stretch-card transparent">
                   <div class="card card-light-blue">
                     <div class="card-body">
-                      <p class="mb-4">Number of Meetings</p>
+
+                      <!-- <p class="mb-4">Surat Keluar</p>
                       <p class="fs-30 mb-2">34040</p>
-                      <p>2.00% (30 days)</p>
+                      <p>2.00% (30 days)</p> -->
+
+                      <!-- AGAR REALTIME KE DASHBOARD -->
+                      <!-- <p class="mb-4">Surat Keluar</p> -->
+                           <p class="mb-4"><i class="mdi mdi-email-send mr-2"></i>Surat Keluar</p>
+                      <p class="fs-30 mb-2">{{ number_format($totalSuratKeluar) }}</p>
+                      <!-- <p>{{ $growthPercent }}% (30 days)</p> -->
+                     </a>
+                     
+
                     </div>
                   </div>
                 </div>
+                
                 <div class="col-md-6 stretch-card transparent">
                   <div class="card card-light-danger">
                     <div class="card-body">
-                      <p class="mb-4">Number of Clients</p>
-                      <p class="fs-30 mb-2">47033</p>
-                      <p>0.22% (30 days)</p>
+                      <!-- <p class="mb-4">Dokumen Lainnya</p> -->
+                           <p class="mb-4"><i class="mdi mdi-file-document mdi-30px mr-2"></i>Dokumen Lainnya</p>  
+                           <!-- mdi-37px -->   <!-- untuk memperbesar ICON  -->
+                      <!-- <p class="fs-30 mb-2">47033</p> -->
+                       <!-- <p class="fs-30 mb-2">{{ number_format($totalDokumenLainnya) }}</p> -->
+                        <p class="fs-30 mb-2">{{ number_format($totalDokumenLainnya) }}</p>
+
+                      <!-- <p>0.22% (30 days)</p> -->
                     </div>
                   </div>
                 </div>
+                </a>
               </div>
             </div>
           </div>
@@ -93,24 +127,24 @@
             <div class="col-md-6 grid-margin stretch-card">
               <div class="card">
                 <div class="card-body">
-                  <p class="card-title">Order Details</p>
+                  <p class="card-title">Log Aktifitas</p>
                   <p class="font-weight-500">The total number of sessions within the date range. It is the period time a user is actively engaged with your website, page or app, etc</p>
                   <div class="d-flex flex-wrap mb-5">
                     <div class="mr-5 mt-3">
-                      <p class="text-muted">Order value</p>
-                      <h3 class="text-primary fs-30 font-weight-medium">12.3k</h3>
+                      <p class="text-muted">Pengguna</p>
+                      <h3 class="text-primary fs-30 font-weight-medium">{{ $totalPengguna }}</h3>
                     </div>
                     <div class="mr-5 mt-3">
-                      <p class="text-muted">Orders</p>
-                      <h3 class="text-primary fs-30 font-weight-medium">14k</h3>
+                      <p class="text-muted">Surat MAsuk</p>
+                      <h3 class="text-primary fs-30 font-weight-medium">{{ number_format($totalSuratMasuk) }}</h3>
                     </div>
                     <div class="mr-5 mt-3">
-                      <p class="text-muted">Users</p>
-                      <h3 class="text-primary fs-30 font-weight-medium">71.56%</h3>
+                      <p class="text-muted">Surat Keluar</p>
+                      <h3 class="text-primary fs-30 font-weight-medium">{{ number_format($totalSuratKeluar) }}</h3>
                     </div>
                     <div class="mt-3">
-                      <p class="text-muted">Downloads</p>
-                      <h3 class="text-primary fs-30 font-weight-medium">34040</h3>
+                      <p class="text-muted">Dokumen Lainnya</p>
+                      <h3 class="text-primary fs-30 font-weight-medium">{{ number_format($totalDokumenLainnya) }}</h3>
                     </div> 
                   </div>
                   <canvas id="order-chart"></canvas>
@@ -134,3 +168,92 @@
         </div>
       </div>
 @endsection
+<!-- <script>
+    const ctx = document.getElementById('order-chart').getContext('2d');
+
+    const orderChart = new Chart(ctx, {
+        type: 'bar',  // bisa juga 'line', 'pie', dll
+        data: {
+            labels: ['Pengguna', 'Surat Masuk', 'Surat Keluar', 'Dokumen Lainnya'],
+            datasets: [{
+                label: 'Jumlah',
+                data: [
+                    {{ $totalPengguna ?? 0 }}, 
+                    {{ $totalSuratMasuk ?? 0 }}, 
+                    {{ $totalSuratKeluar ?? 0 }}, 
+                    {{ $totalDokumenLainnya ?? 0 }}
+                ],
+                backgroundColor: [
+                    'rgba(54, 162, 235, 0.7)',  // warna bar Pengguna
+                    'rgba(255, 206, 86, 0.7)',  // warna bar Surat Masuk
+                    'rgba(75, 192, 192, 0.7)',  // warna bar Surat Keluar
+                    'rgba(255, 99, 132, 0.7)'   // warna bar Dokumen Lainnya
+                ],
+                borderColor: [
+                    'rgba(54, 162, 235, 1)', 
+                    'rgba(255, 206, 86, 1)', 
+                    'rgba(75, 192, 192, 1)', 
+                    'rgba(255, 99, 132, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        stepSize: 1
+                    }
+                }
+            },
+            responsive: true,
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    enabled: true
+                }
+            }
+        }
+    });
+</script> -->
+
+</body>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
+    } else {
+      document.getElementById("city").innerText = "Lokasi tidak didukung";
+    }
+
+    function successCallback(position) {
+      const lat = position.coords.latitude;
+      const lon = position.coords.longitude;
+      const apiKey = "c593bbc2d36cfc1645eb7ba4e35e2e95"; // Ganti dengan API key kamu
+
+      const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
+
+      fetch(url)
+        .then(response => response.json())
+        .then(data => {
+          document.getElementById("temperature").innerText = Math.round(data.main.temp);
+          document.getElementById("city").innerText = data.name;
+          document.getElementById("country").innerText = data.sys.country;
+        })
+        .catch(error => {
+          document.getElementById("city").innerText = "Gagal memuat";
+          document.getElementById("country").innerText = "-";
+        });
+    }
+
+    function errorCallback(error) {
+      document.getElementById("city").innerText = "Izin lokasi ditolak";
+      document.getElementById("country").innerText = "-";
+    }
+  });
+</script>
+
+</html>

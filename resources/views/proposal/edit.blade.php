@@ -73,7 +73,7 @@
                         </div>
                     </div>
 
-                    <div class="mb-3 row">
+                    <!-- <div class="mb-3 row">
                         <label class="col-sm-2 col-form-label font-weight-normal">Tahun Pengajuan</label>
                         <div class="col-sm-10">
                             <input type="number" name="tahun_pengajuan" class="form-control @error('tahun_pengajuan') is-invalid @enderror"
@@ -82,7 +82,7 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
-                    </div>
+                    </div> -->
 
                     <div class="mb-3 row">
                         <label class="col-sm-2 col-form-label font-weight-normal">Status</label>
@@ -117,7 +117,7 @@
                         </div>
                     </div>
 
-                    <div class="mb-3 row">
+                    <!-- <div class="mb-3 row">
                         <label class="col-sm-2 col-form-label font-weight-normal">Keterangan</label>
                         <div class="col-sm-10">
                             <textarea name="keterangan" class="form-control @error('keterangan') is-invalid @enderror"
@@ -126,7 +126,7 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
-                    </div>
+                    </div> -->
 
                     {{-- File Proposal --}}
                     <div class="mb-3 row">

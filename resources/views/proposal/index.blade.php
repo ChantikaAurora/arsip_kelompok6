@@ -8,12 +8,18 @@
     {{-- Tombol Tambah Proposal --}}
     <a href="{{ route('proposal.create') }}" class="btn btn-primary mb-3">+ Tambah Proposal</a>
 
+
+
     {{-- Form Pencarian --}}
     <form action="{{ route('proposal.index') }}" method="GET" class="mb-3 d-flex justify-content-end">
         <input type="text" name="search" class="form-control w-25 me-2" placeholder="Cari judul / peneliti / tanggal
     ..." value="{{ request('search') }}">
         <button type="submit" class="btn btn-primary">Cari</button>
     </form>
+
+
+
+
 
     {{-- Notifikasi --}}
     @if(session('success'))
@@ -36,13 +42,13 @@
             <thead class="table-light text-center">
                 <tr>
                     <th>No</th>
+                                        <th>Tanggal Pengajuan</th>
                     <th>Judul</th>
                     <th>Peneliti</th>
-                    <!-- <th>Jurusan</th> -->
+                    <th>Jurusan</th>
                     <th>Jenis</th>
                     <!-- <th>Tahun Pengajuan</th>
                     <th>Status</th>
-                    <th>Tanggal Pengajuan</th>
                     <th>Dana yang Diajukan</th>
                     <th>Keterangan</th> -->
                     <th>File</th>
@@ -53,13 +59,16 @@
                 @forelse($proposal as $index => $item)
                     <tr>
                         <td class="text-center">{{ $index + 1 }}</td>
+                                                <!-- <td class="text-center">{{ $item->tanggal_pengajuan }}</td> -->
+                                                 <td class="text-center">{{ \Carbon\Carbon::parse($item->tanggal_pengajuan)->format('Y-m-d') }}</td>
+
+
                         <td>{{ $item->judul }}</td>
                         <td>{{ $item->peneliti }}</td>
-                        <!-- <td>{{ $item->jurusan }}</td> -->
+                        <td>{{ $item->jurusan }}</td>
                         <td>{{ $item->jenisArsip->jenis ?? '-' }}</td>
                         <!-- <td class="text-center">{{ $item->tahun_pengajuan }}</td>
                         <td class="text-center">{{ $item->status }}</td>
-                        <td class="text-center">{{ $item->tanggal_pengajuan }}</td>
                         <td class="text-end">Rp {{ number_format($item->dana_diajukan, 0, ',', '.') }}</td>
                         <td style="max-width: 250px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="{{ $item->keterangan }}">
                             {{ Str::limit($item->keterangan, 50) }} -->
