@@ -1,20 +1,28 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PenggunaController;
-use App\Http\Controllers\JenisArsipController;
-use App\Http\Controllers\SuratKeluarController;
-use App\Http\Controllers\SuratMasukController;
 use App\Http\Controllers\ProposalController;
+use App\Http\Controllers\JenisArsipController;
+use App\Http\Controllers\SuratMasukController;
+use App\Http\Controllers\SuratKeluarController;
+use App\Http\Controllers\LogAktivitasController;
 use App\Http\Controllers\LaporanPenelitianController;
 use App\Http\Controllers\AnggaranPenelitianController;
-use App\Http\Controllers\LogAktivitasController;
 
 // Halaman utama
 Route::get('/home', function () {
-    return view('welcome');
+    $jumlahPenggunaAktif = DB::table('users')
+        ->whereDate('last_login', Carbon::today())
+        ->count();
+
+    $jumlahSuratMasuk = DB::table('suratmasuks')->count();
+
+    return view('welcome', compact('jumlahPenggunaAktif', 'jumlahSuratMasuk'));
 });
 
 // Login
