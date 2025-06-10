@@ -11,11 +11,14 @@ use App\Http\Controllers\ProposalController;
 use App\Http\Controllers\LaporanPenelitianController;
 use App\Http\Controllers\AnggaranPenelitianController;
 use App\Http\Controllers\LogAktivitasController;
+use App\Http\Controllers\DashboardController;
 
 // Halaman utama
-Route::get('/home', function () {
-    return view('welcome');
-});
+// Route::get('/home', function () {
+//     return view('welcome');
+// });
+
+Route::get('/home', [DashboardController::class, 'index'])->name('home');
 
 // Login
 Route::get('/', [LoginController::class, 'login'])->name('auth.login');
@@ -65,3 +68,7 @@ Route::get('/anggaran-penelitian/download/{id}', [AnggaranPenelitianController::
 
 // Log Aktivitas
 Route::get('/logaktivitas', [LogAktivitasController::class, 'index'])->name('log.index');
+
+// // dashbordsuratkeluar
+// Route::get('/surat-keluar', [DashboardSuratKeluarController::class, 'index'])->name('dashboardsuratkeluar');
+

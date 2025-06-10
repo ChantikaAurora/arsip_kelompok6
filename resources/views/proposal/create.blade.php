@@ -8,20 +8,20 @@
     {{-- Judul Halaman --}}
     <div class="border-bottom mb-4 pb-2">
         <h3 class="mb-3">Formulir Tambah Proposal</h3>
-        <p class="text-muted">Isi data proposal dengan lengkap dan benar.</p>
+        <p class="text-muted">Isi data proposal_penelitian dengan lengkap dan benar.</p>
     </div>
 
     {{-- Notifikasi Error --}}
     @if ($errors->any())
-        <div class="alert alert-danger">
-            <strong>Oops!</strong> Ada beberapa kesalahan pada input Anda. Silakan periksa kembali.
-            <ul class="mb-0 mt-2">
-                @foreach ($errors as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
+    <div class="alert alert-danger">
+        <strong>Oops!</strong> Ada beberapa kesalahan pada input Anda. Silakan periksa kembali.
+        <ul class="mb-0 mt-2">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
 
     {{-- Kartu Form --}}
     <div class="card shadow-sm">
@@ -80,7 +80,7 @@
                     </div>
                 </div>
 
-                {{-- Tahun Pengajuan --}}
+                <!-- {{-- Tahun Pengajuan --}}
                 <div class="mb-3 row">
                     <label class="col-sm-2 col-form-label">Tahun Pengajuan</label>
                     <div class="col-sm-10">
@@ -89,7 +89,7 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
-                </div>
+                </div> -->
 
                 {{-- Status --}}
                 <div class="mb-3 row">

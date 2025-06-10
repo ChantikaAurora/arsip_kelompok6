@@ -30,7 +30,9 @@
                     <th>Peneliti</th>
                     <th>Jenis</th>
                     <th>Jurusan</th>
+                     <th>file</th> 
                     <th>Aksi</th>
+                 
                 </tr>
             </thead>
             <tbody>
