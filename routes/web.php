@@ -10,6 +10,7 @@ use App\Http\Controllers\SuratMasukController;
 use App\Http\Controllers\ProposalController;
 use App\Http\Controllers\LaporanPenelitianController;
 use App\Http\Controllers\AnggaranPenelitianController;
+use App\Http\Controllers\DiagramController;
 use App\Http\Controllers\LogAktivitasController;
 
 // Halaman utama
@@ -65,3 +66,11 @@ Route::get('/anggaran-penelitian/download/{id}', [AnggaranPenelitianController::
 
 // Log Aktivitas
 Route::get('/logaktivitas', [LogAktivitasController::class, 'index'])->name('log.index');
+
+// Diagram Proposal, Laporan, Anggaran
+// Route::middleware(['auth'])->get('diagram', [DiagramController::class, 'index'])->name('diagram');
+// Route::get('/diagram', [DiagramController::class, 'index']);
+
+Route::get('/diagram', [DiagramController::class, 'index'])->name('diagram');
+Route::get('/diagram/data', [DiagramController::class, 'getData']); // untuk data AJAX
+
