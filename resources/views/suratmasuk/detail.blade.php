@@ -22,30 +22,6 @@
                         <tr><th>Pengirim</th><td>{{ $suratmasuk->pengirim }}</td></tr>
                         <tr><th>Jenis Surat</th><td>{{ $suratmasuk->jenisArsip->jenis }}</td></tr>
                     </table>
-                    {{-- File Proposal (dalam 1 card) --}}
-                    <div class="mt-4">
-                        @if($suratmasuk->file)
-                            {{-- Tombol Download di sisi kanan --}}
-                            <div class="d-flex justify-content-end mb-3">
-                                <a href="{{ route('suratmasuk.download', $suratmasuk->id) }}" class="btn btn-success" target="_blank">
-                                    <i class="bi bi-download"></i> Download
-                                </a>
-                            </div>
-                        @endif
-
-                        @php
-                            $ext = pathinfo($suratmasuk->file, PATHINFO_EXTENSION);
-                        @endphp
-
-                        @if($suratmasuk->file && $ext === 'pdf')
-                            <embed src="{{ route('suratmasuk.download', [$suratmasuk->id, 'preview' => 1]) }}"
-                                type="application/pdf" width="100%" height="900px" style="border: none;">
-                        @elseif($suratmasuk->file)
-                            <p class="text-muted">File tidak dapat ditampilkan langsung. Silakan unduh file untuk melihat isinya.</p>
-                        @else
-                            <p class="text-muted">Tidak ada file yang diunggah.</p>
-                        @endif
-                    </div>
                 </div>
             </div>
         </div>
