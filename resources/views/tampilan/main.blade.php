@@ -78,10 +78,10 @@
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
       <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
         <a class="navbar-brand brand-logo mr-5" href="{{ url('index.html') }}">
-          <img src="{{ asset('images/logo.svg') }}" class="mr-2" alt="logo"/>
+          <img src="{{ asset('images/logo2.png') }}" class="mr-2" alt="logo"/>
         </a>
         <a class="navbar-brand brand-logo-mini" href="{{ url('index.html') }}">
-          <img src="{{ asset('images/logo-mini.svg') }}" alt="logo"/>
+          <img src="{{ asset('images/logopnp.png') }}" alt="logo"/>
         </a>
       </div>
       <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
@@ -174,6 +174,73 @@
     <!-- partial -->
     <div class="container-fluid page-body-wrapper">
       <!-- partial:partials/_sidebar.html -->
+<<<<<<< HEAD
+      <nav class="sidebar sidebar-offcanvas" id="sidebar">
+        <ul class="nav">
+          <li class="nav-item">
+            <a class="nav-link" href="/home">
+              <i class="icon-grid menu-icon"></i>
+              <span class="menu-title">Dashboard</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/pengguna">
+              <i class="icon-head menu-icon"></i>
+              <span class="menu-title">User Manajer</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ route('suratmasuk.index') }}">
+              <i class="icon-envelope-letter menu-icon"></i>
+              <span class="menu-title">Surat Masuk</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/suratkeluar">
+              <i class="icon-envelope-open menu-icon"></i>
+              <span class="menu-title">Surat Keluar</span>
+            </a>
+          </li>
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="collapse" href="#dokumen" role="button"
+            aria-expanded="false" aria-controls="dokumen">
+            <i class="icon-chart menu-icon"></i>
+            <span class="menu-title">Dokumen Lainnya</span>
+            <i class="menu-arrow"></i>
+          </a>
+          <div class="collapse" id="dokumen">
+            <ul class="nav flex-column sub-menu">
+              <li class="nav-item"> <a class="nav-link" href="{{ route('proposal.index') }}">Proposal Penelitian</a></li>
+              <li class="nav-item"> <a class="nav-link" href="{{ route ('laporan_penelitian.index') }}">Laporan Penelitian</a></li>
+              <li class="nav-item"> <a class="nav-link" href="{{ route('anggaran_penelitian.index') }}">Anggaran Penelitian</a></li>
+            </ul>
+          </div>
+        </li>
+
+          <li class="nav-item">
+            <a class="nav-link " href="{{ route('jenisarsip.index') }}">
+              <i class="icon-tag menu-icon"></i>
+              <span class="menu-title">Jenis Arsip</span>
+            </a>
+          </li>
+          <!-- <li class="nav-item">
+            <a class="nav-link " href="#">
+              <i class="icon-doc menu-icon"></i>
+              <span class="menu-title">Log Aktivitas</span>
+            </a>
+          </li> -->
+              <li class="nav-item">
+                <a class="nav-link" href="{{ route('log.index') }}">
+                <i class="icon-doc menu-icon"></i>
+               <span class="menu-title">Log Aktivitas</span>
+              </a>
+            </li>
+
+
+
+        </ul>
+      </nav>
+
      
     @include('tampilan.sidebar')
 

@@ -8663,7 +8663,7 @@
   --purple: #6a008a;
   --pink: #E91E63;
   --red: #f96868;
-  --orange: #f2a654;
+  --orange: #ff914d;
   --yellow: #f6e84e;
   --green: #46c35f;
   --teal: #58d8a3;
@@ -10202,7 +10202,7 @@ pre code {
 }
 
 .table-hover .table-primary:hover {
-  background-color: #bcbae0;
+  background-color: #ff914f;
 }
 
 .table-hover .table-primary:hover > td,
@@ -19059,7 +19059,7 @@ a.text-dark:hover, a.text-dark:focus {
   .table, .jsgrid .jsgrid-table {
     border-collapse: collapse !important;
   }
-  
+
   .table td,
   .jsgrid .jsgrid-table td, .table th, .jsgrid .jsgrid-table th {
     background-color: #ffffff !important;
