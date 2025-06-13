@@ -19,9 +19,8 @@ return new class extends Migration
             $table->string('asal_surat');
             $table->string('perihal');
             $table->string('pengirim');
-            $table->foreignId('jenis_surat');
-            $table->string('file_surat');
-            $table->string('type_surat');
+            $table->foreignId('jenis');
+            $table->string('file');
             $table->timestamps();
         });
     }
