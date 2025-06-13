@@ -25,39 +25,65 @@
             </a>
           </li>
         <li class="nav-item">
-          <a class="nav-link" data-toggle="collapse" href="#penelitian" role="button"
-            aria-expanded="false" aria-controls="penelitian">
+          <a class="nav-link" data-toggle="collapse" href="#proposal" role="button"
+            aria-expanded="false" aria-controls="proposal">
             <i class="icon-book-open menu-icon"></i>
-            <span class="menu-title">Penelitian</span>
+            <span class="menu-title">Proposal</span>
             <i class="menu-arrow"></i>
           </a>
-          <div class="collapse" id="penelitian">
+          <div class="collapse" id="proposal">
             <ul class="nav flex-column sub-menu">
-              <li class="nav-item"> <a class="nav-link" href="{{ route('proposal.index') }}">Proposal Penelitian</a></li>
-              <li class="nav-item"> <a class="nav-link" href="{{ route ('laporan_penelitian.index') }}">Laporan Penelitian</a></li>
-              <li class="nav-item"> <a class="nav-link" href="{{ route('anggaran_penelitian.index') }}">Anggaran Penelitian</a></li>
+              <li class="nav-item"> <a class="nav-link" href="{{ route('proposal.index') }}">Proposal Pengabdian</a></li>
+              <li class="nav-item"> <a class="nav-link" href=" ">Proposal Penelitian <br> DP</a></li>
+              <li class="nav-item"> <a class="nav-link" href=" ">Proposal Penelitian <br> Unggulan</a></li>
             </ul>
           </div>
         </li>
         <li class="nav-item">
-          <a class="nav-link" data-toggle="collapse" href="#pengabdian" role="button"
-            aria-expanded="false" aria-controls="pengabdian" >
-            <i class="icon-chart menu-icon"></i>
-            <span class="menu-title">Pengabdian</span>
+          <a class="nav-link" data-toggle="collapse" href="#laporan" role="button"
+            aria-expanded="false" aria-controls="laporan" >
+            <i class="icon-notebook menu-icon"></i>
+            <span class="menu-title">Laporan</span>
             <i class="menu-arrow"></i>
           </a>
-          <div class="collapse" id="pengabdian">
+          <div class="collapse" id="laporan">
             <ul class="nav flex-column sub-menu">
-              <li class="nav-item"> <a class="nav-link" href="" id="proposalpengabdian">Proposal Pengabdian</a></li>
-              <li class="nav-item"> <a class="nav-link" href="" id="laporanpengabdian">Laporan Pengabdian</a></li>
-              <li class="nav-item"> <a class="nav-link" href="" id="anggaranpengabdian">Anggaran Pengabdian</a></li>
+              <li class="nav-item"> <a class="nav-link" href="" >Laporan Kegiatan <br> Pengabdian</a></li>
+              <li class="nav-item"> <a class="nav-link" href="" >Laporan Akhir <br> Pengabdian</a></li>
+              <li class="nav-item"> <a class="nav-link" href="{{ route ('laporan_penelitian.index') }}" >Laporan Akhir <br> Penelitian</a></li>
             </ul>
           </div>
         </li>
          <li class="nav-item">
+          <a class="nav-link" data-toggle="collapse" href="#anggaran" role="button"
+            aria-expanded="false" aria-controls="anggaran" >
+            <i class="icon-chart menu-icon"></i>
+            <span class="menu-title">Anggaran</span>
+            <i class="menu-arrow"></i>
+          </a>
+          <div class="collapse" id="anggaran">
+            <ul class="nav flex-column sub-menu">
+              <li class="nav-item"> <a class="nav-link" href="{{ route('anggaran_penelitian.index') }}" >Anggaran Penelitian</a></li>
+              <li class="nav-item"> <a class="nav-link" href="" >Anggaran Pengabdian</a></li>
+            </ul>
+          </div>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link " href="" id="jurusan">
+              <i class="icon-people menu-icon"></i>
+              <span class="menu-title">Pengabdian Kepada <br> Masyarakat</span>
+            </a>
+          </li>
+         <li class="nav-item">
             <a class="nav-link " href="" id="jurusan">
               <i class="icon-graduation menu-icon"></i>
               <span class="menu-title">Jurusan</span>
+            </a>
+          </li>
+           <li class="nav-item">
+            <a class="nav-link " href="" id="jurusan">
+              <i class="icon-badge menu-icon"></i>
+              <span class="menu-title">Prodi</span>
             </a>
           </li>
           <li class="nav-item">

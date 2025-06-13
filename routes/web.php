@@ -33,7 +33,8 @@ Route::post('/logout', function () {
 })->name('logout');
 
 // Registrasi
-// Route::post('/register', [RegisterController::class, 'store'])->name('auth.register.store');
+Route::post('/register', [RegisterController::class, 'store'])->name('auth.register.store');
+
 
 // Pengguna & Jenis Arsip
 Route::resource('pengguna', PenggunaController::class);
