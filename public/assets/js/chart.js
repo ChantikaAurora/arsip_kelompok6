@@ -62,14 +62,16 @@ $(function() {
   };
   var options = {
     scales: {
-      yAxes: [{
+      y: [{
         ticks: {
           beginAtZero: true
         }
       }]
     },
+    plugins: {
     legend: {
       display: false
+      }
     },
     elements: {
       point: {
@@ -188,16 +190,16 @@ $(function() {
       }
     },
     scales: {
-      xAxes: [{
+      x: {
         gridLines: {
           display: false
         }
-      }],
-      yAxes: [{
+      },
+      y: {
         gridLines: {
           display: false
         }
-      }]
+      }
     }
   }
 
@@ -261,10 +263,10 @@ $(function() {
 
   var scatterChartOptions = {
     scales: {
-      xAxes: [{
+      x: {
         type: 'linear',
         position: 'bottom'
-      }]
+      }
     }
   }
   // Get context with jQuery - using jQuery's .get() method.

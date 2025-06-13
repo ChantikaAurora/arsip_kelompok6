@@ -10,6 +10,7 @@ use App\Http\Controllers\SuratMasukController;
 use App\Http\Controllers\ProposalController;
 use App\Http\Controllers\LaporanPenelitianController;
 use App\Http\Controllers\AnggaranPenelitianController;
+use App\Http\Controllers\DiagramController;
 use App\Http\Controllers\LogAktivitasController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\RegisterController;
@@ -65,6 +66,13 @@ Route::get('proposal/{id}', [ProposalController::class, 'show'])->name('proposal
 Route::get('/logaktivitas', [LogAktivitasController::class, 'index'])->name('log.index');
 
 // dashbordsuratkeluar
+
+// Diagram Proposal, Laporan, Anggaran
+// Route::middleware(['auth'])->get('diagram', [DiagramController::class, 'index'])->name('diagram');
+// Route::get('/diagram', [DiagramController::class, 'index']);
+
+Route::get('/diagram', [DiagramController::class, 'index'])->name('diagram');
+Route::get('/diagram/data', [DiagramController::class, 'getData']); // untuk data AJAX
+// // dashbordsuratkeluar
+
 // Route::get('/surat-keluar', [DashboardSuratKeluarController::class, 'index'])->name('dashboardsuratkeluar');
-
-
