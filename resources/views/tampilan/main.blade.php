@@ -11,6 +11,7 @@
   top: 70px !important;
   left: 0 !important;
   width: 220px !important; /* Sesuaikan lebar sidebar */
+  width: 250px !important; /* Sesuaikan lebar sidebar */
   height: calc(100vh - 70px) !important;
   overflow-y: auto !important;
   z-index: 1000 !important;
@@ -21,6 +22,7 @@
   /* Atur konten agar tidak tertutupi sidebar */
  .main-panel {
   margin-left: 220px !important;
+  margin-left: 250px !important;
   width: calc(100% - 220px) !important;
 }
 
@@ -166,15 +168,12 @@
       </div>
     </nav>
 
-
-
-
-
-
     <!-- partial -->
     <div class="container-fluid page-body-wrapper">
+
+        @include('tampilan.sidebar')
+
       <!-- partial:partials/_sidebar.html -->
-<<<<<<< HEAD
       <nav class="sidebar sidebar-offcanvas" id="sidebar">
         <ul class="nav">
           <li class="nav-item">
@@ -241,10 +240,8 @@
         </ul>
       </nav>
 
-     
     @include('tampilan.sidebar')
 
-=======
 
       <nav class="sidebar sidebar-offcanvas" id="sidebar">
         <ul class="nav">
@@ -320,11 +317,14 @@
         </div>
       </div>
     </div>
+<<<<<<< HEAD
 
 
 
+=======
+>>>>>>> 0423da7c37c42aff71b19b84bc9a3309792ff17e
   </div>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 
   <!-- plugins:js -->
@@ -332,6 +332,7 @@
   <!-- endinject -->
 
   <!-- Plugin js for this page -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="{{ asset('assets/vendors/chart.js/Chart.min.js') }}"></script>
   <script src="{{ asset('assets/vendors/datatables.net/jquery.dataTables.js') }}"></script>
   <script src="{{ asset('assets/vendors/datatables.net-bs4/dataTables.bootstrap4.js') }}"></script>
@@ -350,7 +351,8 @@
   <script src="{{ asset('assets/js/dashboard.js') }}"></script>
   <script src="{{ asset('assets/js/Chart.roundedBarCharts.js') }}"></script>
   <!-- End custom js for this page-->
-
+  {{-- @yield('scripts') --}}
+  @stack('scripts')
 
 </body>
 </html>
