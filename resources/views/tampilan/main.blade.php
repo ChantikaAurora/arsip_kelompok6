@@ -7,25 +7,46 @@
   <style>
   /* Fix sidebar di sisi kiri */
   .sidebar {
-    position: fixed;
-    top: 70px; /* Sesuaikan dengan tinggi navbar kamu */
-    left: 0;
-    width: 250px; /* Sesuaikan dengan lebar sidebar kamu */
-    height: calc(100vh - 70px); /* Tinggi penuh layar dikurangi navbar */
-    overflow-y: auto;
-    z-index: 1000;
-  }
+  position: fixed !important;
+  top: 70px !important;
+  left: 0 !important;
+  width: 220px !important; /* Sesuaikan lebar sidebar */
+  height: calc(100vh - 70px) !important;
+  overflow-y: auto !important;
+  z-index: 1000 !important;
+  background-color: #fff; /* Jika perlu beri latar */
+}
+
 
   /* Atur konten agar tidak tertutupi sidebar */
-  .main-panel {
-    margin-left: 250px; /* Sesuaikan dengan lebar sidebar */
-    width: calc(100% - 250px);
-  }
+ .main-panel {
+  margin-left: 220px !important;
+  width: calc(100% - 220px) !important;
+}
+
 
   /* Pastikan wrapper tetap fleksibel */
   .page-body-wrapper {
     padding-top: 70px; /* Sesuaikan dengan tinggi navbar */
   }
+
+  @media (max-width: 768px) {
+  .sidebar {
+    position: absolute;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+  }
+
+  .sidebar.active {
+    transform: translateX(0);
+  }
+
+  .main-panel {
+    margin-left: 0;
+    width: 100%;
+  }
+}
+
 </style>
 
 
@@ -153,7 +174,7 @@
     <!-- partial -->
     <div class="container-fluid page-body-wrapper">
       <!-- partial:partials/_sidebar.html -->
-<<<<<<< HEAD
+
       <nav class="sidebar sidebar-offcanvas" id="sidebar">
         <ul class="nav">
           <li class="nav-item">
@@ -219,20 +240,18 @@
 
         </ul>
       </nav>
-
-     
-    @include('tampilan.sidebar')
-
+ @include('tampilan.sidebar')
       <!-- Main content -->
       <div class="main-panel">
         <div class="content-wrapper">
+
           @yield('content')
         </div>
       </div>
     </div>
 
 
-    
+
   </div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 

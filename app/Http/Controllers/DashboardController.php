@@ -21,8 +21,8 @@ class DashboardController extends Controller
     {
         $totalSuratKeluar = SuratKeluar::count();
         $totalPengguna = Pengguna::count();
-$penggunaTerbaru = Pengguna::latest()->take(5)->get();
-$totalSuratMasuk = SuratMasuk::count();       // <-- Surat Masuk
+        $penggunaTerbaru = Pengguna::latest()->take(5)->get();
+        $totalSuratMasuk = SuratMasuk::count();       // <-- Surat Masuk
         // $totalDokumenLainnya = DokumenLainnya::count();  // <-- Dokumen Lainnya
 
         // Hitung total dokumen lainnya dari 3 tabel

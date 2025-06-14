@@ -43,21 +43,21 @@ class ProposalController extends Controller
             'peneliti'          => 'required|string|max:255',
             'jurusan'           => 'required|string|max:255',
             'jenis'             => 'required|exists:jenis_arsips,id',
-            // 'tahun_pengajuan'   => 'required|integer',
+            'tahun_pengajuan'   => 'required|integer',
             'status'            => 'required|string|max:100',
             'tanggal_pengajuan' => 'required|date',
             'dana_diajukan'     => 'required|numeric',
             'keterangan'        => 'nullable|string',
             'file_proposal'     => 'required|file|mimes:pdf,doc,docx|max:5120',
         ]);
-        
+
         if ($request->hasFile('file_proposal')) {
             $file = $request->file('file_proposal');
             $fileName = time() . '_' . $file->getClientOriginalName();
             $file->storeAs('proposals', $fileName, 'public');  // pastikan tidak ada disk kedua!
             $validated['file_proposal'] = $fileName;
         }
-        
+
         // $path = $request->file('file')->store('suratmasuk', 'public’);
         Proposal::create($validated);
 
