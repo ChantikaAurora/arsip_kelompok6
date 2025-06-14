@@ -32,6 +32,7 @@ use App\Http\Controllers\DiagramController;
 // use App\Http\Controllers\LogAktivitasController;
 // use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\AnggaranPengabdianController;
 
 
 // Halaman utama
@@ -52,7 +53,7 @@ Route::post('/logout', function () {
 })->name('logout');
 
 // Registrasi
-Route::post('/register', [RegisterController::class, 'store'])->name('auth.register.store');
+// Route::post('/register', [RegisterController::class, 'store'])->name('auth.register.store');
 
 
 // Pengguna & Jenis Arsip
@@ -80,6 +81,8 @@ Route::get('proposal/{id}/download', [ProposalController::class, 'download'])->n
 Route::get('proposal/{id}', [ProposalController::class, 'show'])->name('proposal.show');
 
 // Pengabdian
+Route::resource('anggaran_pengabdian', AnggaranPengabdianController::class);
+Route::get('anggaran/{id}/download', [AnggaranPengabdianController::class, 'download'])->name('anggaran.download');
 
 
 // Log Aktivitas

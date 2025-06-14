@@ -28464,6 +28464,7 @@ div.tagsinput span.tag a {
 
 /* Sidebar */
 .sidebar {
+  position: fixed;
   min-height: calc(100vh - 60px);
   background: #fff;
   font-family: "Nunito", sans-serif;
@@ -28477,11 +28478,32 @@ div.tagsinput span.tag a {
   -ms-transition: width 0.25s ease, background 0.25s ease;
 }
 
+.main-panel {
+  margin-left: 235px;
+}
+
+.sidebar-icon-only .sidebar {
+  width: 70px;
+}
+
+.sidebar-icon-only .main-panel {
+  margin-left: 70px;
+}
+
 .sidebar .nav {
   overflow: hidden;
   flex-wrap: nowrap;
   flex-direction: column;
   margin-bottom: 60px;
+}
+
+.sidebar.minimized {
+  width: 70px; /* Atur lebar saat minimize */
+}
+
+
+.main-panel.minimized {
+  margin-left: 70px; /* Margin saat sidebar minimize */
 }
 
 .sidebar .nav .nav-item {
@@ -28769,6 +28791,7 @@ div.tagsinput span.tag a {
   .sidebar-offcanvas.active {
     right: 0;
   }
+
 }
 
 /* Navbar */

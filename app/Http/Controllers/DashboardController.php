@@ -60,7 +60,7 @@ class DashboardController extends Controller
     // {
     //     $totalSuratKeluar = SuratKeluar::count();
     //     $totalPengguna = User::count();
-    //     // $totalPengguna = User::count(); // ✅ HARUS ADA
+    //     // $totalPengguna = User::count(); //
     //     $penggunaTerbaru = User::latest()->take(5)->get();
 
     //     // Hitung pertumbuhan 30 hari terakhir

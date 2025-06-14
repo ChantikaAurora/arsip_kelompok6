@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>Skydash Admin</title>
+
   <style>
   /* Fix sidebar di sisi kiri */
   .sidebar {
@@ -14,7 +15,7 @@
   width: 220px !important; /* Sesuaikan lebar sidebar */
 
   width: 250px !important; /* Sesuaikan lebar sidebar */
->>>>>>> origin/iterasi-3
+
   height: calc(100vh - 70px) !important;
   overflow-y: auto !important;
   z-index: 1000 !important;
@@ -56,6 +57,7 @@
 }
 
 </style>
+
 
 
   <!-- plugins:css -->
@@ -175,9 +177,10 @@
     </nav>
 
     <!-- partial -->
-    <div class="container-fluid page-body-wrapper">
+    <div class="container-scroller page-body-wrapper">
 
         @include('tampilan.sidebar')
+
 
       <!-- partial:partials/_sidebar.html -->
 
@@ -254,6 +257,7 @@
 
 
     @include('tampilan.sidebar')
+
 
       <!-- Main content -->
       <div class="main-panel">
