@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
     <main>
         {{-- Tombol Kembali --}}
-        <a href="{{ route('laporan_penelitian.index', $laporan_penelitian->id) }}" class="btn btn-secondary my-4">
+        <a href="{{ route('laporan_penelitian.index', $laporan_penelitian->id) }}" class="btn btn-secondary my-4" >
             <i class="bi bi-arrow-left-circle"></i>Kembali</a>
         <div class="container-fluid px-4">
             <div class="card mb-4">

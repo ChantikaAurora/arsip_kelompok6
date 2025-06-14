@@ -3,7 +3,7 @@
 @section('content')
 <div class="container mt-4">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-    <a href="{{ route('suratmasuk.index') }}" class="btn btn-secondary mb-3">  <i class="bi bi-arrow-left-circle"></i> Kembali</a>
+    <a href="{{ route('suratmasuk.index') }}" class="btn btn-secondary mb-3" id="suratmasuk">  <i class="bi bi-arrow-left-circle"></i> Kembali</a>
 
     <div class="row">
         <!-- Detail Surat Masuk -->

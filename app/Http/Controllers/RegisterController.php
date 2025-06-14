@@ -1,9 +1,9 @@
 <?php
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Auth;
 
-use App\Models\Pengguna;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\User;
+use App\Models\Pengguna;
 use Illuminate\Support\Facades\Hash;
 
 class RegisterController extends Controller
@@ -15,19 +15,26 @@ class RegisterController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'username' => 'required|string|max:255|unique:users,name',
+        // Validasi input
+        $validated = $request->validate([
+            'username' => 'required|string|max:255|unique:users,username',
             'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:6',
+            'password' => 'required|min:6',
         ]);
 
-        Pengguna::create([
-            'name' => $request->username,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
+        // Simpan ke database
+        $pengguna = Pengguna::create([
+            'name' => $validated['username'], // atau 'username' tergantung nama kolom kamu
+            'email' => $validated['email'],
+            'password' => Hash::make($validated['password']),
         ]);
 
-        return redirect()->route('login')->with('success', 'Registration successful!');
+    //     // Redirect atau login otomatis
+        // auth()->login($pengguna);
+
+        // return redirect()->route('home'); // arahkan ke halaman dashboard atau home
     }
 }
+
+
 

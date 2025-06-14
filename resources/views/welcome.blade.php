@@ -155,12 +155,86 @@
               <div class="card">
                 <div class="card-body">
                  <div class="d-flex justify-content-between">
-                  <p class="card-title">Sales Report</p>
-                  <a href="#" class="text-info">View all</a>
+                  <p class="card-title">Dokumen Lainnya</p>
+                  <a href={{ route('diagram') }} class="text-info">View all</a>
                  </div>
-                  <p class="font-weight-500">The total number of sessions within the date range. It is the period time a user is actively engaged with your website, page or app, etc</p>
+                  {{-- <p class="font-weight-500">The total number of sessions within the date range. It is the period time a user is actively engaged with your website, page or app, etc</p> --}}
                   <div id="sales-legend" class="chartjs-legend mt-4 mb-2"></div>
                   <canvas id="sales-chart"></canvas>
+                  <script>
+                  document.addEventListener('DOMContentLoaded', function () {
+                      fetch('/diagram/data')
+                          .then(response => response.json())
+                          .then(result => {
+                              const ctx = document.getElementById('sales-chart').getContext('2d');
+                              new Chart(ctx, {
+                                  type: 'bar',
+                                  data: {
+                                      labels: result.labels,
+                                      datasets: [{
+                                          label: 'Jumlah',
+                                          data: result.data,
+                                          backgroundColor: [
+                                              '#98BDFF',
+                                              '#4B49AC',
+                                              '#7B68EE',
+                                          ],
+                                          borderColor: [
+                                              '#98BDFF',
+                                              '#4B49AC',
+                                              '#7B68EE',
+                                          ],
+                                          borderWidth: 1
+                                      }]
+                                  },
+                                  options: {
+                                    cornerRadius: 5,
+                                    responsive: true,
+                                    maintainAspectRatio: true,
+                                    layout: {
+                                      padding: {
+                                        left: 0,
+                                        right: 0,
+                                        top: 20,
+                                        bottom: 0
+                                      // responsive: true,
+                                      }
+                                    },
+                                      scales: {
+                                          x: {
+                                              stacked: false,
+                                              beginAtZero: true,
+                                              ticks: {
+                                                  precision: 0
+                                                  // stepSize: 10
+
+                                              }
+                                          },
+                                          y: {
+                                              beginAtZero: true,
+                                              display: true,
+                                              gridLines: {
+                                                display: true,
+                                                drawBorder: false,
+                                                color: "#F2F2F2"
+                                              },
+                                              min : 0,
+                                              max : 10,
+                                              ticks: {
+                                                beginAtZero: true,
+                                                stepSize: 10,
+                                                // suggestedMax: 20,
+                                                callback: function(value) {
+                                                    return Number.isInteger(value) ? value : null;
+                                                },
+                                            }
+                                          }
+                                      }
+                                  }
+                              });
+                          });
+                  });
+                  </script>
                 </div>
               </div>
             </div>
@@ -168,6 +242,10 @@
         </div>
       </div>
 @endsection
+
+@push('scripts')
+<script src="{{ asset('assets/js/dashboard.js') }}"></script>
+@endpush
 <!-- <script>
     const ctx = document.getElementById('order-chart').getContext('2d');
 

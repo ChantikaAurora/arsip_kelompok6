@@ -42,6 +42,8 @@ class ProposalController extends Controller
             'judul'             => 'required|string|max:255',
             'peneliti'          => 'required|string|max:255',
             'jurusan'           => 'required|string|max:255',
+            'jenis'             => 'required|exists:jenis_arsips,id', 
+            'tahun_pengajuan'   => 'required|integer',
             'jenis'             => 'required|exists:jenis_arsips,id',
             'tahun_pengajuan'   => 'required|integer',
             'status'            => 'required|string|max:100',
@@ -152,7 +154,6 @@ class ProposalController extends Controller
     // Download
     return Storage::disk('public')->download($filePath);
 }
-
 
 
     // {

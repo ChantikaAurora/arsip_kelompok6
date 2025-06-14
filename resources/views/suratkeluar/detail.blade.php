@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container mt-4">
-    <a href="{{ route('suratkeluar.index') }}" class="btn btn-secondary mb-3">← Kembali ke Daftar Surat Keluar</a>
+    <a href="{{ route('suratkeluar.index') }}" class="btn btn-secondary mb-3" id="suratkeluar"> ← Kembali</a>
 
     <div class="card shadow">
         <div class="card-header bg-primary text-white">
