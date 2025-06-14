@@ -4,13 +4,18 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>Skydash Admin</title>
+
   <style>
   /* Fix sidebar di sisi kiri */
   .sidebar {
   position: fixed !important;
   top: 70px !important;
   left: 0 !important;
+
+  width: 220px !important; /* Sesuaikan lebar sidebar */
+
   width: 250px !important; /* Sesuaikan lebar sidebar */
+
   height: calc(100vh - 70px) !important;
   overflow-y: auto !important;
   z-index: 1000 !important;
@@ -20,7 +25,11 @@
 
   /* Atur konten agar tidak tertutupi sidebar */
  .main-panel {
+
+  margin-left: 220px !important;
+
   margin-left: 250px !important;
+>>>>>>> origin/iterasi-3
   width: calc(100% - 220px) !important;
 }
 
@@ -48,6 +57,7 @@
 }
 
 </style>
+
 
 
   <!-- plugins:css -->
@@ -167,11 +177,15 @@
     </nav>
 
     <!-- partial -->
-    <div class="container-fluid page-body-wrapper">
+    <div class="container-scroller page-body-wrapper">
 
         @include('tampilan.sidebar')
 
+
       <!-- partial:partials/_sidebar.html -->
+
+
+
       <nav class="sidebar sidebar-offcanvas" id="sidebar">
         <ul class="nav">
           <li class="nav-item">
@@ -238,16 +252,26 @@
         </ul>
       </nav>
 
+ @include('tampilan.sidebar')
+
+
 
     @include('tampilan.sidebar')
+
 
       <!-- Main content -->
       <div class="main-panel">
         <div class="content-wrapper">
+
           @yield('content')
         </div>
       </div>
     </div>
+
+
+
+
+
   </div>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 

@@ -21,8 +21,8 @@ class DashboardController extends Controller
     {
         $totalSuratKeluar = SuratKeluar::count();
         $totalPengguna = Pengguna::count();
-$penggunaTerbaru = Pengguna::latest()->take(5)->get();
-$totalSuratMasuk = SuratMasuk::count();       // <-- Surat Masuk
+        $penggunaTerbaru = Pengguna::latest()->take(5)->get();
+        $totalSuratMasuk = SuratMasuk::count();       // <-- Surat Masuk
         // $totalDokumenLainnya = DokumenLainnya::count();  // <-- Dokumen Lainnya
 
         // Hitung total dokumen lainnya dari 3 tabel
@@ -60,7 +60,7 @@ $totalSuratMasuk = SuratMasuk::count();       // <-- Surat Masuk
     // {
     //     $totalSuratKeluar = SuratKeluar::count();
     //     $totalPengguna = User::count();
-    //     // $totalPengguna = User::count(); // ✅ HARUS ADA
+    //     // $totalPengguna = User::count(); //
     //     $penggunaTerbaru = User::latest()->take(5)->get();
 
     //     // Hitung pertumbuhan 30 hari terakhir

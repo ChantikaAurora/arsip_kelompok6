@@ -19,15 +19,15 @@ class LoginController extends Controller
             'email' => ['required', 'email'],
             'password' => ['required'],
         ]);
- 
+
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
- 
+
             return redirect()->intended('/welcome');
         }
 
         dd('Login gagal'); // Tambahkan ini untuk melihat apakah block gagal dieksekusi
- 
+
         return back()->withErrors([
             'email' => 'The provided credentials do not match our records.',
         ])->onlyInput('email');
@@ -41,8 +41,6 @@ class LoginController extends Controller
         // Menghapus session dan token
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-
-       
         return redirect('/');
     }
 }

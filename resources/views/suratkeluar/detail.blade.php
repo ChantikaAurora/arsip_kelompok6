@@ -24,9 +24,7 @@
             {{-- File Surat --}}
             <div class="d-flex justify-content-end align-items-center mb-3">
                 @if($data->file)
-                    <a href="{{ route('suratkeluar.download', $data->id) }}" class="btn btn-success btn-sm" target="_blank">
-                        Download
-                    </a>
+                    <a href="{{ route('suratkeluar.download', $data->id) }}" class="btn btn-success btn-sm" target="_blank">Download</a>
                 @endif
             </div>
             <div style="height: 900px 900py; ">

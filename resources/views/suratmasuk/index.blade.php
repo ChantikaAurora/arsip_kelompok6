@@ -34,9 +34,9 @@
     {{-- Tabel Data Surat Masuk --}}
     <div class="table-responsive">
         <table class="table table-bordered table-hover ">
-            <thead class="table-light">
-                <tr>
-                    <th>No</th>
+            <thead class="table-light" >
+                <tr class="text-center">
+                    <th >No</th>
                     <th>Nomor Surat</th>
                     <th>Perihal</th>
                     <th>Jenis Arsip</th>

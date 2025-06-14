@@ -99,17 +99,17 @@
                       <p class="fs-30 mb-2">{{ number_format($totalSuratKeluar) }}</p>
                       <!-- <p>{{ $growthPercent }}% (30 days)</p> -->
                      </a>
-                     
+
 
                     </div>
                   </div>
                 </div>
-                
+
                 <div class="col-md-6 stretch-card transparent">
                   <div class="card card-light-danger">
                     <div class="card-body">
                       <!-- <p class="mb-4">Dokumen Lainnya</p> -->
-                           <p class="mb-4"><i class="mdi mdi-file-document mdi-30px mr-2"></i>Dokumen Lainnya</p>  
+                           <p class="mb-4"><i class="mdi mdi-file-document mdi-30px mr-2"></i>Dokumen Lainnya</p>
                            <!-- mdi-37px -->   <!-- untuk memperbesar ICON  -->
                       <!-- <p class="fs-30 mb-2">47033</p> -->
                        <!-- <p class="fs-30 mb-2">{{ number_format($totalDokumenLainnya) }}</p> -->
@@ -145,7 +145,7 @@
                     <div class="mt-3">
                       <p class="text-muted">Dokumen Lainnya</p>
                       <h3 class="text-primary fs-30 font-weight-medium">{{ number_format($totalDokumenLainnya) }}</h3>
-                    </div> 
+                    </div>
                   </div>
                   <canvas id="order-chart"></canvas>
                 </div>
@@ -256,9 +256,9 @@
             datasets: [{
                 label: 'Jumlah',
                 data: [
-                    {{ $totalPengguna ?? 0 }}, 
-                    {{ $totalSuratMasuk ?? 0 }}, 
-                    {{ $totalSuratKeluar ?? 0 }}, 
+                    {{ $totalPengguna ?? 0 }},
+                    {{ $totalSuratMasuk ?? 0 }},
+                    {{ $totalSuratKeluar ?? 0 }},
                     {{ $totalDokumenLainnya ?? 0 }}
                 ],
                 backgroundColor: [
@@ -268,9 +268,9 @@
                     'rgba(255, 99, 132, 0.7)'   // warna bar Dokumen Lainnya
                 ],
                 borderColor: [
-                    'rgba(54, 162, 235, 1)', 
-                    'rgba(255, 206, 86, 1)', 
-                    'rgba(75, 192, 192, 1)', 
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
                     'rgba(255, 99, 132, 1)'
                 ],
                 borderWidth: 1
