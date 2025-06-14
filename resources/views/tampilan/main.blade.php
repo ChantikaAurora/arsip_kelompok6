@@ -5,6 +5,61 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>Skydash Admin</title>
 
+  <style>
+  /* Fix sidebar di sisi kiri */
+  .sidebar {
+  position: fixed !important;
+  top: 70px !important;
+  left: 0 !important;
+
+  width: 220px !important; /* Sesuaikan lebar sidebar */
+
+  width: 250px !important; /* Sesuaikan lebar sidebar */
+
+  height: calc(100vh - 70px) !important;
+  overflow-y: auto !important;
+  z-index: 1000 !important;
+  background-color: #fff; /* Jika perlu beri latar */
+}
+
+
+  /* Atur konten agar tidak tertutupi sidebar */
+ .main-panel {
+
+  margin-left: 220px !important;
+
+  margin-left: 250px !important;
+>>>>>>> origin/iterasi-3
+  width: calc(100% - 220px) !important;
+}
+
+
+  /* Pastikan wrapper tetap fleksibel */
+  .page-body-wrapper {
+    padding-top: 70px; /* Sesuaikan dengan tinggi navbar */
+  }
+
+  @media (max-width: 768px) {
+  .sidebar {
+    position: absolute;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+  }
+
+  .sidebar.active {
+    transform: translateX(0);
+  }
+
+  .main-panel {
+    margin-left: 0;
+    width: 100%;
+  }
+}
+
+</style>
+
+
+
   <!-- plugins:css -->
   <link rel="stylesheet" href="{{ asset('assets/vendors/feather/feather.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/vendors/ti-icons/css/themify-icons.css') }}">
@@ -126,13 +181,97 @@
 
         @include('tampilan.sidebar')
 
+
+      <!-- partial:partials/_sidebar.html -->
+
+
+
+      <nav class="sidebar sidebar-offcanvas" id="sidebar">
+        <ul class="nav">
+          <li class="nav-item">
+            <a class="nav-link" href="/home">
+              <i class="icon-grid menu-icon"></i>
+              <span class="menu-title">Dashboard</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/pengguna">
+              <i class="icon-head menu-icon"></i>
+              <span class="menu-title">User Manajer</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ route('suratmasuk.index') }}">
+              <i class="icon-envelope-letter menu-icon"></i>
+              <span class="menu-title">Surat Masuk</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/suratkeluar">
+              <i class="icon-envelope-open menu-icon"></i>
+              <span class="menu-title">Surat Keluar</span>
+            </a>
+          </li>
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="collapse" href="#dokumen" role="button"
+            aria-expanded="false" aria-controls="dokumen">
+            <i class="icon-chart menu-icon"></i>
+            <span class="menu-title">Dokumen Lainnya</span>
+            <i class="menu-arrow"></i>
+          </a>
+          <div class="collapse" id="dokumen">
+            <ul class="nav flex-column sub-menu">
+              <li class="nav-item"> <a class="nav-link" href="{{ route('proposal.index') }}">Proposal Penelitian</a></li>
+              <li class="nav-item"> <a class="nav-link" href="{{ route ('laporan_penelitian.index') }}">Laporan Penelitian</a></li>
+              <li class="nav-item"> <a class="nav-link" href="{{ route('anggaran_penelitian.index') }}">Anggaran Penelitian</a></li>
+            </ul>
+          </div>
+        </li>
+
+          <li class="nav-item">
+            <a class="nav-link " href="{{ route('jenisarsip.index') }}">
+              <i class="icon-tag menu-icon"></i>
+              <span class="menu-title">Jenis Arsip</span>
+            </a>
+          </li>
+          <!-- <li class="nav-item">
+            <a class="nav-link " href="#">
+              <i class="icon-doc menu-icon"></i>
+              <span class="menu-title">Log Aktivitas</span>
+            </a>
+          </li> -->
+              <li class="nav-item">
+                <a class="nav-link" href="{{ route('log.index') }}">
+                <i class="icon-doc menu-icon"></i>
+               <span class="menu-title">Log Aktivitas</span>
+              </a>
+            </li>
+
+
+
+        </ul>
+      </nav>
+
+ @include('tampilan.sidebar')
+
+
+
+    @include('tampilan.sidebar')
+
+
       <!-- Main content -->
       <div class="main-panel">
         <div class="content-wrapper">
+
           @yield('content')
         </div>
       </div>
     </div>
+
+
+
+
+
   </div>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 

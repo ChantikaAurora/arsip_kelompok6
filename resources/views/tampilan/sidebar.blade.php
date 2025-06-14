@@ -77,13 +77,13 @@
             </a>
           </li>
          <li class="nav-item">
-            <a class="nav-link " href="" id="jurusan">
+            <a class="nav-link " href="/jurusan" id="jurusan">
               <i class="icon-graduation menu-icon"></i>
               <span class="menu-title">Jurusan</span>
             </a>
           </li>
            <li class="nav-item">
-            <a class="nav-link " href="" id="jurusan">
+            <a class="nav-link " href="/prodi" id="prodi">
               <i class="icon-badge menu-icon"></i>
               <span class="menu-title">Prodi</span>
             </a>
@@ -103,8 +103,8 @@
           </a>
           <div class="collapse" id="skema">
             <ul class="nav flex-column sub-menu">
-              <li class="nav-item"> <a class="nav-link" href="#" >Penelitian</a></li>
-              <li class="nav-item"> <a class="nav-link" href="#" >Pengabdian</a></li>
+              <li class="nav-item"> <a class="nav-link" href="/skemaPenelitian" >Penelitian</a></li>
+              <li class="nav-item"> <a class="nav-link" href="/skemaPengabdian" >Pengabdian</a></li>
             </ul>
           </div>
         </li>

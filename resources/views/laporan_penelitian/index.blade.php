@@ -9,11 +9,11 @@
     {{-- Form Pencarian --}}
     <div class="d-flex justify-content-end mb-3">
         <form class="d-flex" method="GET" action="{{ route('laporan_penelitian.index') }}">
-            <input 
-                type="text" 
-                name="search" 
-                class="form-control me-2 @if(session('search_error')) is-invalid @endif" 
-                placeholder="Cari laporan penelitian..." 
+            <input
+                type="text"
+                name="search"
+                class="form-control me-2 @if(session('search_error')) is-invalid @endif"
+                placeholder="Cari laporan penelitian..."
                 value="{{ request('search') }}"
             >
             <button class="btn btn-primary" type="submit">Cari</button>
@@ -30,9 +30,8 @@
                     <th>Peneliti</th>
                     <th>Jenis</th>
                     <th>Jurusan</th>
-                     <th>file</th> 
                     <th>Aksi</th>
-                 
+
                 </tr>
             </thead>
             <tbody>
