@@ -1,14 +1,14 @@
 @extends('tampilan.main')
 
-@section('navProposal', 'active') {{-- Sesuaikan jika pakai navbar dinamis --}}
+@section('navProposal', 'active')
 @section('content')
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
 
 <div class="container mt-4">
     {{-- Judul Halaman --}}
     <div class="border-bottom mb-4 pb-2">
-        <h3 class="mb-3">Formulir Tambah Proposal</h3>
-        <p class="text-muted">Isi data proposal_penelitian dengan lengkap dan benar.</p>
+        <h3 class="mb-3">Formulir Tambah Proposal Penelitian</h3>
+        <p class="text-muted">Isi data proposal penelitian dengan lengkap dan benar.</p>
     </div>
 
     {{-- Notifikasi Error --}}
@@ -21,13 +21,24 @@
             @endforeach
         </ul>
     </div>
-@endif
+    @endif
 
     {{-- Kartu Form --}}
     <div class="card shadow-sm">
         <div class="card-body">
             <form action="{{ route('proposal.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
+
+                {{-- Kode Seri --}}
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label">Kode Seri</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="kode_seri" class="form-control @error('kode_seri') is-invalid @enderror" value="{{ old('kode_seri') }}">
+                        @error('kode_seri')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
 
                 {{-- Judul --}}
                 <div class="mb-3 row">
@@ -51,52 +62,59 @@
                     </div>
                 </div>
 
+                {{-- Skema --}}
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label">Skema</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="skema" class="form-control @error('skema') is-invalid @enderror" value="{{ old('skema') }}">
+                        @error('skema')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
+
+                {{-- Anggota --}}
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label">Anggota</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="anggota" class="form-control @error('anggota') is-invalid @enderror" value="{{ old('anggota') }}">
+                        @error('anggota')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
+
                 {{-- Jurusan --}}
                 <div class="mb-3 row">
                     <label class="col-sm-2 col-form-label">Jurusan</label>
                     <div class="col-sm-10">
-                        <input type="text" name="jurusan" class="form-control @error('jurusan') is-invalid @enderror" value="{{ old('jurusan') }}">
-                        @error('jurusan')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-                </div>
-
-                {{-- Jenis --}}
-                <div class="mb-3 row">
-                    <label class="col-sm-2 col-form-label">Jenis</label>
-                    <div class="col-sm-10">
-                        <select name="jenis" class="form-control @error('jenis') is-invalid @enderror" required>
-                            <option value="">-- Pilih Jenis Arsip --</option>
-                            @foreach ($jenisarsips as $jenis)
-                                <option value="{{ $jenis->id }}" {{ old('jenis') == $jenis->id ? 'selected' : '' }}>
-                                    {{ $jenis->jenis }}
+                        <select name="jurusan_id" class="form-control @error('jurusan_id') is-invalid @enderror" required>
+                            <option value="">-- Pilih Jurusan --</option>
+                            @foreach ($jurusans as $jurusan)
+                                <option value="{{ $jurusan->id }}" {{ old('jurusan_id') == $jurusan->id ? 'selected' : '' }}>
+                                    {{ $jurusan->nama_jurusan }}
                                 </option>
                             @endforeach
                         </select>
-                        @error('jenis')
+                        @error('jurusan_id')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
                 </div>
 
-                <!-- {{-- Tahun Pengajuan --}}
+                {{-- Prodi --}}
                 <div class="mb-3 row">
-                    <label class="col-sm-2 col-form-label">Tahun Pengajuan</label>
+                    <label class="col-sm-2 col-form-label">Program Studi</label>
                     <div class="col-sm-10">
-                        <input type="number" name="tahun_pengajuan" class="form-control @error('tahun_pengajuan') is-invalid @enderror" value="{{ old('tahun_pengajuan') }}">
-                        @error('tahun_pengajuan')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-                </div> -->
-
-                {{-- Status --}}
-                <div class="mb-3 row">
-                    <label class="col-sm-2 col-form-label">Status</label>
-                    <div class="col-sm-10">
-                        <input type="text" name="status" class="form-control @error('status') is-invalid @enderror" value="{{ old('status') }}">
-                        @error('status')
+                        <select name="prodi_id" class="form-control @error('prodi_id') is-invalid @enderror" required>
+                            <option value="">-- Pilih Program Studi --</option>
+                            @foreach ($prodis as $prodi)
+                                <option value="{{ $prodi->id }}" {{ old('prodi_id') == $prodi->id ? 'selected' : '' }}>
+                                    {{ $prodi->nama_prodi }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('prodi_id')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
@@ -108,17 +126,6 @@
                     <div class="col-sm-10">
                         <input type="date" name="tanggal_pengajuan" class="form-control @error('tanggal_pengajuan') is-invalid @enderror" value="{{ old('tanggal_pengajuan') }}">
                         @error('tanggal_pengajuan')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-                </div>
-
-                {{-- Dana Diajukan --}}
-                <div class="mb-3 row">
-                    <label class="col-sm-2 col-form-label">Dana Diajukan (Rp)</label>
-                    <div class="col-sm-10">
-                        <input type="number" name="dana_diajukan" class="form-control @error('dana_diajukan') is-invalid @enderror" value="{{ old('dana_diajukan') }}">
-                        @error('dana_diajukan')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
@@ -139,8 +146,8 @@
                 <div class="mb-3 row">
                     <label class="col-sm-2 col-form-label">Upload File Proposal</label>
                     <div class="col-sm-10">
-                        <input type="file" name="file_proposal" class="form-control @error('file_proposal') is-invalid @enderror" accept=".pdf,.doc,.docx">
-                        @error('file_proposal')
+                        <input type="file" name="file" class="form-control @error('file') is-invalid @enderror" accept=".pdf,.doc,.docx">
+                        @error('file')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
