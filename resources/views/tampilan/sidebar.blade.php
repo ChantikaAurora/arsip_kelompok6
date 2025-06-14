@@ -103,8 +103,8 @@
           </a>
           <div class="collapse" id="skema">
             <ul class="nav flex-column sub-menu">
-              <li class="nav-item"> <a class="nav-link" href="#" >Penelitian</a></li>
-              <li class="nav-item"> <a class="nav-link" href="#" >Pengabdian</a></li>
+              <li class="nav-item"> <a class="nav-link" href="/skemaPenelitian" >Penelitian</a></li>
+              <li class="nav-item"> <a class="nav-link" href="/skemaPengabdian" >Pengabdian</a></li>
             </ul>
           </div>
         </li>
