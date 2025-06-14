@@ -1,3 +1,5 @@
+
+
  <nav class="sidebar sidebar-offcanvas" id="sidebar">
         <ul class="nav">
           <li class="nav-item">
@@ -64,7 +66,7 @@
           <div class="collapse" id="anggaran">
             <ul class="nav flex-column sub-menu">
               <li class="nav-item"> <a class="nav-link" href="{{ route('anggaran_penelitian.index') }}" >Anggaran Penelitian</a></li>
-              <li class="nav-item"> <a class="nav-link" href="" >Anggaran Pengabdian</a></li>
+              <li class="nav-item"> <a class="nav-link" href="{{ route('anggaran_pengabdian.index') }}" >Anggaran Pengabdian</a></li>
             </ul>
           </div>
         </li>
@@ -92,12 +94,20 @@
               <span class="menu-title">Jenis Arsip</span>
             </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link " href="" id="skema">
-              <i class="icon-organization menu-icon"></i>
-              <span class="menu-title">Skema</span>
-            </a>
-          </li>
+           <li class="nav-item">
+          <a class="nav-link" data-toggle="collapse" href="#skema" role="button"
+            aria-expanded="false" aria-controls="skema" >
+            <i class="icon-organization menu-icon"></i>
+            <span class="menu-title">Skema</span>
+            <i class="menu-arrow"></i>
+          </a>
+          <div class="collapse" id="skema">
+            <ul class="nav flex-column sub-menu">
+              <li class="nav-item"> <a class="nav-link" href="#" >Penelitian</a></li>
+              <li class="nav-item"> <a class="nav-link" href="#" >Pengabdian</a></li>
+            </ul>
+          </div>
+        </li>
               <li class="nav-item">
                 <a class="nav-link" href="{{ route('log.index') }}" id="log">
                 <i class="icon-doc menu-icon"></i>
