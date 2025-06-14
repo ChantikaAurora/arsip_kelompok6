@@ -21,7 +21,8 @@
     {{-- Kartu Form --}}
     <div class="card shadow-sm">
         <div class="card-body">
-            <form action="{{ route('anggaran_pengabdian.store') }}" method="POST">
+            <form action="{{ route('anggaran_pengabdian.store') }}" method="POST" enctype="multipart/form-data">
+
                 @csrf
 
                 {{-- Kode --}}
@@ -74,6 +75,17 @@
                     <div class="col-sm-10">
                         <input type="number" step="0.01" name="total_anggaran" class="form-control @error('total_anggaran') is-invalid @enderror" value="{{ old('total_anggaran') }}">
                         @error('total_anggaran')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
+
+                {{-- File --}}
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label">Upload File</label>
+                    <div class="col-sm-10">
+                        <input type="file" name="file" class="form-control @error('file') is-invalid @enderror" required>
+                        @error('file')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>

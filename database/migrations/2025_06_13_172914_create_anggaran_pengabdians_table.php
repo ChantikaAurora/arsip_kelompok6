@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('kode');
             $table->string('kegiatan');
-            $table->integer('volume_usulan');
+            $table->integer('volume');
             $table->string('skema');
-            $table->decimal('total_anggaran', 15, 2);
+            $table->string('total_anggaran');
             $table->string('file');
             $table->timestamps();
         });

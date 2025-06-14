@@ -21,6 +21,19 @@
                         <tr><th>Perihal</th><td>{{ $suratmasuk->perihal }}</td></tr>
                         <tr><th>Pengirim</th><td>{{ $suratmasuk->pengirim }}</td></tr>
                         <tr><th>Jenis Surat</th><td>{{ $suratmasuk->jenisArsip->jenis }}</td></tr>
+                        <tr>
+                            <th>File Surat Masuk</th>
+                            <td>
+                            @if ($suratmasuk->file)
+                                <a href="{{ Storage::url($suratmasuk->file) }}" target="_blank">
+                                    {{ basename($suratmasuk->file) }}
+                                </a>
+                            @else
+                                <span class="text-muted">Tidak ada file</span>
+                            @endif
+                        </td>
+                        </tr>
+
                     </table>
                 </div>
             </div>

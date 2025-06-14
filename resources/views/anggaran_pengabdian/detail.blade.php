@@ -22,7 +22,7 @@
                         </tr>
                         <tr>
                             <th>Kegiatan</th>
-                            <td>{{ $anggaran->kegiatan }}</td>
+                            <td style="white-space: normal; word-wrap: break-word; max-width: 300px;">{{ $anggaran->kegiatan }}</td>
                         </tr>
                         <tr>
                             <th>Volume Usulan</th>
@@ -35,6 +35,16 @@
                         <tr>
                             <th>Total Anggaran</th>
                             <td>Rp {{ number_format($anggaran->total_anggaran, 2, ',', '.') }}</td>
+                        </tr>
+                        <tr><th> File Anggaran Pengabdian</th><td>
+                                @if($anggaran->file)
+                                    <a href="{{ route('anggaran_pengabdian.download', [$anggaran->id, 'preview' => 1]) }}" target="_blank" class="text-primary">
+                                        {{ basename($anggaran->file) }}
+                                    </a>
+                                @else
+                                    <span class="text-muted">Tidak ada</span>
+                                @endif
+                            </td></tr>
                         </tr>
                     </table>
                 </div>

@@ -63,8 +63,8 @@ Route::get('proposal/{id}', [ProposalController::class, 'show'])->name('proposal
 
 // Pengabdian
 Route::resource('anggaran_pengabdian', AnggaranPengabdianController::class);
-Route::get('anggaran/{id}/download', [AnggaranPengabdianController::class, 'download'])->name('anggaran.download');
-
+Route::get('anggaran_pengabdian/{id}/download', [AnggaranPengabdianController::class, 'download'])->name('anggaran_pengabdian.download');
+Route::get('/anggaran_pengabdian/{id}/preview', [AnggaranPengabdianController::class, 'preview'])->name('anggaran_pengabdian.preview');
 
 // Log Aktivitas
 Route::get('/logaktivitas', [LogAktivitasController::class, 'index'])->name('log.index');

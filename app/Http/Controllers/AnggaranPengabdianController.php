@@ -8,15 +8,17 @@ use Illuminate\Support\Facades\Storage;
 
 class AnggaranPengabdianController extends Controller
 {
-    public function index(Request $request)
+  public function index(Request $request)
     {
         $search = $request->input('search');
 
         $anggaran = AnggaranPengabdian::when($search, function ($query, $search) {
             $query->where('kode', 'like', "%{$search}%")
-                  ->orWhere('kegiatan', 'like', "%{$search}%")
-                  ->orWhere('skema', 'like', "%{$search}%");
-        })->orderBy('created_at', 'desc')->get();
+                ->orWhere('kegiatan', 'like', "%{$search}%")
+                ->orWhere('skema', 'like', "%{$search}%");
+        })
+        ->orderBy('created_at', 'desc')
+        ->paginate(10); // Gunakan paginate di sini, jangan get()
 
         return view('anggaran_pengabdian.index', compact('anggaran'));
     }
@@ -40,7 +42,7 @@ class AnggaranPengabdianController extends Controller
         if ($request->hasFile('file')) {
             $file = $request->file('file');
             $fileName = time() . '_' . $file->getClientOriginalName();
-            $file->storeAs('anggaran', $fileName, 'public');
+            $file->move(public_path('anggaran'), $fileName);
             $validated['file'] = $fileName;
         }
 
@@ -49,17 +51,20 @@ class AnggaranPengabdianController extends Controller
         return redirect()->route('anggaran_pengabdian.index')->with('success', 'Data anggaran berhasil ditambahkan.');
     }
 
-    public function show(AnggaranPengabdian $anggaran)
+    public function show($id)
     {
+        $anggaran = AnggaranPengabdian::findOrFail($id);
         return view('anggaran_pengabdian.detail', compact('anggaran'));
     }
 
-    public function edit(AnggaranPengabdian $anggaran)
+
+    public function edit(AnggaranPengabdian $anggaran_pengabdian)
     {
-        return view('anggaran_pengabdian.edit', compact('anggaran'));
+        return view('anggaran_pengabdian.edit', compact('anggaran_pengabdian'));
     }
 
-    public function update(Request $request, AnggaranPengabdian $anggaran)
+
+    public function update(Request $request, AnggaranPengabdian $anggaran_pengabdian)
     {
         $validated = $request->validate([
             'kode'           => 'required|string|max:100',
@@ -71,24 +76,28 @@ class AnggaranPengabdianController extends Controller
         ]);
 
         if ($request->hasFile('file')) {
-            if ($anggaran->file && Storage::disk('public')->exists('anggaran/' . $anggaran->file)) {
-                Storage::disk('public')->delete('anggaran/' . $anggaran->file);
+            // hapus file lama jika ada
+            if ($anggaran_pengabdian->file && file_exists(public_path('anggaran/' . $anggaran_pengabdian->file))) {
+                unlink(public_path('anggaran/' . $anggaran_pengabdian->file));
             }
             $file = $request->file('file');
             $fileName = time() . '_' . $file->getClientOriginalName();
-            $file->storeAs('anggaran', $fileName, 'public');
+            $file->move(public_path('anggaran'), $fileName);
             $validated['file'] = $fileName;
         }
 
-        $anggaran->update($validated);
+
+        $anggaran_pengabdian->update($validated);
 
         return redirect()->route('anggaran_pengabdian.index')->with('success', 'Data anggaran berhasil diperbarui.');
     }
 
-    public function destroy(AnggaranPengabdian $anggaran)
+    public function destroy($id)
     {
-        if ($anggaran->file && Storage::disk('public')->exists('anggaran/' . $anggaran->file)) {
-            Storage::disk('public')->delete('anggaran/' . $anggaran->file);
+        $anggaran = AnggaranPengabdian::findOrFail($id);
+
+        if ($anggaran->file && Storage::disk('public')->exists($anggaran->file)) {
+            Storage::disk('public')->delete($anggaran->file);
         }
 
         $anggaran->delete();
@@ -96,26 +105,55 @@ class AnggaranPengabdianController extends Controller
         return redirect()->route('anggaran_pengabdian.index')->with('success', 'Data anggaran berhasil dihapus.');
     }
 
+
     public function download($id)
     {
         $anggaran = AnggaranPengabdian::findOrFail($id);
-        $filePath = 'anggaran/' . $anggaran->file;
+        $filePath = public_path('anggaran/' . $anggaran->file);
 
-        if (!$anggaran->file || !Storage::disk('public')->exists($filePath)) {
+        if (!$anggaran->file || !file_exists($filePath)) {
             abort(404, 'File tidak ditemukan.');
         }
 
         if (request()->has('preview') && request('preview') == 1) {
-            $path = Storage::disk('public')->path($filePath);
-            $extension = strtolower(pathinfo($path, PATHINFO_EXTENSION));
+            $extension = strtolower(pathinfo($filePath, PATHINFO_EXTENSION));
             if (in_array($extension, ['pdf', 'txt'])) {
-                return response()->file($path, [
+                return response()->file($filePath, [
                     'Content-Type' => $extension === 'pdf' ? 'application/pdf' : 'text/plain',
                 ]);
             }
         }
 
-        return Storage::disk('public')->download($filePath);
+        return response()->file($filePath);
+
+        }
+
+    public function preview($id)
+{
+    $anggaran = AnggaranPengabdian::findOrFail($id);
+    $filePath = public_path('anggaran/' . $anggaran->file);
+
+    if (!$anggaran->file || !file_exists($filePath)) {
+        abort(404, 'File tidak ditemukan.');
+    }
+
+    $extension = strtolower(pathinfo($filePath, PATHINFO_EXTENSION));
+
+    if (in_array($extension, ['pdf'])) {
+        return response()->file($filePath, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="'.basename($filePath).'"'
+        ]);
+    } elseif (in_array($extension, ['doc', 'docx'])) {
+        // Untuk doc/docx, browser biasanya tidak punya viewer bawaan
+        // Solusi: Redirect atau sarankan user download, atau gunakan Google Docs Viewer
+        $url = asset('anggaran/' . $anggaran->file);
+        return redirect("https://docs.google.com/gview?url=$url&embedded=true");
+    } else {
+        abort(415, 'Format file tidak didukung untuk preview.');
     }
 }
+
+
+    }
 
