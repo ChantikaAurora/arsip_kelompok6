@@ -28,6 +28,17 @@
             <form action="{{ route('laporan_penelitian.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
 
+                {{-- Kode Seri --}}
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label">Kode Seri</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="kode_seri" class="form-control @error('kode_seri') is-invalid @enderror" value="{{ old('kode_seri') }}" required>
+                        @error('kode_seri')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
+
                 {{-- Judul Penelitian --}}
                 <div class="mb-3 row">
                     <label class="col-sm-2 col-form-label">Judul Penelitian</label>
@@ -50,7 +61,29 @@
                     </div>
                 </div>
 
-                {{-- Jenis Arsip --}}
+                {{-- Skema --}}
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label">Skema</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="skema" class="form-control @error('skema') is-invalid @enderror" value="{{ old('skema') }}" required>
+                        @error('skema')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
+
+                {{-- Anggota --}}
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label">Anggota</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="anggota" class="form-control @error('anggota') is-invalid @enderror" value="{{ old('anggota') }}" required>
+                        @error('anggota')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
+
+                {{-- Jenis Arsip
                 <div class="mb-3 row">
                     <label class="col-sm-2 col-form-label">Jenis Arsip</label>
                     <div class="col-sm-10">
@@ -66,7 +99,7 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
-                </div>
+                </div> --}}
 
                 {{-- Jurusan --}}
                 <div class="mb-3 row">
@@ -83,7 +116,18 @@
                     </div>
                 </div>
 
-                {{-- Tahun Penelitian --}}
+                {{-- Prodi --}}
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label">Program Studi</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="prodi" class="form-control @error('prodi') is-invalid @enderror" value="{{ old('prodi') }}" required>
+                        @error('prodi')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
+
+                {{-- Tahun Penelitian
                 <div class="mb-3 row">
                     <label class="col-sm-2 col-form-label">Tahun Penelitian</label>
                     <div class="col-sm-10">
@@ -92,7 +136,7 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
-                </div>
+                </div> --}}
 
                 {{-- Tanggal Laporan Diterima --}}
                 <div class="mb-3 row">
@@ -105,7 +149,7 @@
                     </div>
                 </div>
 
-                {{-- Status Laporan --}}
+                {{-- Status Laporan
                 <div class="mb-3 row">
                     <label class="col-sm-2 col-form-label">Status Laporan</label>
                     <div class="col-sm-10">
@@ -118,7 +162,7 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
-                </div>
+                </div> --}}
 
                 {{-- File --}}
                 <div class="mb-3 row">
@@ -131,7 +175,7 @@
                     </div>
                 </div>
 
-                <!-- {{-- Keterangan --}}
+                {{-- Keterangan --}}
                 <div class="mb-3 row">
                     <label class="col-sm-2 col-form-label">Keterangan</label>
                     <div class="col-sm-10">
@@ -140,7 +184,7 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
-                </div> -->
+                </div>
 
                 {{-- Tombol --}}
                 <div class="text-end">

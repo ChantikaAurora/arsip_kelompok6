@@ -17,47 +17,39 @@ class LaporanPenelitianController extends Controller
 
     public function create()
     {
-        $jenisarsips = JenisArsip::all();
-        return view('laporan_penelitian.create', compact('jenisarsips'));
+        // $jenisarsips = JenisArsip::all();
+        return view('laporan_penelitian.create');
     }
 
     public function store(Request $request)
     {
-        $request->validate([
+        $validated =  $request->validate([
+            'kode_seri' => 'required|string|max:255',
             'judul_penelitian' => 'required|string|max:255',
             'peneliti' => 'required|string|max:255',
-            'jenis_arsip_laporan' => 'required|exists:jenis_arsips,id',
+            'skema' => 'required|string|max:255',
+            'anggota' => 'required|string|max:255',
             'jurusan' => 'required|string|max:255',
-            'tahun_penelitian' => 'required|digits:4',
+            'prodi' => 'required|string|max:255',
             'tanggal_laporan_diterima' => 'required|date',
-            'status_laporan' => 'nullable|string|max:255',
-            'file' => 'required|file|mimes:pdf,docx|max:10240',
+            'file' => 'required|file|mimes:pdf,docx,xls,xlsx|max:10240',
             'keterangan' => 'nullable|string',
         ]);
 
-        $laporan = new LaporanPenelitian();
-
-        $laporan->judul_penelitian = $request->judul_penelitian;
-        $laporan->peneliti = $request->peneliti;
-        $laporan->jenis_arsip_laporan = $request->jenis_arsip_laporan;
-        $laporan->jurusan = $request->jurusan;
-        $laporan->tahun_penelitian = $request->tahun_penelitian;
-        $laporan->tanggal_laporan_diterima = $request->tanggal_laporan_diterima;
-        $laporan->status_laporan = $request->status_laporan;
-        $laporan->keterangan = $request->keterangan;
-
-        // Upload file ke storage/app/public/laporan_penelitian
         if ($request->hasFile('file')) {
-            $path = $request->file('file')->store('laporan_penelitian', 'public');
-            $laporan->file = $path; // simpan path relatif
+            $file = $request->file('file');
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $file->storeAs('laporan_penelitians', $fileName, 'public');  // pastikan tidak ada disk kedua!
+            $validated['file'] = $fileName;
         }
-        $laporan->save();
+
+        LaporanPenelitian::create($validated);
         return redirect()->route('laporan_penelitian.index')->with('success', 'Data penelitian berhasil ditambahkan.');
     }
 
-    public function show($id)
+    public function show(LaporanPenelitian $laporan_penelitian)
     {
-        $laporan_penelitian = LaporanPenelitian::findOrFail($id);
+        // $laporan_penelitian->load('jenisArsip'); // muat relasi jika perlu
         return view('laporan_penelitian.show', compact('laporan_penelitian'));
     }
 
@@ -67,38 +59,33 @@ class LaporanPenelitianController extends Controller
         return view('laporan_penelitian.edit', compact('laporan_penelitian'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, LaporanPenelitian $laporan_penelitian)
     {
-        $request->validate([
+        $validated = $request->validate([
+            'kode_seri' => 'required|string|max:255',
             'judul_penelitian' => 'required|string|max:255',
             'peneliti' => 'required|string|max:255',
-            'jenis_arsip_laporan' => 'required|exists:jenis_arsips,id',
+            'skema' => 'required|string|max:255',
+            'anggota' => 'required|string|max:255',
             'jurusan' => 'required|string|max:255',
-            'tahun_penelitian' => 'required|digits:4',
+            'prodi' => 'required|string|max:255',
             'tanggal_laporan_diterima' => 'required|date',
-            'status_laporan' => 'nullable|string|max:255',
-            'file' => 'nullable|file|mimes:pdf,docx|max:10240',
+            'file' => 'required|file|mimes:pdf,docx,xls,xlsx|max:10240',
             'keterangan' => 'nullable|string',
         ]);
 
-        $laporan_penelitian = LaporanPenelitian::findOrFail($id);
-
-        $laporan_penelitian->judul_penelitian = $request->judul_penelitian;
-        $laporan_penelitian->peneliti = $request->peneliti;
-        $laporan_penelitian->jenis_arsip_laporan = $request->jenis_arsip_laporan;
-        $laporan_penelitian->jurusan = $request->jurusan;
-        $laporan_penelitian->tahun_penelitian = $request->tahun_penelitian;
-        $laporan_penelitian->tanggal_laporan_diterima = $request->tanggal_laporan_diterima;
-        $laporan_penelitian->status_laporan = $request->status_laporan;
-        $laporan_penelitian->keterangan = $request->keterangan;
-
         if ($request->hasFile('file')) {
-            $path = $request->file('file')->store('laporan_penelitian', 'public');
-            $laporan_penelitian->file = $path;
+            if ($laporan_penelitian->file && Storage::exists('laporan_penelitians/' . $laporan_penelitian->file)) {
+                Storage::delete('laporan_penelitians/' . $laporan_penelitian->file);
+            }
+
+            $file = $request->file('file');
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $file->storeAs('laporan_penelitians', $fileName);
+            $validated['file'] = $fileName;
         }
 
-        $laporan_penelitian->save();
-
+        $laporan_penelitian->update($validated);
         return redirect()->route('laporan_penelitian.index')->with('success', 'Data berhasil diperbarui.');
     }
 
@@ -111,11 +98,32 @@ class LaporanPenelitianController extends Controller
     public function download($id)
     {
         $laporan_penelitian = LaporanPenelitian::findOrFail($id);
+        $fileName = $laporan_penelitian->file;
 
-        if (!$laporan_penelitian->file || !Storage::disk('public')->exists($laporan_penelitian->file)) {
-            return redirect()->back()->with('error', 'File tidak ditemukan.');
+        $filePath = 'laporan_penelitians/' . $fileName;
+
+        if (!$fileName || !Storage::disk('public')->exists($filePath)) {
+            abort(404, 'File tidak ditemukan.');
         }
 
-        return Storage::disk('public')->download($laporan_penelitian->file);
+        $path = Storage::disk('public')->path($filePath);
+        $extension = strtolower(pathinfo($path, PATHINFO_EXTENSION));
+
+        if (!file_exists($path)) {
+            abort(404, "File tidak ditemukan di path: $path");
+        }
+
+        // Preview
+            if (request()->has('preview') && request('preview') == 1) {
+                if (in_array($extension, ['pdf', 'docx', 'xls', 'xlsl'])) {
+                    return response()->file($path, [
+                        'Content-Type' => $extension === 'pdf' ? 'application/pdf' : 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                    ]);
+                } else {
+                    return Storage::disk('public')->download($filePath);
+                }
+            }
+
+        return Storage::disk('public')->download($filePath);
     }
 }

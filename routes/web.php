@@ -54,7 +54,8 @@ Route::resource('anggaran_penelitian', AnggaranPenelitianController::class);
 Route::get('anggaran-penelitian/download/{id}', [AnggaranPenelitianController::class, 'download'])->name('anggaran_penelitian.download');
 
 Route::resource('laporan_penelitian', LaporanPenelitianController::class);
-Route::get('laporan-penelitian/download/{id}', [LaporanPenelitianController::class, 'download'])->name('laporan_penelitian.download');
+Route::get('laporan_penelitian/{id}/download', [LaporanPenelitianController::class, 'download'])->name('laporan_penelitian.download');
+Route::get('laporan_penelitian/{id}', [LaporanPenelitianController::class, 'show'])->name('laporan_penelitian.show');
 
 Route::resource('proposal', ProposalController::class);
 Route::get('proposal/{id}/download', [ProposalController::class, 'download'])->name('proposal.download');

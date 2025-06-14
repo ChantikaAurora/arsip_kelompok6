@@ -13,18 +13,20 @@ return new class extends Migration
     {
         Schema::create('laporan_penelitians', function (Blueprint $table) {
             $table->id();
+            $table->string('kode_seri');
             $table->string('judul_penelitian');
             $table->string('peneliti');
+            $table->string('skema');
+            $table->string('anggota');
             $table->string('jurusan');
-            $table->year('tahun_penelitian');
+            $table->string('prodi');
             $table->date('tanggal_laporan_diterima')->nullable();
-            $table->enum('status_laporan', ['proses', 'selesai'])->default('proses');
             $table->string('file')->nullable();
             $table->text('keterangan')->nullable();
             $table->timestamps();
         });
     }
-
+    
     /**
      * Reverse the migrations.
      */
@@ -33,3 +35,4 @@ return new class extends Migration
         Schema::dropIfExists('laporan_penelitians');
     }
 };
+

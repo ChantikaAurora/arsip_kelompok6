@@ -26,6 +26,14 @@
                 @csrf
                 @method('PUT')
 
+                {{-- Kode Seri  --}}
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label">Kode Seri</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="kode_seri" class="form-control" value="{{ $laporan_penelitian->kode_seri }}" required>
+                    </div>
+                </div>
+
                 {{-- Judul Penelitian --}}
                 <div class="mb-3 row">
                     <label class="col-sm-2 col-form-label">Judul Penelitian</label>
@@ -42,13 +50,29 @@
                     </div>
                 </div>
 
-                {{-- Jenis Arsip --}}
+                {{-- Skema --}}
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label">Skema</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="skema" class="form-control" value="{{ $laporan_penelitian->skema }}" required>
+                    </div>
+                </div>
+
+                {{-- Anggota --}}
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label">Anggota</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="anggota" class="form-control" value="{{ $laporan_penelitian->anggota }}" required>
+                    </div>
+                </div>
+
+                {{-- Jenis Arsip
                 <div class="mb-3 row">
                     <label class="col-sm-2 col-form-label">Jenis Arsip</label>
                     <div class="col-sm-10">
                         <input type="number" name="jenis_arsip_laporan" class="form-control" value="{{ $laporan_penelitian->jenis_arsip_laporan }}" required>
                     </div>
-                </div>
+                </div> --}}
 
                 {{-- Jurusan --}}
                 <div class="mb-3 row">
@@ -58,11 +82,11 @@
                     </div>
                 </div>
 
-                {{-- Tahun Penelitian --}}
+                {{-- Prodi --}}
                 <div class="mb-3 row">
-                    <label class="col-sm-2 col-form-label">Tahun Penelitian</label>
+                    <label class="col-sm-2 col-form-label">Prodi</label>
                     <div class="col-sm-10">
-                        <input type="number" name="tahun_penelitian" class="form-control" min="1900" max="{{ date('Y')+5 }}" value="{{ $laporan_penelitian->tahun_penelitian }}"required>
+                        <input type="text" name="prodi" class="form-control" value="{{ $laporan_penelitian->prodi }}" required>
                     </div>
                 </div>
 
@@ -74,17 +98,6 @@
                     </div>
                 </div>
 
-                {{-- Status Laporan  --}}
-                <div class="mb-3 row">
-                    <label class="col-sm-2 col-form-label">Status Laporan</label>
-                    <div class="col-sm-10">
-                        <select name="status_laporan" class="form-control" value="{{ $laporan_penelitian->status_laporan }}" required>
-                            <option value="proses">Proses</option>
-                            <option value="selesai">Selesai</option>
-                        </select>
-                    </div>
-                </div>
-
                 {{-- File --}}
                 <div class="mb-3 row">
                     <label class="col-sm-2 col-form-label" for="file">File</label>
@@ -93,13 +106,13 @@
                     </div>
                 </div>
 
-                <!-- {{-- Keterangan --}}
+                {{-- Keterangan --}}
                 <div class="mb-3 row">
                     <label class="col-sm-2 col-form-label">Keterangan</label>
                     <div class="col-sm-10">
                         <textarea name="keterangan" class="form-control">{{ $laporan_penelitian->keterangan }}</textarea>
                     </div>
-                </div> -->
+                </div> 
 
                 {{-- Tombol --}}
                 <div class="text-end">
