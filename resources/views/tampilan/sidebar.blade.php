@@ -77,13 +77,13 @@
             </a>
           </li>
          <li class="nav-item">
-            <a class="nav-link " href="" id="jurusan">
+            <a class="nav-link " href="/jurusan" id="jurusan">
               <i class="icon-graduation menu-icon"></i>
               <span class="menu-title">Jurusan</span>
             </a>
           </li>
            <li class="nav-item">
-            <a class="nav-link " href="" id="jurusan">
+            <a class="nav-link " href="/prodi" id="prodi">
               <i class="icon-badge menu-icon"></i>
               <span class="menu-title">Prodi</span>
             </a>

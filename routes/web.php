@@ -5,16 +5,16 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\ProdiController;
 use App\Http\Controllers\DiagramController;
+use App\Http\Controllers\JurusanController;
 use App\Http\Controllers\PenggunaController;
 use App\Http\Controllers\ProposalController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\JenisArsipController;
-use App\Http\Controllers\SuratMasukController;
-use App\Http\Controllers\SuratKeluarController;
 
-use App\Http\Controllers\LogAktivitasController;
+use App\Http\Controllers\SuratMasukController;
 
 // Halaman utama
 Route::get('/home', function () {
@@ -28,9 +28,11 @@ Route::get('/home', function () {
 });
 
 
-use App\Http\Controllers\SkemaPenelitianController;
+use App\Http\Controllers\SuratKeluarController;
 // use App\Http\Controllers\LogAktivitasController;
 // use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\LogAktivitasController;
+use App\Http\Controllers\SkemaPenelitianController;
 use App\Http\Controllers\SkemaPengabdianController;
 use App\Http\Controllers\LaporanPenelitianController;
 use App\Http\Controllers\AnggaranPenelitianController;
@@ -105,5 +107,12 @@ Route::resource('skemaPenelitian', SkemaPenelitianController::class);
 
 //skemapengabdian
 Route::resource('skemaPengabdian', SkemaPengabdianController::class);
+
+
+//jurusan
+Route::resource('jurusan', JurusanController::class);
+
+//prodi
+Route::resource('prodi', ProdiController::class);
 
 // Route::get('/surat-keluar', [DashboardSuratKeluarController::class, 'index'])->name('dashboardsuratkeluar');
