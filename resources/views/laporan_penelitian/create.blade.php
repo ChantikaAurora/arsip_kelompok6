@@ -131,7 +131,7 @@
                     </div>
                 </div>
 
-                {{-- Keterangan --}}
+                <!-- {{-- Keterangan --}}
                 <div class="mb-3 row">
                     <label class="col-sm-2 col-form-label">Keterangan</label>
                     <div class="col-sm-10">
@@ -140,7 +140,7 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
-                </div>
+                </div> -->
 
                 {{-- Tombol --}}
                 <div class="text-end">
