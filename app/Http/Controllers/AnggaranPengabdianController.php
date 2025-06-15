@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AnggaranPengabdian;
+use App\Models\SkemaPengabdian;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -18,17 +19,18 @@ class AnggaranPengabdianController extends Controller
                 ->orWhere('skema', 'like', "%{$search}%");
         })
         ->orderBy('created_at', 'desc')
-        ->paginate(10); // Gunakan paginate di sini, jangan get()
+        ->paginate(10)->withQueryString();
 
         return view('anggaran_pengabdian.index', compact('anggaran'));
     }
 
     public function create()
     {
-        return view('anggaran_pengabdian.create');
+        $skemas = SkemaPengabdian::all();
+        return view('anggaran_pengabdian.create', compact('skemas'));
     }
 
-    public function store(Request $request)
+     public function store(Request $request)
     {
         $validated = $request->validate([
             'kode'           => 'required|string|max:100',
@@ -105,8 +107,20 @@ class AnggaranPengabdianController extends Controller
         return redirect()->route('anggaran_pengabdian.index')->with('success', 'Data anggaran berhasil dihapus.');
     }
 
-
     public function download($id)
+    {
+        $anggaran = AnggaranPengabdian::findOrFail($id);
+        $filePath = public_path('anggaran/' . $anggaran->file);
+
+        if (!file_exists($filePath)) {
+            abort(404, 'File tidak ditemukan.');
+        }
+
+        return response()->download($filePath, $anggaran->file);
+
+    }
+
+    public function preview($id)
     {
         $anggaran = AnggaranPengabdian::findOrFail($id);
         $filePath = public_path('anggaran/' . $anggaran->file);
@@ -115,45 +129,21 @@ class AnggaranPengabdianController extends Controller
             abort(404, 'File tidak ditemukan.');
         }
 
-        if (request()->has('preview') && request('preview') == 1) {
-            $extension = strtolower(pathinfo($filePath, PATHINFO_EXTENSION));
-            if (in_array($extension, ['pdf', 'txt'])) {
-                return response()->file($filePath, [
-                    'Content-Type' => $extension === 'pdf' ? 'application/pdf' : 'text/plain',
-                ]);
-            }
+        $extension = strtolower(pathinfo($filePath, PATHINFO_EXTENSION));
+
+        if (in_array($extension, ['pdf'])) {
+            return response()->file($filePath, [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'inline; filename="'.basename($filePath).'"'
+            ]);
+        } elseif (in_array($extension, ['doc', 'docx'])) {
+            // Untuk doc/docx, browser biasanya tidak punya viewer bawaan
+            // Solusi: Redirect atau sarankan user download, atau gunakan Google Docs Viewer
+            $url = asset('anggaran/' . $anggaran->file);
+            return redirect("https://docs.google.com/gview?url=$url&embedded=true");
+        } else {
+            abort(415, 'Format file tidak didukung untuk preview.');
         }
-
-        return response()->file($filePath);
-
-        }
-
-    public function preview($id)
-{
-    $anggaran = AnggaranPengabdian::findOrFail($id);
-    $filePath = public_path('anggaran/' . $anggaran->file);
-
-    if (!$anggaran->file || !file_exists($filePath)) {
-        abort(404, 'File tidak ditemukan.');
-    }
-
-    $extension = strtolower(pathinfo($filePath, PATHINFO_EXTENSION));
-
-    if (in_array($extension, ['pdf'])) {
-        return response()->file($filePath, [
-            'Content-Type' => 'application/pdf',
-            'Content-Disposition' => 'inline; filename="'.basename($filePath).'"'
-        ]);
-    } elseif (in_array($extension, ['doc', 'docx'])) {
-        // Untuk doc/docx, browser biasanya tidak punya viewer bawaan
-        // Solusi: Redirect atau sarankan user download, atau gunakan Google Docs Viewer
-        $url = asset('anggaran/' . $anggaran->file);
-        return redirect("https://docs.google.com/gview?url=$url&embedded=true");
-    } else {
-        abort(415, 'Format file tidak didukung untuk preview.');
     }
 }
-
-
-    }
 

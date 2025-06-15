@@ -142,8 +142,7 @@ class SuratMasukController extends Controller
             ]);
         }
 
-        // Untuk download
-        return Storage::disk('public')->download($suratmasuk->file);
+
     }
 
 }

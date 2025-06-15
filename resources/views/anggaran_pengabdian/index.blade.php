@@ -49,7 +49,7 @@
             <tbody>
                 @forelse ($anggaran as $item)
                     <tr class="text-center">
-                        <td>{{ $loop->iteration }}</td>
+                        <td>{{ ($anggaran->currentPage() - 1) * $anggaran->perPage() + $loop->iteration }}</td>
                         <td style="white-space: normal; word-wrap: break-word; max-width: 200px;">{{ $item->kode }}</td>
                         <td style="white-space: normal; word-wrap: break-word; max-width: 300px;">{{ $item->kegiatan }}</td>
                         <td style="white-space: normal; word-wrap: break-word; max-width: 100px;">{{ $item->volume_usulan }}</td>
@@ -74,8 +74,8 @@
     </div>
 
     {{-- Pagination --}}
-    <div class="d-flex justify-content-center">
-        {{ $anggaran->links('pagination::bootstrap-5') }}
+    <div class="d-flex justify-content-end">
+        {{ $anggaran->withQueryString()->links() }}
     </div>
 </div>
 

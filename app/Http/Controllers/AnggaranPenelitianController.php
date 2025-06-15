@@ -2,142 +2,140 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\AnggaranPenelitian;
-use App\Http\Controllers\Controller;
-use App\Models\JenisArsip;
+use App\Models\SkemaPenelitian;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-
 
 class AnggaranPenelitianController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        // Ambil semua data dari tabel anggaran_penelitian
-        $data = AnggaranPenelitian::paginate(10);
+        $search = $request->input('search');
 
+        $anggaran = AnggaranPenelitian::when($search, function ($query, $search) {
+            $query->where('kode', 'like', "%{$search}%")
+                  ->orWhere('kegiatan', 'like', "%{$search}%")
+                  ->orWhere('skema', 'like', "%{$search}%");
+        })
+        ->orderBy('created_at', 'desc')
+        ->paginate(10)->withQueryString();
 
-        // Tampilkan ke view index
-        return view('anggaran_penelitian.index', compact('data'));
+        return view('anggaran_penelitian.index', compact('anggaran'));
     }
 
     public function create()
     {
-        $jenisarsips = JenisArsip::all(); //ambil semua jenis arsip dari database
-        return view('anggaran_penelitian.create', compact('jenisarsips'));
+        $skemas = SkemaPenelitian::all();
+        return view('anggaran_penelitian.create', compact('skemas'));
     }
 
     public function store(Request $request)
     {
-        $request->validate([
-        'judul_penelitian' => 'required|string|max:255',
-        'peneliti' => 'required|string|max:255',
-        'tahun' => 'required|digits:4|integer',
-        'total_anggaran' => 'required|numeric',
-        'jenis_arsip_id' => 'required|exists:jenis_arsips,id', // Pastikan validasi
-        'rincian_anggaran' => 'nullable|string',
-        'status' => 'required|string',
-        'file' => 'required|file|mimes:pdf,docx|max:10240', // ukuran untuk 10 MB
-        'keterangan' => 'nullable|string',
-    ]);
-    // Buat instance model
-        $anggaran = new AnggaranPenelitian();
+        $validated = $request->validate([
+            'kode'           => 'required|string|max:100',
+            'kegiatan'       => 'required|string|max:255',
+            'volume_usulan'  => 'required|integer|min:1',
+            'skema'          => 'required|string|max:100',
+            'total_anggaran' => 'required|numeric|min:0',
+            'file'           => 'nullable|file|mimes:pdf,doc,docx|max:5120',
+        ]);
 
-        $anggaran->judul_penelitian = $request->judul_penelitian;
-        $anggaran->peneliti = $request->peneliti;
-        $anggaran->tahun = $request->tahun;
-        $anggaran->total_anggaran = $request->total_anggaran;
-        $anggaran->jenis_arsip_id = $request->jenis_arsip_id;
-        $anggaran->rincian_anggaran = $request->rincian_anggaran;
-        $anggaran->status = $request->status;
-        $anggaran->keterangan = $request->keterangan;
-
-        // Tangani file upload
         if ($request->hasFile('file')) {
-            $path = $request->file('file')->store('laporan_penelitian', 'public');
-            $anggaran->file = $path;
+            $file = $request->file('file');
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('anggaran'), $fileName);
+            $validated['file'] = $fileName;
         }
-        // Simpan nama file ke database (bukan path)
-        $anggaran->file = $path;
 
-    $anggaran->save();
+        AnggaranPenelitian::create($validated);
 
-    return redirect()->route('anggaran_penelitian.index')->with('success', 'Data penelitian berhasil ditambahkan.');
+        return redirect()->route('anggaran_penelitian.index')->with('success', 'Data anggaran berhasil ditambahkan.');
     }
 
     public function show($id)
     {
-        $item = AnggaranPenelitian::findOrFail($id);
-        return view('anggaran_penelitian.show', compact('item'));
+        $anggaran = AnggaranPenelitian::findOrFail($id);
+        return view('anggaran_penelitian.detail', compact('anggaran'));
     }
 
-    public function edit($id)
+    public function edit(AnggaranPenelitian $anggaran_penelitian)
     {
-        $anggaran_penelitian = AnggaranPenelitian::findOrFail($id);
         return view('anggaran_penelitian.edit', compact('anggaran_penelitian'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, AnggaranPenelitian $anggaran_penelitian)
     {
-        // Validasi data input
-        $request->validate([
-            'judul_penelitian' => 'required|string|max:255',
-            'peneliti' => 'required|string|max:255',
-            'tahun' => 'required|numeric',
-            'total_anggaran' => 'required|numeric',
-            'jenis_arsip_id' => 'required|numeric',
-            'rincian_anggaran' => 'nullable|string',
-            'status' => 'required|in:draft,done',
-            'file' => 'required|file|mimes:pdf,docx|max:10240', // ukuran untuk 10 MB
-            'keterangan' => 'nullable|string',
+        $validated = $request->validate([
+            'kode'           => 'required|string|max:100',
+            'kegiatan'       => 'required|string|max:255',
+            'volume_usulan'  => 'required|integer|min:1',
+            'skema'          => 'required|string|max:100',
+            'total_anggaran' => 'required|numeric|min:0',
+            'file'           => 'nullable|file|mimes:pdf,doc,docx|max:5120',
         ]);
 
-        // Temukan data yang akan di-update
-        $anggaran = AnggaranPenelitian::findOrFail($id);
-
-        // Update data
-        $anggaran->judul_penelitian = $request->judul_penelitian;
-        $anggaran->peneliti = $request->peneliti;
-        $anggaran->tahun = $request->tahun;
-        $anggaran->total_anggaran = $request->total_anggaran;
-        $anggaran->jenis_arsip_id = $request->jenis_arsip_id;
-        $anggaran->rincian_anggaran = $request->rincian_anggaran;
-        $anggaran->status = $request->status;
-        $anggaran->file = $request->file;
-        $anggaran->keterangan = $request->keterangan;
-
-        // Tangani file upload
         if ($request->hasFile('file')) {
-            // Hapus file lama jika ada
-            if ($anggaran->file && Storage::disk('public')->exists($anggaran->file)) {
-                Storage::disk('public')->delete($anggaran->file);
+            if ($anggaran_penelitian->file && file_exists(public_path('anggaran/' . $anggaran_penelitian->file))) {
+                unlink(public_path('anggaran/' . $anggaran_penelitian->file));
             }
-            // Simpan file baru
-            $path = $request->file('file')->store('laporan_penelitian', 'public');
-            $anggaran->file = $path;
+            $file = $request->file('file');
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('anggaran'), $fileName);
+            $validated['file'] = $fileName;
         }
 
+        $anggaran_penelitian->update($validated);
 
-    $anggaran->save();
-
-    return redirect()->route('anggaran_penelitian.index')->with('success', 'Data penelitian berhasil ditambahkan.');
+        return redirect()->route('anggaran_penelitian.index')->with('success', 'Data anggaran berhasil diperbarui.');
     }
 
-    public function destroy(AnggaranPenelitian $anggaran_penelitian)
+    public function destroy($id)
     {
-        $anggaran_penelitian->delete();
-        return redirect()->route('anggaran_penelitian.index')->with('success', 'Laporan Penelitian dihapus!');
+        $anggaran = AnggaranPenelitian::findOrFail($id);
+
+        if ($anggaran->file && Storage::disk('public')->exists($anggaran->file)) {
+            Storage::disk('public')->delete($anggaran->file);
+        }
+
+        $anggaran->delete();
+
+        return redirect()->route('anggaran_penelitian.index')->with('success', 'Data anggaran berhasil dihapus.');
     }
 
     public function download($id)
     {
-        $anggaran_penelitian= AnggaranPenelitian::findOrFail($id);
+        $anggaran = AnggaranPenelitian::findOrFail($id);
+        $filePath = public_path('anggaran/' . $anggaran->file);
 
-        if (!$anggaran_penelitian->file || !Storage::disk('public')->exists($anggaran_penelitian->file)) {
-            return redirect()->back()->with('error', 'File tidak ditemukan.');
+        if (!file_exists($filePath)) {
+            abort(404, 'File tidak ditemukan.');
         }
 
-        return Storage::disk('public')->download($anggaran_penelitian->file);
+        return response()->download($filePath, $anggaran->file);
     }
 
+    public function preview($id)
+    {
+        $anggaran = AnggaranPenelitian::findOrFail($id);
+        $filePath = public_path('anggaran/' . $anggaran->file);
+
+        if (!$anggaran->file || !file_exists($filePath)) {
+            abort(404, 'File tidak ditemukan.');
+        }
+
+        $extension = strtolower(pathinfo($filePath, PATHINFO_EXTENSION));
+
+        if (in_array($extension, ['pdf'])) {
+            return response()->file($filePath, [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'inline; filename="' . basename($filePath) . '"'
+            ]);
+        } elseif (in_array($extension, ['doc', 'docx'])) {
+            $url = asset('anggaran/' . $anggaran->file);
+            return redirect("https://docs.google.com/gview?url=$url&embedded=true");
+        } else {
+            abort(415, 'Format file tidak didukung untuk preview.');
+        }
+    }
 }

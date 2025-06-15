@@ -19,9 +19,14 @@ class ProdiController extends Controller
             $query->where('prodi', 'like', "%{$request->search}%");
         }
 
-        $prodis = $query->get();
+        // Tambahkan orderBy untuk mengurutkan berdasarkan kode_prodi dari kecil ke besar
+        $query->orderBy('kode_prodi', 'asc');
+
+        $prodis = $query->paginate(10)->withQueryString();
+
         return view('prodi.index', compact('prodis'));
     }
+
 
     /**
      * Show the form for creating a new resource.

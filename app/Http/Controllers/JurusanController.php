@@ -14,7 +14,7 @@ class JurusanController extends Controller
                             return $query->where('jurusan', 'like', "%$search%")
                                          ->orWhere('kode_jurusan', 'like', "%$search%");
                         })
-                        ->orderBy('jurusan')
+                        ->orderBy('kode_jurusan','asc')
                         ->get();
 
         return view('jurusan.index', compact('jurusans'));

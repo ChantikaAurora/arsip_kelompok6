@@ -17,5 +17,11 @@ class AnggaranPengabdian extends Model
         'total_anggaran',
         'file',
     ];
+
+    public function skemaRelasi()
+    {
+        return $this->belongsTo(SkemaPengabdian::class, 'skema', 'id');
+    }
+
 }
 

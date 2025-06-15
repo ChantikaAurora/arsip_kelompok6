@@ -13,17 +13,12 @@ return new class extends Migration
     {
         Schema::create('anggaran_penelitians', function (Blueprint $table) {
             $table->id();
-            $table->string('judul_penelitian');
-            $table->string('peneliti');
-            $table->string('tahun');
-            $table->integer('total_anggaran');
-            $table->foreignId('jenis_arsip_id') // foreign key ke jenis_arsips
-                    ->constrained('jenis_arsips')
-                    ->onDelete('cascade'); //foreign key dari jenis arsip
-            $table->string('rincian_anggaran');
-            $table->string('status');
+            $table->string('kode');
+            $table->string('kegiatan');
+            $table->integer('volume_usulan');
+            $table->string('skema');
+            $table->decimal('total_anggaran', 15, 2);
             $table->string('file');
-            $table->string('keterangan');
             $table->timestamps();
         });
     }

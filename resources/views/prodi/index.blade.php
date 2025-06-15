@@ -38,7 +38,7 @@
         <tbody>
             @forelse ($prodis as $prodi)
                 <tr>
-                    <td>{{ $loop->iteration }}</td>
+                    <td>{{ ($prodis->currentPage() - 1) * $prodis->perPage() + $loop->iteration }}</td>
                     <td>{{ $prodi->jurusan->jurusan }}</td>
                     <td>{{ $prodi->kode_prodi }}</td>
                     <td>{{ $prodi->prodi }}</td>
@@ -56,5 +56,9 @@
             @endforelse
         </tbody>
     </table>
+    <br>
+    <div class="d-flex justify-content-end">
+    {{ $prodis->withQueryString()->links() }}
+    </div>
 </div>
 @endsection
