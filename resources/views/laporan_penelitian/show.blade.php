@@ -49,21 +49,6 @@
                     @else
                             <p class="text-muted">Tidak ada file yang diunggah.</p>
                     @endif
-
-                    {{-- Preview PDF
-                    <div class="card body">
-                        <table class="table">
-                            @php
-                                $ext = pathinfo($laporan_penelitian->file, PATHINFO_EXTENSION);
-                            @endphp
-
-                            @if ($ext === 'pdf')
-                                <embed src="{{ asset('storage/' . $laporan_penelitian->file) }}" type="application/pdf" width="100%" height="600px">
-                            @else
-                                <p>File tidak dapat ditampilkan langsung. Silakan unduh file untuk melihat isinya.</p>
-                            @endif
-                        </table>
-                    </div> --}}
                 </div>
             </div>
         </div>

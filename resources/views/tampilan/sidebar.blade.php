@@ -50,8 +50,8 @@
           </a>
           <div class="collapse" id="laporan">
             <ul class="nav flex-column sub-menu">
-              <li class="nav-item"> <a class="nav-link" href="" >Laporan Kegiatan <br> Pengabdian</a></li>
-              <li class="nav-item"> <a class="nav-link" href="" >Laporan Akhir <br> Pengabdian</a></li>
+              <li class="nav-item"> <a class="nav-link" href="{{ route('laporan_kegiatan_pengabdian.index') }}" >Laporan Kegiatan <br> Pengabdian</a></li>
+              <li class="nav-item"> <a class="nav-link" href="{{ route('laporan_pengabdian.index') }}" >Laporan Akhir <br> Pengabdian</a></li>
               <li class="nav-item"> <a class="nav-link" href="{{ route ('laporan_penelitian.index') }}" >Laporan Akhir <br> Penelitian</a></li>
             </ul>
           </div>

@@ -35,8 +35,10 @@ use App\Http\Controllers\LogAktivitasController;
 use App\Http\Controllers\SkemaPenelitianController;
 use App\Http\Controllers\SkemaPengabdianController;
 use App\Http\Controllers\LaporanPenelitianController;
+use App\Http\Controllers\LaporanPengabdianController;
 use App\Http\Controllers\AnggaranPenelitianController;
 use App\Http\Controllers\AnggaranPengabdianController;
+use App\Http\Controllers\LaporanKegiatanPengabdianController;
 
 
 // Halaman utama
@@ -88,6 +90,14 @@ Route::get('proposal/{id}', [ProposalController::class, 'show'])->name('proposal
 // Pengabdian
 Route::resource('anggaran_pengabdian', AnggaranPengabdianController::class);
 Route::get('anggaran/{id}/download', [AnggaranPengabdianController::class, 'download'])->name('anggaran.download');
+
+Route::resource('laporan_pengabdian', LaporanPengabdianController::class);
+Route::get('laporan_pengabdian/{id}/download', [LaporanPengabdianController::class, 'download'])->name('laporan_pengabdian.download');
+Route::get('laporan_pengabdian/{id}', [LaporanPengabdianController::class, 'show'])->name('laporan_pengabdian.show');
+
+Route::resource('laporan_kegiatan_pengabdian', LaporanKegiatanPengabdianController::class);
+Route::get('laporan_kegiatan_pengabdian/{id}/download', [LaporanKegiatanPengabdianController::class, 'download'])->name('laporan_kegiatan_pengabdian.download');
+Route::get('laporan_kegiatan_pengabdian/{id}', [LaporanKegiatanPengabdianController::class, 'show'])->name('laporan_kegiatan_pengabdian.show');
 
 
 // Log Aktivitas

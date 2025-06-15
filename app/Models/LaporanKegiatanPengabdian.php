@@ -5,14 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class LaporanPenelitian extends Model
+class LaporanKegiatanPengabdian extends Model
 {
     /** @use HasFactory<\Database\Factories\LaporanPenelitianFactory> */
     use HasFactory;
 
-    protected $table = 'laporan_penelitians';
+    protected $table = 'laporan_kegiatan_pengabdians';
 
-    protected $fillable = ['kode_seri','judul_penelitian', 'peneliti','skema','anggota','jurusan','prodi', 'tanggal_laporan_diterima', 'file', 'keterangan'];
+    protected $fillable = ['kode_seri','judul', 'peneliti','skema','anggota','jurusan','prodi', 'tanggal_laporan_diterima', 'file', 'keterangan'];
 
     // public function jenisArsip()
     // {
