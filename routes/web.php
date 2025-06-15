@@ -13,14 +13,14 @@ use App\Http\Controllers\ProposalController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\JenisArsipController;
-use App\Http\Controllers\SuratKeluarController;
 use App\Http\Controllers\SuratMasukController;
+use App\Http\Controllers\SuratKeluarController;
 use App\Http\Controllers\LogAktivitasController;
 use App\Http\Controllers\SkemaPenelitianController;
 use App\Http\Controllers\SkemaPengabdianController;
 use App\Http\Controllers\LaporanPenelitianController;
+use App\Http\Controllers\LaporanPengabdianController;
 use App\Http\Controllers\AnggaranPenelitianController;
-use App\Http\Controllers\AnggaranPengabdianController;
 
 // Halaman utama
 Route::get('/home', function () {
@@ -33,17 +33,8 @@ Route::get('/home', function () {
     return view('welcome', compact('jumlahPenggunaAktif', 'jumlahSuratMasuk'));
 });
 
-<<<<<<< HEAD
-
-use App\Http\Controllers\SuratKeluarController;
 // use App\Http\Controllers\LogAktivitasController;
 // use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\LogAktivitasController;
-use App\Http\Controllers\SkemaPenelitianController;
-use App\Http\Controllers\SkemaPengabdianController;
-use App\Http\Controllers\LaporanPenelitianController;
-use App\Http\Controllers\LaporanPengabdianController;
-use App\Http\Controllers\AnggaranPenelitianController;
 use App\Http\Controllers\AnggaranPengabdianController;
 use App\Http\Controllers\LaporanKegiatanPengabdianController;
 
@@ -53,8 +44,6 @@ use App\Http\Controllers\LaporanKegiatanPengabdianController;
 //     return view('welcome');
 // });
 
-=======
->>>>>>> a336187a1e055f439c2a97b003b297c491e4f507
 Route::get('/home', [DashboardController::class, 'index'])->name('home');
 
 // Login & Logout
