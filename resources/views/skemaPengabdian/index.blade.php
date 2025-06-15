@@ -36,16 +36,16 @@
     <table class="table table-bordered table-hover">
         <thead class="table-light">
             <tr>
-                <th>No</th>
-                <th>Skema Pengabdian</th>
+                <th class="text-center">No</th>
+                <th class="text-center">Skema Pengabdian</th>
                 <th class="text-center">Aksi</th>
             </tr>
         </thead>
         <tbody>
             @forelse ($skemas as $skema)
             <tr>
-                <td>{{ $loop->iteration }}</td>
-                <td>{{ $skema->skema_pengabdian }}</td>
+                <td class="text-center">{{ $loop->iteration }}</td>
+                <td >{{ $skema->skema_pengabdian }}</td>
                 <td class="text-center">
                     <a href="{{ route('skemaPengabdian.edit', $skema->id) }}" class="btn btn-sm btn-warning">Edit</a>
                     <form action="{{ route('skemaPengabdian.destroy', $skema->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin ingin menghapus skema ini?')">

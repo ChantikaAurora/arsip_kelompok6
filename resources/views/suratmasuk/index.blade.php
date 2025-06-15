@@ -81,9 +81,9 @@
     </div>
 
     {{-- Pagination --}}
-    <div class="d-flex justify-content-center">
-        {{ $suratmasuks->links('pagination::bootstrap-5') }}
-    </div>
+    {{-- <div class="d-flex justify-content-center">
+        {{ $suratmasuk->links('pagination::bootstrap-5') }}
+    </div> --}}
 </div>
 
 @endsection

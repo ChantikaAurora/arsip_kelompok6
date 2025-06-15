@@ -51,11 +51,7 @@
                     <tr>
                         <td>{{ $index + $data->firstItem() }}</td>
                         <td>{{ $item->nomor_surat }}</td>
-                        {{-- <td>{{ $item->tanggal_surat }}</td>
-                        <td>{{ $item->tujuan_surat }}</td> --}}
                         <td>{{ $item->perihal }}</td>
-                        {{-- <td>{{ $item->pengirim }}</td>
-                        <td>{{ $item->penerima }}</td> --}}
                         <td>{{ $item->jenisArsip->jenis ?? '-' }}</td>
                         <td>
                             @if ($item->file)
@@ -74,9 +70,6 @@
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
                             </form>
-                            {{-- @if ($item->file)
-                                <a href="{{ route('suratkeluar.download', $item->id) }}" class="btn btn-info btn-sm">Download</a>
-                            @endif --}}
                         </td>
                     </tr>
                 @endforeach
@@ -90,8 +83,8 @@
     </div>
 
     {{-- Pagination --}}
-    <div class="d-flex justify-content-center">
-        {{ $data->withQueryString()->links('pagination::bootstrap-5') }}
-    </div>
+    {{-- <div class="d-flex justify-content-end">
+        {{ $suratmasuks->withQueryString()->links() }}
+    </div> --}}
 </div>
 @endsection

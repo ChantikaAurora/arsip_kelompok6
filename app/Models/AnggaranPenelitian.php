@@ -7,14 +7,19 @@ use Illuminate\Database\Eloquent\Model;
 
 class AnggaranPenelitian extends Model
 {
-    /** @use HasFactory<\Database\Factories\AnggaranPenelitianFactory> */
     use HasFactory;
-    protected $table = 'anggaran_penelitians';
 
-    protected $fillable = ['judul_penelitian', 'peneliti', 'tahun', 'total_anggaran', 'jenis_arsip_id', 'rincian_anggaran', 'status', 'keterangan'];
+    protected $fillable = [
+        'kode',
+        'kegiatan',
+        'volume_usulan',
+        'skema',
+        'total_anggaran',
+        'file',
+    ];
 
-    public function jenisArsip()
+    public function skemaRelasi()
     {
-        return $this->belongsTo(JenisArsip::class,'jenis_arsip_id');
+        return $this->belongsTo(SkemaPenelitian::class, 'skema', 'id');
     }
 }

@@ -1,5 +1,3 @@
-
-
  <nav class="sidebar sidebar-offcanvas" id="sidebar">
         <ul class="nav">
           <li class="nav-item">
@@ -65,8 +63,8 @@
           </a>
           <div class="collapse" id="anggaran">
             <ul class="nav flex-column sub-menu">
-              <li class="nav-item"> <a class="nav-link" href="{{ route('anggaran_penelitian.index') }}" >Anggaran Penelitian</a></li>
-              <li class="nav-item"> <a class="nav-link" href="{{ route('anggaran_pengabdian.index') }}" >Anggaran Pengabdian</a></li>
+              <li class="nav-item"> <a class="nav-link" href="{{ route('anggaran_penelitian.index') }}" >Anggaran <br>Penelitian</a></li>
+              <li class="nav-item"> <a class="nav-link" href="{{ route('anggaran_pengabdian.index') }}" >Anggaran <br>Pengabdian</a></li>
             </ul>
           </div>
         </li>

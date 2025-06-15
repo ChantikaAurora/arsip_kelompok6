@@ -18,7 +18,7 @@ return new class extends Migration
             $table->integer('volume_usulan');
             $table->string('skema');
             $table->decimal('total_anggaran', 15, 2);
-            $table->string('file')->nullable();
+            $table->string('file');
             $table->timestamps();
         });
     }

@@ -60,7 +60,7 @@ class SuratKeluarController extends Controller
 
         // Dapatkan nomor urut terakhir
         $autoNo = SuratKeluar::count() + 1;
-        
+
         SuratKeluar::create([
         'no' => (string)$autoNo, // simpan sebagai string
         'nomor_surat' => $validated['nomor_surat'],
@@ -169,8 +169,7 @@ class SuratKeluarController extends Controller
             }
         }
 
-        // Download
-        return Storage::disk('public')->download($suratkeluar->file);
+
     }
 
 }

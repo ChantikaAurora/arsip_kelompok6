@@ -49,21 +49,20 @@
             <tbody>
                 @forelse ($anggaran as $item)
                     <tr class="text-center">
-                        <td>{{ $loop->iteration }}</td>
-                        <td>{{ $item->kode }}</td>
-                        <td>{{ $item->kegiatan }}</td>
-                        <td>{{ $item->volume_usulan }}</td>
-                        <td class="text-center">
-                            <a href="" class="btn btn-sm btn-secondary">Lihat</a>
-                            <a href="" class="btn btn-sm btn-success">Unduh</a>
+                        <td>{{ ($anggaran->currentPage() - 1) * $anggaran->perPage() + $loop->iteration }}</td>
+                        <td style="white-space: normal; word-wrap: break-word; max-width: 200px;">{{ $item->kode }}</td>
+                        <td style="white-space: normal; word-wrap: break-word; max-width: 300px;">{{ $item->kegiatan }}</td>
+                        <td style="white-space: normal; word-wrap: break-word; max-width: 100px;">{{ $item->volume_usulan }}</td>
+                        <td  style="white-space: normal; word-wrap: break-word; max-width: 800px " class="text-center">
+                            <a href="{{ route('anggaran_pengabdian.preview', $item->id) }}" target="_blank" class="btn btn-sm btn-secondary">Lihat</a>
+                            <a href="{{ route('anggaran_pengabdian.download', $item->id) }}" class="btn btn-sm btn-success">Unduh</a>
                             <a href="{{ route('anggaran_pengabdian.show', $item->id) }}" class="btn btn-sm btn-primary">Detail</a>
                             <a href="{{ route('anggaran_pengabdian.edit', $item->id) }}" class="btn btn-sm btn-warning">Edit</a>
-                            <form action="{{ route('anggaran_pengabdian.destroy', $item->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin mau hapus data ini?')">
+                            <form action="{{ route('anggaran_pengabdian.destroy',  $item->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin mau hapus data ini?')">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-sm btn-danger">Hapus</button>
                             </form>
-                        </td>
                     </tr>
                 @empty
                     <tr>
@@ -75,9 +74,9 @@
     </div>
 
     {{-- Pagination --}}
-    {{-- <div class="d-flex justify-content-center">
-        {{ $anggaran->links('pagination::bootstrap-5') }}
-    </div> --}}
+    <div class="d-flex justify-content-end">
+        {{ $anggaran->withQueryString()->links() }}
+    </div>
 </div>
 
 @endsection
