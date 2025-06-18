@@ -26,4 +26,9 @@ class SuratKeluar extends Model
     public function jenisArsip() {
         return $this->belongsTo(JenisArsip::class, 'jenis'); // foreign key: jenis
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id'); // sesuaikan jika beda nama kolom
+    }
 }

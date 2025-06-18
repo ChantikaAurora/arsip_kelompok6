@@ -10,9 +10,12 @@
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
 
-    {{-- Tombol Tambah Surat Keluar --}}
-    <div class="mb-4">
-        <a href="{{ route('suratkeluar.create') }}" class="btn btn-primary">+ Tambah Surat Keluar</a>
+    {{-- Tombol Tambah Surat Keluar dan Cetak Metadata --}}
+    <div class="d-flex justify-content-between mb-3">
+        <div class="d-flex gap-2">
+            <a href="{{ route('suratkeluar.create') }}" class="btn btn-primary">+ Tambah Surat</a>
+            <a href="{{ route('suratkeluar.metadata') }}" class="btn btn-success">📄 Cetak Metadata</a>
+        </div>
     </div>
 
     {{-- Pencarian --}}
