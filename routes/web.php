@@ -15,7 +15,6 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\JenisArsipController;
 use App\Http\Controllers\SuratMasukController;
 use App\Http\Controllers\SuratKeluarController;
-use App\Http\Controllers\LogAktivitasController;
 use App\Http\Controllers\SkemaPenelitianController;
 use App\Http\Controllers\SkemaPengabdianController;
 use App\Http\Controllers\LaporanPenelitianController;
@@ -100,8 +99,6 @@ Route::get('laporan_kegiatan_pengabdian/{id}/download', [LaporanKegiatanPengabdi
 Route::get('laporan_kegiatan_pengabdian/{id}', [LaporanKegiatanPengabdianController::class, 'show'])->name('laporan_kegiatan_pengabdian.show');
 
 
-// Log Aktivitas
-Route::get('/logaktivitas', [LogAktivitasController::class, 'index'])->name('log.index');
 
 // dashbordsuratkeluar
 
