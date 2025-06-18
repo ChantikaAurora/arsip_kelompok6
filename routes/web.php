@@ -21,6 +21,8 @@ use App\Http\Controllers\SkemaPengabdianController;
 use App\Http\Controllers\LaporanPenelitianController;
 use App\Http\Controllers\LaporanPengabdianController;
 use App\Http\Controllers\AnggaranPenelitianController;
+use App\Exports\MetadataSuratKeluarExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 // Halaman utama
 Route::get('/home', function () {
@@ -69,9 +71,15 @@ Route::resource('suratmasuk', SuratMasukController::class);
 Route::get('suratmasuk/{id}/download', [SuratMasukController::class, 'download'])->name('suratmasuk.download');
 Route::get('suratmasuk/{id}', [SuratMasukController::class, 'show'])->name('suratmasuk.detail');
 
+//metada surat keluar
+Route::get('suratkeluar/download/{id}', [SuratKeluarController::class, 'download'])->name('suratkeluar.download');
+Route::get('/suratkeluar/metadata', [SuratKeluarController::class, 'metadata'])->name('suratkeluar.metadata');
+Route::get('/suratkeluar/metadata/export', [SuratKeluarController::class, 'exportMetadata'])->name('suratkeluar.metadata.export');
 // Surat Keluar
 Route::resource('suratkeluar', SuratKeluarController::class);
-Route::get('suratkeluar/download/{id}', [SuratKeluarController::class, 'download'])->name('suratkeluar.download');
+
+
+
 
 Route::resource('laporan_penelitian', LaporanPenelitianController::class);
 Route::get('laporan_penelitian/{id}/download', [LaporanPenelitianController::class, 'download'])->name('laporan_penelitian.download');
@@ -127,3 +135,6 @@ Route::resource('jurusan', JurusanController::class);
 Route::resource('prodi', ProdiController::class);
 
 // Route::get('/surat-keluar', [DashboardSuratKeluarController::class, 'index'])->name('dashboardsuratkeluar');
+Route::get('/test', function () {
+    return 'Route test OK';
+});

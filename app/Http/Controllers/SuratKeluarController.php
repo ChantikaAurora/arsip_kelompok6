@@ -6,6 +6,8 @@ use App\Models\SuratKeluar;
 use App\Models\JenisArsip;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\MetadataExport;
 
 class SuratKeluarController extends Controller
 {
@@ -147,29 +149,39 @@ class SuratKeluarController extends Controller
     }
 
     public function download($id)
-    {
-        $suratkeluar = SuratKeluar::findOrFail($id);
+{
+    $suratkeluar = SuratKeluar::findOrFail($id);
 
-        if (!$suratkeluar->file || !Storage::disk('public')->exists($suratkeluar->file)) {
-            abort(404, 'File tidak ditemukan.');
-        }
-
-        $path = Storage::disk('public')->path($suratkeluar->file);
-        $extension = pathinfo($path, PATHINFO_EXTENSION);
-
-        // Preview hanya jika file adalah PDF atau TXT
-        if (request()->has('preview')) {
-            if (in_array($extension, ['pdf', 'txt'])) {
-                return response()->file($path, [
-                    'Content-Type' => $extension === 'pdf' ? 'application/pdf' : 'text/plain',
-                ]);
-            } else {
-                // Redirect ke download jika bukan file yang bisa ditampilkan
-                return redirect()->route('suratkeluar.download', ['id' => $id]);
-            }
-        }
-
-
+    if (!$suratkeluar->file || !Storage::disk('public')->exists($suratkeluar->file)) {
+        abort(404, 'File tidak ditemukan.');
     }
 
+    $path = Storage::disk('public')->path($suratkeluar->file);
+    $extension = pathinfo($path, PATHINFO_EXTENSION);
+
+    // Preview hanya jika file adalah PDF atau TXT
+    if (request()->has('preview')) {
+        if (in_array($extension, ['pdf', 'txt'])) {
+            return response()->file($path, [
+                'Content-Type' => $extension === 'pdf' ? 'application/pdf' : 'text/plain',
+            ]);
+        } else {
+            return redirect()->route('suratkeluar.download', ['id' => $id]);
+        }
+    }
+
+    // ✅ Ini bagian yang belum ada: download biasa
+    return Storage::disk('public')->download($suratkeluar->file);
+}
+
+    public function metadata()
+    {
+        $data = SuratKeluar::with('jenisArsip')->get();
+        return view('suratkeluar.metadata', compact('data'));
+    }
+
+    public function exportMetadata()
+    {
+        return Excel::download(new MetadataExport, 'metadata_suratkeluar.xlsx');
+    }
 }
