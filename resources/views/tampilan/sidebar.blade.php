@@ -13,7 +13,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{{ route('suratmasuk.index') }}" id="suratmasuk">
+            <a class="nav-link active" href="{{ route('suratmasuk.index') }}" id="suratmasuk">
               <i class="icon-envelope-letter menu-icon"></i>
               <span class="menu-title">Surat Masuk</span>
             </a>
@@ -33,9 +33,12 @@
           </a>
           <div class="collapse" id="proposal">
             <ul class="nav flex-column sub-menu">
-              <li class="nav-item"> <a class="nav-link" href="{{ route('proposal.index') }}">Proposal Pengabdian</a></li>
-              <li class="nav-item"> <a class="nav-link" href=" ">Proposal Penelitian <br> DP</a></li>
-              <li class="nav-item"> <a class="nav-link" href=" ">Proposal Penelitian <br> Unggulan</a></li>
+              <li class="nav-item"> <a class="nav-link" href="{{ route('proposal.index') }}">Proposal DIPA <br>Penelitian</a></li>
+              <li class="nav-item"> <a class="nav-link" href=" ">Proposal DIPA <br> Pengabdian</a></li>
+              <li class="nav-item"> <a class="nav-link" href=" ">Proposal Pusat <br> Penelitian</a></li>
+              <li class="nav-item"> <a class="nav-link" href=" ">Proposal Pusat <br> Pengabdian</a></li>
+              <li class="nav-item"> <a class="nav-link" href=" ">Proposal Mandiri <br> Penelitian</a></li>
+              <li class="nav-item"> <a class="nav-link" href=" ">Proposal Mandiri <br> Pengabdian</a></li>
             </ul>
           </div>
         </li>
@@ -48,32 +51,30 @@
           </a>
           <div class="collapse" id="laporan">
             <ul class="nav flex-column sub-menu">
-              <li class="nav-item"> <a class="nav-link" href="" >Laporan Kegiatan <br> Pengabdian</a></li>
+              <li class="nav-item"> <a class="nav-link" href="{{ route ('laporan_penelitian.index') }}" >Laporan Kemajuan <br> Penelitian</a></li>
+              <li class="nav-item"> <a class="nav-link" href="" >Laporan Kemajuan <br> Pengabdian</a></li>
+              <li class="nav-item"> <a class="nav-link" href="" >Laporan Akhir <br> Penelitian</a></li>
               <li class="nav-item"> <a class="nav-link" href="" >Laporan Akhir <br> Pengabdian</a></li>
-              <li class="nav-item"> <a class="nav-link" href="{{ route ('laporan_penelitian.index') }}" >Laporan Akhir <br> Penelitian</a></li>
+              <li class="nav-item"> <a class="nav-link" href="{{ route('anggaran_penelitian.index') }}" >Laporan Keuangan <br> Penelitian</a></li>
+              <li class="nav-item"> <a class="nav-link" href="{{ route('anggaran_pengabdian.index') }}" >Laporan Keuangan <br> Pengabdian</a></li>
             </ul>
           </div>
         </li>
-         <li class="nav-item">
-          <a class="nav-link" data-toggle="collapse" href="#anggaran" role="button"
-            aria-expanded="false" aria-controls="anggaran" >
-            <i class="icon-chart menu-icon"></i>
-            <span class="menu-title">Anggaran</span>
+        </li>
+           <li class="nav-item">
+          <a class="nav-link" data-toggle="collapse" href="#skema" role="button"
+            aria-expanded="false" aria-controls="skema" >
+            <i class="icon-organization menu-icon"></i>
+            <span class="menu-title">Skema</span>
             <i class="menu-arrow"></i>
           </a>
-          <div class="collapse" id="anggaran">
+          <div class="collapse" id="skema">
             <ul class="nav flex-column sub-menu">
-              <li class="nav-item"> <a class="nav-link" href="{{ route('anggaran_penelitian.index') }}" >Anggaran <br>Penelitian</a></li>
-              <li class="nav-item"> <a class="nav-link" href="{{ route('anggaran_pengabdian.index') }}" >Anggaran <br>Pengabdian</a></li>
+              <li class="nav-item"> <a class="nav-link" href="/skemaPenelitian" >Penelitian</a></li>
+              <li class="nav-item"> <a class="nav-link" href="/skemaPengabdian" >Pengabdian</a></li>
             </ul>
           </div>
         </li>
-        <li class="nav-item">
-            <a class="nav-link " href="" id="jurusan">
-              <i class="icon-people menu-icon"></i>
-              <span class="menu-title">Pengabdian Kepada <br> Masyarakat</span>
-            </a>
-          </li>
          <li class="nav-item">
             <a class="nav-link " href="/jurusan" id="jurusan">
               <i class="icon-graduation menu-icon"></i>
@@ -91,26 +92,5 @@
               <i class="icon-tag menu-icon"></i>
               <span class="menu-title">Jenis Arsip</span>
             </a>
-          </li>
-           <li class="nav-item">
-          <a class="nav-link" data-toggle="collapse" href="#skema" role="button"
-            aria-expanded="false" aria-controls="skema" >
-            <i class="icon-organization menu-icon"></i>
-            <span class="menu-title">Skema</span>
-            <i class="menu-arrow"></i>
-          </a>
-          <div class="collapse" id="skema">
-            <ul class="nav flex-column sub-menu">
-              <li class="nav-item"> <a class="nav-link" href="/skemaPenelitian" >Penelitian</a></li>
-              <li class="nav-item"> <a class="nav-link" href="/skemaPengabdian" >Pengabdian</a></li>
-            </ul>
-          </div>
-        </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{{ route('log.index') }}" id="log">
-                <i class="icon-doc menu-icon"></i>
-               <span class="menu-title">Log Aktivitas</span>
-              </a>
-            </li>
         </ul>
       </nav>
