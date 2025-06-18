@@ -8,4 +8,9 @@ class SkemaPengabdian extends Model
 {
     use HasFactory;
     protected $fillable = ['skema_pengabdian'];
+
+    public function laporan_pengabdians()
+    {
+        return $this->hasMany(LaporanPengabdian::class, 'skema_pengabdian');
+    }
 }

@@ -6,31 +6,32 @@ use App\Models\Prodi;
 use App\Models\Jurusan;
 use App\Models\JenisArsip;
 use Illuminate\Http\Request;
-use App\Models\LaporanPenelitian;
-use App\Models\SkemaPenelitian;
+use App\Models\LaporanPengabdian;
+use App\Models\SkemaPengabdian;
+use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Storage;
 
-class LaporanPenelitianController extends Controller
+class LaporanPengabdianController extends Controller
 {
     public function index()
     {
-        $laporan_penelitians = LaporanPenelitian::paginate(10);
-        return view('laporan_penelitian.index', compact('laporan_penelitians'));
+        $laporan_pengabdians = LaporanPengabdian::paginate(10);
+        return view('laporan_pengabdian.index', compact('laporan_pengabdians'));
     }
 
     public function create()
     {
         $prodis = Prodi::all();
         $jurusans = Jurusan::all();
-        $skemas = SkemaPenelitian::all();
-        return view('laporan_penelitian.create', compact('prodis', 'jurusans', 'skemas'));
+        $skemas = SkemaPengabdian::all();
+        return view('laporan_pengabdian.create', compact('prodis','jurusans','skemas'));
     }
 
     public function store(Request $request)
     {
         $validated =  $request->validate([
             'kode_seri' => 'required|string|max:255',
-            'judul_penelitian' => 'required|string|max:255',
+            'judul' => 'required|string|max:255',
             'peneliti' => 'required|string|max:255',
             'skema' => 'required|string|max:255',
             'anggota' => 'required|string|max:255',
@@ -44,31 +45,31 @@ class LaporanPenelitianController extends Controller
         if ($request->hasFile('file')) {
             $file = $request->file('file');
             $fileName = time() . '_' . $file->getClientOriginalName();
-            $file->storeAs('laporan_penelitians', $fileName, 'public');  // pastikan tidak ada disk kedua!
+            $file->storeAs('laporan_pengabdians', $fileName, 'public');  // pastikan tidak ada disk kedua!
             $validated['file'] = $fileName;
         }
 
-        LaporanPenelitian::create($validated);
-        return redirect()->route('laporan_penelitian.index')->with('success', 'Data penelitian berhasil ditambahkan.');
+        LaporanPengabdian::create($validated);
+        return redirect()->route('laporan_pengabdian.index')->with('success', 'Data pengabdian berhasil ditambahkan.');
     }
 
-    public function show(LaporanPenelitian $laporan_penelitian)
+    public function show(LaporanPengabdian $laporan_pengabdian)
     {
         // $laporan_penelitian->load('jenisArsip'); // muat relasi jika perlu
-        return view('laporan_penelitian.show', compact('laporan_penelitian'));
+        return view('laporan_pengabdian.show', compact('laporan_pengabdian'));
     }
 
     public function edit($id)
     {
-        $laporan_penelitian = LaporanPenelitian::findOrFail($id);
-        return view('laporan_penelitian.edit', compact('laporan_penelitian'));
+        $laporan_pengabdian = LaporanPengabdian::findOrFail($id);
+        return view('laporan_pengabdian.edit', compact('laporan_pengabdian'));
     }
 
-    public function update(Request $request, LaporanPenelitian $laporan_penelitian)
+    public function update(Request $request, LaporanPengabdian $laporan_pengabdian)
     {
         $validated = $request->validate([
             'kode_seri' => 'required|string|max:255',
-            'judul_penelitian' => 'required|string|max:255',
+            'judul' => 'required|string|max:255',
             'peneliti' => 'required|string|max:255',
             'skema' => 'required|string|max:255',
             'anggota' => 'required|string|max:255',
@@ -80,32 +81,32 @@ class LaporanPenelitianController extends Controller
         ]);
 
         if ($request->hasFile('file')) {
-            if ($laporan_penelitian->file && Storage::exists('laporan_penelitians/' . $laporan_penelitian->file)) {
-                Storage::delete('laporan_penelitians/' . $laporan_penelitian->file);
+            if ($laporan_pengabdian->file && Storage::exists('laporan_pengabdians/' . $laporan_pengabdian->file)) {
+                Storage::delete('laporan_penelitians/' . $laporan_pengabdian->file);
             }
 
             $file = $request->file('file');
             $fileName = time() . '_' . $file->getClientOriginalName();
-            $file->storeAs('laporan_penelitians', $fileName);
+            $file->storeAs('laporan_pengabdians', $fileName);
             $validated['file'] = $fileName;
         }
 
-        $laporan_penelitian->update($validated);
-        return redirect()->route('laporan_penelitian.index')->with('success', 'Data berhasil diperbarui.');
+        $laporan_pengabdian->update($validated);
+        return redirect()->route('laporan_pengabdian.index')->with('success', 'Data berhasil diperbarui.');
     }
 
-    public function destroy(LaporanPenelitian $laporan_penelitian)
+    public function destroy(LaporanPengabdian $laporan_pengabdian)
     {
-        $laporan_penelitian->delete();
-        return redirect()->route('laporan_penelitian.index')->with('success', 'Laporan Penelitian dihapus!');
+        $laporan_pengabdian->delete();
+        return redirect()->route('laporan_pengabdian.index')->with('success', 'Laporan Pengabdian dihapus!');
     }
 
     public function download($id)
     {
-        $laporan_penelitian = LaporanPenelitian::findOrFail($id);
-        $fileName = $laporan_penelitian->file;
+        $laporan_pengabdian = LaporanPengabdian::findOrFail($id);
+        $fileName = $laporan_pengabdian->file;
 
-        $filePath = 'laporan_penelitians/' . $fileName;
+        $filePath = 'laporan_pengabdians/' . $fileName;
 
         if (!$fileName || !Storage::disk('public')->exists($filePath)) {
             abort(404, 'File tidak ditemukan.');

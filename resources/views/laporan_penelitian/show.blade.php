@@ -8,45 +8,50 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
     <main>
         {{-- Tombol Kembali --}}
-        <a href="{{ route('laporan_penelitian.index', $laporan_penelitian->id) }}" class="btn btn-secondary my-4" >
-            <i class="bi bi-arrow-left-circle"></i>Kembali</a>
-        <div class="container-fluid px-4">
-            <div class="card mb-4">
-                <div class="card-header">Detail Laporan Penelitian</div>
+        <a href="{{ route('laporan_penelitian.index', $laporan_penelitian->id) }}" class="btn btn-secondary mb-3" >← Kembali </a>
+
+        <div class="row">
+            {{-- detail laporan penelitian --}}
+        <div class="col-12 mb-4">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Detail Laporan Akhir Penelitian</h5>
+                    @if($laporan_penelitian->file)
+                        <!-- Tombol download di header bisa diaktifkan kalau mau -->
+                    @endif
+                </div>
                 <div class="card-body">
-                    <table class="table">
-                        <tbody>
+                    <table class="table table-borderless">
                             {{-- <tr><th>ID</th><td>{{ $laporan_penelitian->id }}</td></tr> --}}
+                            <tr><th>Kode Seri</th><td>{{ $laporan_penelitian->kode_seri }}</td></tr>
                             <tr><th>Judul Penelitian</th><td>{{ $laporan_penelitian->judul_penelitian }}</td></tr>
                             <tr><th>Peneliti</th><td>{{ $laporan_penelitian->peneliti }}</td></tr>
-                            <tr><th>Jenis</th><td>{{ $laporan_penelitian->jenisArsip->jenis }}</td></tr>
+                            <tr><th>Skema</th><td>{{ $laporan_penelitian->skema }}</td></tr>
+                            <tr><th>Anggota</th><td>{{ $laporan_penelitian->anggota }}</td></tr>
                             <tr><th>Jurusan</th><td>{{ $laporan_penelitian->jurusan }}</td></tr>
-                            <tr><th>Tahun Penelitian</th><td>{{ $laporan_penelitian->tahun_penelitian }}</td></tr>
+                            <tr><th>Prodi</th><td>{{ $laporan_penelitian->prodi }}</td></tr>
                             <tr><th>Tanggal Laporan Diterima</th><td>{{ $laporan_penelitian->tanggal_laporan_diterima }}</td></tr>
-                            <tr><th>Status Laporan</th><td>{{ $laporan_penelitian->status_laporan }}</td></tr>
                             <tr><th>Keterangan</th><td>{{ $laporan_penelitian->keterangan }}</td></tr>
-                        </tbody>
+                            <tr><th> File Laporan Akhir Penelitian</th><td>
+                                @if($laporan_penelitian->file)
+                                    <a href="{{ route('laporan_penelitian.download', [$laporan_penelitian->id, 'preview' => 1]) }}" target="_blank" class="text-primary">
+                                        {{ basename($laporan_penelitian->file) }}
+                                    </a>
+                                @else
+                                    <span class="text-muted">Tidak ada</span>
+                                @endif
+                            </td></tr>
                     </table>
 
-                    {{-- Tombol Download --}}
-                    <a href="{{ route('laporan_penelitian.download', $laporan_penelitian->id) }}" class="btn btn-success mb-3">Download Dokumen</a>
-
-                    {{-- Preview PDF --}}
-                    <div class="card body">
-                        <table class="table">
-                            @php
-                                $ext = pathinfo($laporan_penelitian->file, PATHINFO_EXTENSION);
-                            @endphp
-
-                            @if ($ext === 'pdf')
-                                <embed src="{{ asset('storage/' . $laporan_penelitian->file) }}" type="application/pdf" width="100%" height="600px">
-                            @else
-                                <p>File tidak dapat ditampilkan langsung. Silakan unduh file untuk melihat isinya.</p>
-                            @endif
-                        </table>
-                    </div>
+                    @if($laporan_penelitian->file)
+                            <!-- <iframe src="{{ route('laporan_penelitian.download', ['id' => $laporan_penelitian->id]) }}?preview=1"
+                                width="100%" height="100%" style="border: none;"></iframe> -->
+                    @else
+                            <p class="text-muted">Tidak ada file yang diunggah.</p>
+                    @endif
                 </div>
             </div>
+        </div>
         </div>
     </main>
 @endsection

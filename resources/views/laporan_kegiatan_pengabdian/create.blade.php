@@ -6,21 +6,26 @@
 <div class="container mt-4">
     {{-- Judul Halaman --}}
     <div class="border-bottom mb-4 pb-2">
-        <h3 class="mb-3">Formulir Tambah Laporan Penelitian</h3>
-        <p class="text-muted">Isi data laporan penelitian dengan lengkap dan benar.</p>
+        <h3 class="mb-3">Formulir Tambah Laporan kegiatan Pengabdian</h3>
+        <p class="text-muted">Isi data laporan kegiatan pengabdian dengan lengkap dan benar.</p>
     </div>
 
     {{-- Notifikasi Error --}}
     @if ($errors->any())
         <div class="alert alert-danger">
             <strong>Oops!</strong> Ada beberapa kesalahan pada input Anda. Silakan periksa kembali.
+            <ul class="mb-0 mt-2">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
         </div>
     @endif
 
     {{-- Kartu Form --}}
     <div class="card shadow-sm">
         <div class="card-body">
-            <form action="{{ route('laporan_penelitian.store') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('laporan_kegiatan_pengabdian.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
 
                 {{-- Kode Seri --}}
@@ -36,10 +41,10 @@
 
                 {{-- Judul Penelitian --}}
                 <div class="mb-3 row">
-                    <label class="col-sm-2 col-form-label">Judul Penelitian</label>
+                    <label class="col-sm-2 col-form-label">Judul Pengabdian</label>
                     <div class="col-sm-10">
-                        <input type="text" name="judul_penelitian" class="form-control @error('judul_penelitian') is-invalid @enderror" value="{{ old('judul_penelitian') }}" required>
-                        @error('judul_penelitian')
+                        <input type="text" name="judul" class="form-control @error('judul') is-invalid @enderror" value="{{ old('judul') }}" required>
+                        @error('judul')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
@@ -57,28 +62,18 @@
                 </div>
 
                 {{-- Skema --}}
-                {{-- <div class="mb-3 row">
-                    <label class="col-sm-2 col-form-label">Skema</label>
-                    <div class="col-sm-10">
-                        <input type="text" name="skema" class="form-control @error('skema') is-invalid @enderror" value="{{ old('skema') }}" required>
-                        @error('skema')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-                </div> --}}
-
                 <div class="mb-3 row">
                     <label class="col-sm-2 col-form-label">Skema</label>
                     <div class="col-sm-10">
                         <select name="skema" class="form-control @error('skema') is-invalid @enderror" required>
                             <option value="">-- Pilih Skema --</option>
                             @foreach ($skemas as $skema)
-                                <option value="{{ $skema->id }}" {{ old('skema_penelitian') == $skema->id ? 'selected' : '' }}>
-                                    {{ $skema->skema_penelitian }}
+                                <option value="{{ $skema->id }}" {{ old('skema_pengabdian') == $skema->id ? 'selected' : '' }}>
+                                    {{ $skema->skema_pengabdian }}
                                 </option>
                             @endforeach
                         </select>
-                        @error('skema_penelitian')
+                        @error('skema_pengabdian')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
@@ -166,7 +161,7 @@
 
                 {{-- Tombol --}}
                 <div class="text-end">
-                    <a href="{{ route('laporan_penelitian.index') }}" class="btn btn-secondary">
+                    <a href="{{ route('laporan_kegiatan_pengabdian.index') }}" class="btn btn-secondary">
                         <i class="bi bi-arrow-left-circle"></i> Kembali
                     </a>
                     <button type="submit" class="btn btn-primary me-2">
