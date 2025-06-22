@@ -33,12 +33,12 @@
           </a>
           <div class="collapse" id="proposal">
             <ul class="nav flex-column sub-menu">
-              <li class="nav-item"> <a class="nav-link" href="{{ route('proposal.index') }}">Proposal DIPA <br>Penelitian</a></li>
-              <li class="nav-item"> <a class="nav-link" href=" ">Proposal DIPA <br> Pengabdian</a></li>
-              <li class="nav-item"> <a class="nav-link" href=" ">Proposal Pusat <br> Penelitian</a></li>
-              <li class="nav-item"> <a class="nav-link" href=" ">Proposal Pusat <br> Pengabdian</a></li>
-              <li class="nav-item"> <a class="nav-link" href=" ">Proposal Mandiri <br> Penelitian</a></li>
-              <li class="nav-item"> <a class="nav-link" href=" ">Proposal Mandiri <br> Pengabdian</a></li>
+              <li class="nav-item"> <a class="nav-link" href="{{ route('proposal_dipa_penelitian.index') }}">Proposal DIPA <br>Penelitian</a></li>
+              <li class="nav-item"> <a class="nav-link" href="{{ route('proposal_dipa_pengabdian.index') }}">Proposal DIPA <br>Pengabdian</a></li>
+              <li class="nav-item"> <a class="nav-link" href="{{ route('proposal_pusat_penelitian.index') }} ">Proposal Pusat <br> Penelitian</a></li>
+              <li class="nav-item"> <a class="nav-link" href="{{ route('proposal_pusat_pengabdian.index') }} ">Proposal Pusat <br> Pengabdian</a></li>
+              <li class="nav-item"> <a class="nav-link" href="{{ route('proposal_mandiri_penelitian.index') }}  ">Proposal Mandiri <br> Penelitian</a></li>
+              <li class="nav-item"> <a class="nav-link" href="{{ route('proposal_mandiri_pengabdian.index') }} ">Proposal Mandiri <br> Pengabdian</a></li>
             </ul>
           </div>
         </li>
@@ -51,12 +51,12 @@
           </a>
           <div class="collapse" id="laporan">
             <ul class="nav flex-column sub-menu">
-              <li class="nav-item"> <a class="nav-link" href="{{ route ('laporan_penelitian.index') }}" >Laporan Kemajuan <br> Penelitian</a></li>
+              {{-- <li class="nav-item"> <a class="nav-link" href="{{ route ('laporan_penelitian.index') }}" >Laporan Kemajuan <br> Penelitian</a></li> --}}
               <li class="nav-item"> <a class="nav-link" href="" >Laporan Kemajuan <br> Pengabdian</a></li>
               <li class="nav-item"> <a class="nav-link" href="" >Laporan Akhir <br> Penelitian</a></li>
               <li class="nav-item"> <a class="nav-link" href="" >Laporan Akhir <br> Pengabdian</a></li>
-              <li class="nav-item"> <a class="nav-link" href="{{ route('anggaran_penelitian.index') }}" >Laporan Keuangan <br> Penelitian</a></li>
-              <li class="nav-item"> <a class="nav-link" href="{{ route('anggaran_pengabdian.index') }}" >Laporan Keuangan <br> Pengabdian</a></li>
+              {{-- <li class="nav-item"> <a class="nav-link" href="{{ route('anggaran_penelitian.index') }}" >Laporan Keuangan <br> Penelitian</a></li> --}}
+              {{-- <li class="nav-item"> <a class="nav-link" href="{{ route('anggaran_pengabdian.index') }}" >Laporan Keuangan <br> Pengabdian</a></li> --}}
             </ul>
           </div>
         </li>

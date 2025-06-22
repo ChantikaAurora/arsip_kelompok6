@@ -15,18 +15,18 @@ class Prodi extends Model
         return $this->belongsTo(Jurusan::class);
     }
 
-    public function laporan_penelitians()
-    {
-        return $this->hasMany(LaporanPenelitian::class,'prodi');
-    }
+    // public function laporan_penelitians()
+    // {
+    //     return $this->hasMany(LaporanPenelitian::class,'prodi');
+    // }
 
-    public function laporan_pengabdians()
-    {
-        return $this->hasMany(LaporanPengabdian::class, 'prodi');
-    }
+    // public function laporan_pengabdians()
+    // {
+    //     return $this->hasMany(LaporanPengabdian::class, 'prodi');
+    // }
 
-    public function laporan_kegiatan_pengabdians()
-    {
-        return $this->hasMany(LaporanPengabdian::class, 'prodi');
-    }
+    // public function laporan_kegiatan_pengabdians()
+    // {
+    //     return $this->hasMany(LaporanPengabdian::class, 'prodi');
+    // }
 }

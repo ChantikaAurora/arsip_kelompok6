@@ -7,7 +7,8 @@ use App\Models\JenisArsip;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\Response;
-
+use App\Exports\MetadataMasukExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class SuratMasukController extends Controller
 {
@@ -15,57 +16,64 @@ class SuratMasukController extends Controller
     {
         $search = $request->input('search');
 
-        // Validasi pencarian
         if ($search && !preg_match("/^[a-zA-Z0-9\s\-\/]+$/", $search)) {
             return redirect()->back()->with('search_error', 'Data yang Anda masukkan tidak valid!');
         }
 
-        // Ambil semua surat masuk beserta relasi jenis arsip
-        $suratMasuks = SuratMasuk::with('jenisArsip')->get();
+        $suratmasuks = SuratMasuk::with('jenisArsip')
+            ->when($search, function ($query) use ($search) {
+                return $query->where('nomor_surat', 'like', "%{$search}%")
+                            ->orWhere('pengirim', 'like', "%{$search}%")
+                            ->orWhere('perihal', 'like', "%{$search}%");
+            })
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
 
-        $suratmasuks = SuratMasuk::when($search, function ($query) use ($search) {
-            return $query->where('nomor_surat', 'like', "%{$search}%")
-                         ->orWhere('pengirim', 'like', "%{$search}%")
-                         ->orWhere('perihal', 'like', "%{$search}%");
-        })->paginate(10);
-
-        return view('suratmasuk.index', compact('suratmasuks'));
+        return view('suratmasuk.index', compact('suratmasuks', 'search'));
     }
 
-    public function create()
-    {
-        $jenisarsips = JenisArsip::all(); // ambil semua jenis arsip dari database
-        return view('suratmasuk.create', compact('jenisarsips'));
-    }
 
     public function store(Request $request)
     {
         $request->validate([
             'nomor_surat'    => 'required|string|max:255',
+            'kode_klasifikasi' => 'required',
             'tanggal_surat'  => 'required|date',
             'tanggal_terima' => 'required|date',
-            'asal_surat'     => 'required|string|max:255',
-            'perihal'        => 'required|string|max:255',
+            'asal_surat'       => 'required|string|max:255',
             'pengirim'       => 'required|string|max:255',
+            'perihal'        => 'required|string|max:255',
+            'lampiran' => 'nullable|string',
             'jenis'          => 'required|integer',
+            'keterangan' => 'nullable|string',
             'file'           => 'required|mimes:pdf,doc,docx|max:2048',
         ]);
 
         $path = $request->file('file')->store('suratmasuk', 'public');
+
         SuratMasuk::create([
-            'nomor_surat'    => $request->nomor_surat,
-            'tanggal_surat'  => $request->tanggal_surat,
-            'tanggal_terima' => $request->tanggal_terima,
-            'asal_surat'     => $request->asal_surat,
-            'perihal'        => $request->perihal,
-            'pengirim'       => $request->pengirim,
-            'jenis'          => $request->jenis,
-            'file'           => $path,
+            'nomor_surat'      => $request->nomor_surat,
+            'kode_klasifikasi' => $request->kode_klasifikasi,
+            'tanggal_surat'    => $request->tanggal_surat,
+            'tanggal_terima'   => $request->tanggal_terima,
+            'asal_surat'       => $request->asal_surat,
+            'pengirim'         => $request->pengirim,
+            'perihal'          => $request->perihal,
+            'lampiran'         => $request->lampiran,
+            'jenis'            => $request->jenis,
+            'keterangan'       => $request->keterangan,
+            'file'             => $path,
         ]);
+
 
         return redirect()->route('suratmasuk.index')->with('success', 'Surat Masuk berhasil ditambahkan.');
     }
 
+    public function create()
+    {
+        $jenisarsips = JenisArsip::all(); // ambil semua jenis arsip dari tabel
+        return view('suratmasuk.create', compact('jenisarsips'));
+    }
 
     public function edit(SuratMasuk $suratmasuk)
     {
@@ -76,14 +84,17 @@ class SuratMasukController extends Controller
     public function update(Request $request, SuratMasuk $suratmasuk)
     {
         $request->validate([
-            'nomor_surat'    => 'required|string|max:255|unique:suratmasuks,nomor_surat,' . $suratmasuk->id,
+            'nomor_surat'    => 'required|string|max:255',
+            'kode_klasifikasi' => 'required',
             'tanggal_surat'  => 'required|date',
             'tanggal_terima' => 'required|date',
-            'asal_surat'     => 'required|string|max:255',
-            'perihal'        => 'required|string|max:255',
+            'tanggal_terima'   => 'required|date',
             'pengirim'       => 'required|string|max:255',
+            'perihal'        => 'required|string|max:255',
+            'lampiran' => 'nullable|string',
             'jenis'          => 'required|integer',
-            'file'           => 'nullable|mimes:pdf,doc,docx|max:2048',
+            'keterangan' => 'nullable|string',
+            'file'           => 'required|mimes:pdf,doc,docx|max:2048',
         ]);
 
         $data = $request->only([
@@ -142,7 +153,27 @@ class SuratMasukController extends Controller
             ]);
         }
 
+        // Default: download file
+        return Storage::disk('public')->download($suratmasuk->file);
+    }
 
+    public function metadata(Request $request)
+    {
+        $search = $request->search;
+        $data = SuratMasuk::with('jenisArsip')
+            ->when($search, function ($query, $search) {
+                $query->where('nomor_surat', 'like', "%$search%")
+                    ->orWhere('perihal', 'like', "%$search%")
+                    ->orWhere('pengirim', 'like', "%$search%");
+            })
+            ->get();
+
+        return view('suratmasuk.metadata', compact('data'));
+    }
+
+    public function exportMetadata(Request $request)
+    {
+        return Excel::download(new MetadataMasukExport($request->search), 'metadata_suratmasuk.xlsx');
     }
 
 }

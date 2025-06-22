@@ -32,6 +32,24 @@
                     </div>
                 </div>
 
+                {{-- Nomor Agenda --}}
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label">Nomor Agenda</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="nomor_agenda" class="form-control @error('nomor_agenda') is-invalid @enderror" value="{{ old('nomor_agenda') }}" placeholder="Opsional, jika ada">
+                        @error('nomor_agenda') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                    </div>
+                </div>
+
+                {{-- Kode Klasifikasi --}}
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label">Kode Klasifikasi</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="kode_klasifikasi" class="form-control @error('kode_klasifikasi') is-invalid @enderror" value="{{ old('kode_klasifikasi') }}" placeholder="Contoh: 123/ABC">
+                        @error('kode_klasifikasi') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                    </div>
+                </div>
+
                 {{-- Tanggal Surat --}}
                 <div class="mb-3 row">
                     <label class="col-sm-2 col-form-label">Tanggal Surat</label>
@@ -50,24 +68,6 @@
                     </div>
                 </div>
 
-                {{-- Perihal --}}
-                <div class="mb-3 row">
-                    <label class="col-sm-2 col-form-label">Perihal</label>
-                    <div class="col-sm-10">
-                        <input type="text" name="perihal" class="form-control @error('perihal') is-invalid @enderror" value="{{ old('perihal') }}" placeholder="Masukkan perihal surat">
-                        @error('perihal') <div class="invalid-feedback">{{ $message }}</div> @enderror
-                    </div>
-                </div>
-
-                {{-- Pengirim --}}
-                <div class="mb-3 row">
-                    <label class="col-sm-2 col-form-label">Pengirim</label>
-                    <div class="col-sm-10">
-                        <input type="text" name="pengirim" class="form-control @error('pengirim') is-invalid @enderror" value="{{ old('pengirim') }}" placeholder="Masukkan nama pengirim">
-                        @error('pengirim') <div class="invalid-feedback">{{ $message }}</div> @enderror
-                    </div>
-                </div>
-
                 {{-- Penerima --}}
                 <div class="mb-3 row">
                     <label class="col-sm-2 col-form-label">Penerima</label>
@@ -77,21 +77,46 @@
                     </div>
                 </div>
 
-                {{-- Jenis --}}
+                {{-- Perihal --}}
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label">Perihal</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="perihal" class="form-control @error('perihal') is-invalid @enderror" value="{{ old('perihal') }}" placeholder="Masukkan perihal surat">
+                        @error('perihal') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                    </div>
+                </div>
+
+                {{-- Lampiran --}}
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label">Lampiran</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="lampiran" class="form-control @error('lampiran') is-invalid @enderror" value="{{ old('lampiran') }}" placeholder="Contoh: 2 lembar">
+                        @error('lampiran') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                    </div>
+                </div>
+
+                {{-- Keterangan --}}
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label">Keterangan</label>
+                    <div class="col-sm-10">
+                        <textarea name="keterangan" class="form-control @error('keterangan') is-invalid @enderror" rows="2" placeholder="Opsional...">{{ old('keterangan') }}</textarea>
+                        @error('keterangan') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                    </div>
+                </div>
+
+                {{-- Jenis Arsip --}}
                 <div class="mb-3 row">
                     <label class="col-sm-2 col-form-label">Jenis</label>
                     <div class="col-sm-10">
                         <select name="jenis" class="form-control @error('jenis') is-invalid @enderror" required>
                             <option value="">-- Pilih Jenis Arsip --</option>
                             @foreach ($jenisarsips as $jenis)
-                                <option value="{{ $jenis->id }}" {{ old('jenis') == $jenis->jenis ? 'selected' : '' }}>
+                                <option value="{{ $jenis->id }}" {{ old('jenis') == $jenis->id ? 'selected' : '' }}>
                                     {{ $jenis->jenis }}
                                 </option>
                             @endforeach
                         </select>
-                        @error('jenis')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
+                        @error('jenis') <div class="invalid-feedback">{{ $message }}</div> @enderror
                     </div>
                 </div>
 

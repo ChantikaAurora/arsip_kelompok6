@@ -12,13 +12,16 @@ class SuratMasuk extends Model
     // Field yang bisa diisi (mass assignable)
     protected $fillable = [
         'nomor_surat',
+        'kode_klasifikasi',
         'tanggal_surat',
         'tanggal_terima',
         'asal_surat',
-        'perihal',
         'pengirim',
+        'perihal',
+        'lampiran',
         'jenis',
-        'file',
+        'keterangan',
+        'file'
     ];
 
     protected $hidden = [

@@ -7,7 +7,7 @@ use App\Models\JenisArsip;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
-use App\Exports\MetadataExport;
+use App\Exports\MetadataKeluarExport;
 
 class SuratKeluarController extends Controller
 {
@@ -43,13 +43,16 @@ class SuratKeluarController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-        'nomor_surat' => 'required',
+        'nomor_surat' => 'required|string|max:255',
+        'nomor_agenda' => 'nullable|string|max:255',
+        'kode_klasifikasi' => 'required|string|max:100',
         'tanggal_surat' => 'required|date',
-        'tujuan_surat' => 'required',
-        'perihal' => 'required',
-        'pengirim' => 'required',
-        'penerima' => 'required',
-        'jenis' => 'required',
+        'tujuan_surat' => 'required|string|max:255',
+        'penerima' => 'required|string|max:255',
+        'perihal' => 'required|string|max:255',
+        'lampiran' => 'nullable|string|max:100',
+        'keterangan' => 'nullable|string',
+        'jenis' => 'required|exists:jenis_arsips,id',
         'file' => 'nullable|file|mimes:pdf,doc,docx,txt|max:10240',
         ]);
 
@@ -64,14 +67,16 @@ class SuratKeluarController extends Controller
         $autoNo = SuratKeluar::count() + 1;
 
         SuratKeluar::create([
-        'no' => (string)$autoNo, // simpan sebagai string
-        'nomor_surat' => $validated['nomor_surat'],
-        'tanggal_surat' => $validated['tanggal_surat'],
-        'tujuan_surat' => $validated['tujuan_surat'],
-        'perihal' => $validated['perihal'],
-        'pengirim' => $validated['pengirim'],
-        'penerima' => $validated['penerima'],
-        'jenis' => $validated['jenis'],
+        'nomor_surat' => $request->nomor_surat,
+        'nomor_agenda' => $request->nomor_agenda,
+        'kode_klasifikasi' => $request->kode_klasifikasi,
+        'tanggal_surat' => $request->tanggal_surat,
+        'tujuan_surat' => $request->tujuan_surat,
+        'penerima' => $request->penerima,
+        'perihal' => $request->perihal,
+        'lampiran' => $request->lampiran,
+        'keterangan' => $request->keterangan,
+        'jenis' => $request->jenis,
         'file' => $filePath,
 
         ]);
@@ -107,13 +112,16 @@ class SuratKeluarController extends Controller
     public function update(Request $request, $id)
     {
         $validated = $request->validate([
-            'nomor_surat' => 'required',
+            'nomor_surat' => 'required|string|max:255',
+            'nomor_agenda' => 'nullable|string|max:255',
+            'kode_klasifikasi' => 'required|string|max:100',
             'tanggal_surat' => 'required|date',
-            'tujuan_surat' => 'required',
-            'perihal' => 'required',
-            'pengirim' => 'required',
-            'penerima' => 'required',
-            'jenis' => 'required',
+            'tujuan_surat' => 'required|string|max:255',
+            'penerima' => 'required|string|max:255',
+            'perihal' => 'required|string|max:255',
+            'lampiran' => 'nullable|string|max:100',
+            'keterangan' => 'nullable|string',
+            'jenis' => 'required|exists:jenis_arsips,id',
             'file' => 'nullable|file|mimes:pdf,doc,docx,txt|max:10240',
         ]);
 
@@ -149,39 +157,56 @@ class SuratKeluarController extends Controller
     }
 
     public function download($id)
-{
-    $suratkeluar = SuratKeluar::findOrFail($id);
-
-    if (!$suratkeluar->file || !Storage::disk('public')->exists($suratkeluar->file)) {
-        abort(404, 'File tidak ditemukan.');
-    }
-
-    $path = Storage::disk('public')->path($suratkeluar->file);
-    $extension = pathinfo($path, PATHINFO_EXTENSION);
-
-    // Preview hanya jika file adalah PDF atau TXT
-    if (request()->has('preview')) {
-        if (in_array($extension, ['pdf', 'txt'])) {
-            return response()->file($path, [
-                'Content-Type' => $extension === 'pdf' ? 'application/pdf' : 'text/plain',
-            ]);
-        } else {
-            return redirect()->route('suratkeluar.download', ['id' => $id]);
-        }
-    }
-
-    // ✅ Ini bagian yang belum ada: download biasa
-    return Storage::disk('public')->download($suratkeluar->file);
-}
-
-    public function metadata()
     {
-        $data = SuratKeluar::with('jenisArsip')->get();
+        $suratkeluar = SuratKeluar::findOrFail($id);
+
+        if (!$suratkeluar->file || !Storage::disk('public')->exists($suratkeluar->file)) {
+            abort(404, 'File tidak ditemukan.');
+        }
+
+        $path = Storage::disk('public')->path($suratkeluar->file);
+        $extension = pathinfo($path, PATHINFO_EXTENSION);
+
+        // Preview hanya jika file adalah PDF atau TXT
+        if (request()->has('preview')) {
+            if (in_array($extension, ['pdf', 'txt'])) {
+                return response()->file($path, [
+                    'Content-Type' => $extension === 'pdf' ? 'application/pdf' : 'text/plain',
+                ]);
+            } else {
+                return redirect()->route('suratkeluar.download', ['id' => $id]);
+            }
+        }
+
+        // ✅ Ini bagian yang belum ada: download biasa
+        return Storage::disk('public')->download($suratkeluar->file);
+    }
+
+    public function metadata(Request $request)
+    {
+        $search = $request->search;
+
+        $data = SuratKeluar::with('jenisArsip', 'user')
+            ->when($search, function ($query) use ($search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('nomor_surat', 'like', "%$search%")
+                    ->orWhere('nomor_agenda', 'like', "%$search%")
+                    ->orWhere('kode_klasifikasi', 'like', "%$search%")
+                    ->orWhere('tanggal_surat', 'like', "%$search%")
+                    ->orWhere('tujuan_surat', 'like', "%$search%")
+                    ->orWhere('penerima', 'like', "%$search%")
+                    ->orWhere('perihal', 'like', "%$search%")
+                    ->orWhere('lampiran', 'like', "%$search%")
+                    ->orWhere('keterangan', 'like', "%$search%");
+                });
+            })
+            ->get();
+
         return view('suratkeluar.metadata', compact('data'));
     }
 
-    public function exportMetadata()
+    public function exportMetadataKeluar(Request $request)
     {
-        return Excel::download(new MetadataExport, 'metadata_suratkeluar.xlsx');
+        return Excel::download(new MetadataKeluarExport($request->search), 'metadata_suratkeluar.xlsx');
     }
 }

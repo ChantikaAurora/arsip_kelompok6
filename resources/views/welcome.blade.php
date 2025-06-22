@@ -95,9 +95,9 @@
 
                       <!-- AGAR REALTIME KE DASHBOARD -->
                       <!-- <p class="mb-4">Surat Keluar</p> -->
-                           <p class="mb-4"><i class="mdi mdi-email-send mr-2"></i>Surat Keluar</p>
+                        <p class="mb-4"><i class="mdi mdi-email-send mr-2"></i>Surat Keluar</p>
                       <p class="fs-30 mb-2">{{ number_format($totalSuratKeluar) }}</p>
-                      <!-- <p>{{ $growthPercent }}% (30 days)</p> -->
+                      {{-- <!-- <p>{{ $growthPercent }}% (30 days)</p> --> --}}
                      </a>
 
 
@@ -112,8 +112,8 @@
                            <p class="mb-4"><i class="mdi mdi-file-document mdi-30px mr-2"></i>Dokumen Lainnya</p>
                            <!-- mdi-37px -->   <!-- untuk memperbesar ICON  -->
                       <!-- <p class="fs-30 mb-2">47033</p> -->
-                       <!-- <p class="fs-30 mb-2">{{ number_format($totalDokumenLainnya) }}</p> -->
-                        <p class="fs-30 mb-2">{{ number_format($totalDokumenLainnya) }}</p>
+                       {{-- <!-- <p class="fs-30 mb-2">{{ number_format($totalDokumenLainnya) }}</p> -->
+                        <p class="fs-30 mb-2">{{ number_format($totalDokumenLainnya) }}</p> --}}
 
                       <!-- <p>0.22% (30 days)</p> -->
                     </div>
@@ -142,10 +142,10 @@
                       <p class="text-muted">Surat Keluar</p>
                       <h3 class="text-primary fs-30 font-weight-medium">{{ number_format($totalSuratKeluar) }}</h3>
                     </div>
-                    <div class="mt-3">
+                    {{-- <div class="mt-3">
                       <p class="text-muted">Dokumen Lainnya</p>
                       <h3 class="text-primary fs-30 font-weight-medium">{{ number_format($totalDokumenLainnya) }}</h3>
-                    </div>
+                    </div> --}}
                   </div>
                   <canvas id="order-chart"></canvas>
                 </div>

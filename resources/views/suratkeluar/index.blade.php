@@ -25,7 +25,7 @@
                 type="text"
                 name="search"
                 class="form-control me-2"
-                placeholder="Cari judul surat..."
+                placeholder="Cari nomor/perihal surat..."
                 value="{{ request('search') }}"
             >
             <button class="btn btn-primary" type="submit">Cari</button>
@@ -35,37 +35,28 @@
     {{-- Tabel --}}
     <div class="table-responsive">
         <table class="table table-bordered table-hover">
-            <thead class="table-light">
+            <thead class="table-light text-center">
                 <tr>
                     <th>No</th>
                     <th>Nomor Surat</th>
-                    {{-- <th>Tanggal Surat</th>
-                    <th>Tujuan Surat</th> --}}
+                    <th>Nomor Agenda</th>
+                    <th>Kode Klasifikasi</th>
                     <th>Perihal</th>
-                    {{-- <th>Pengirim</th>
-                    <th>Penerima</th> --}}
                     <th>Jenis</th>
-                    <th>File</th>
-                    <th class="text-center">Aksi</th>
+                    <th>Aksi</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($data as $index => $item)
                     <tr>
-                        <td>{{ $index + $data->firstItem() }}</td>
+                        <td class="text-center">{{ $index + $data->firstItem() }}</td>
                         <td>{{ $item->nomor_surat }}</td>
+                        <td>{{ $item->nomor_agenda }}</td>
+                        <td>{{ $item->kode_klasifikasi }}</td>
                         <td>{{ $item->perihal }}</td>
                         <td>{{ $item->jenisArsip->jenis ?? '-' }}</td>
-                        <td>
-                            @if ($item->file)
-                                <a href="{{ route('suratkeluar.download', $item->id) }}" target="_blank">
-                                    {{ basename($item->file) }}
-                                </a>
-                            @else
-                                <em>Tidak ada file</em>
-                            @endif
-                        </td>
                         <td class="text-center">
+                            <a href="{{ route('suratkeluar.download', $item->id) }}" class="btn btn-success btn-sm">Unduh</a>
                             <a href="{{ route('suratkeluar.show', $item->id) }}" class="btn btn-primary btn-sm">Detail</a>
                             <a href="{{ route('suratkeluar.edit', $item->id) }}" class="btn btn-warning btn-sm">Edit</a>
                             <form action="{{ route('suratkeluar.destroy', $item->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin ingin menghapus?')">
@@ -78,7 +69,7 @@
                 @endforeach
                 @if ($data->isEmpty())
                     <tr>
-                        <td colspan="10" class="text-center">Surat keluar tidak ditemukan.</td>
+                        <td colspan="11" class="text-center">Surat keluar tidak ditemukan.</td>
                     </tr>
                 @endif
             </tbody>
@@ -86,8 +77,8 @@
     </div>
 
     {{-- Pagination --}}
-    {{-- <div class="d-flex justify-content-end">
-        {{ $suratmasuks->withQueryString()->links() }}
-    </div> --}}
+    <div class="d-flex justify-content-end">
+        {{ $data->withQueryString()->links('pagination::bootstrap-5') }}
+    </div>
 </div>
 @endsection

@@ -2,39 +2,84 @@
 
 @section('content')
 <div class="container mt-4">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-    <a href="{{ route('suratmasuk.index') }}" class="btn btn-secondary mb-3" id="suratmasuk">  <i class="bi bi-arrow-left-circle"></i> Kembali</a>
+    <a href="{{ route('suratmasuk.index') }}" class="btn btn-secondary mb-3" id="suratmasuk">
+        <i class="bi bi-arrow-left-circle"></i> Kembali
+    </a>
 
-    <div class="row">
-        <!-- Detail Surat Masuk -->
-        <div class="col-12 mb-4">
-            <div class="card shadow">
-                <div class="card-header bg-primary text-white">
-                    <h5>Detail Surat Masuk</h5>
-                </div>
-                <div class="card-body">
-                    <table class="table table-borderless">
-                        <tr><th>Nomor Surat</th><td>{{ $suratmasuk->nomor_surat }}</td></tr>
-                        <tr><th>Tanggal Surat</th><td>{{ $suratmasuk->tanggal_surat }}</td></tr>
-                        <tr><th>Tanggal Diterima</th><td>{{ $suratmasuk->tanggal_terima}}</td></tr>
-                        <tr><th>Asal Surat</th><td>{{ $suratmasuk->asal_surat }}</td></tr>
-                        <tr><th>Perihal</th><td>{{ $suratmasuk->perihal }}</td></tr>
-                        <tr><th>Pengirim</th><td>{{ $suratmasuk->pengirim }}</td></tr>
-                        <tr><th>Jenis Surat</th><td>{{ $suratmasuk->jenisArsip->jenis }}</td></tr>
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            <h5>Detail Surat Masuk</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                {{-- Kolom Kiri: Informasi Surat --}}
+                <div class="col-md-7">
+                    <table class="table table-borderless mb-4">
                         <tr>
-                            <th>File Surat Masuk</th>
-                            <td>
-                            @if ($suratmasuk->file)
-                                <a href="{{ Storage::url($suratmasuk->file) }}" target="_blank">
-                                    {{ basename($suratmasuk->file) }}
-                                </a>
-                            @else
-                                <span class="text-muted">Tidak ada file</span>
-                            @endif
-                        </td>
+                            <th>Nomor Surat</th>
+                            <td>{{ $suratmasuk->nomor_surat }}</td>
                         </tr>
-
+                        <tr>
+                            <th>Kode Klasifikasi</th>
+                            <td>{{ $suratmasuk->kode_klasifikasi }}</td>
+                        </tr>
+                        <tr>
+                            <th>Tanggal Surat</th>
+                            <td>{{ \Carbon\Carbon::parse($suratmasuk->tanggal_surat)->format('d-m-Y') }}</td>
+                        </tr>
+                        <tr>
+                            <th>Tanggal Diterima</th>
+                            <td>{{ \Carbon\Carbon::parse($suratmasuk->tanggal_terima)->format('d-m-Y') }}</td>
+                        </tr>
+                        <tr>
+                            <th>Asal Surat</th>
+                            <td>{{ $suratmasuk->asal_surat }}</td>
+                        </tr>
+                        <tr>
+                            <th>Pengirim</th>
+                            <td>{{ $suratmasuk->pengirim }}</td>
+                        </tr>
+                        <tr>
+                            <th>Perihal</th>
+                            <td>{{ $suratmasuk->perihal }}</td>
+                        </tr>
+                        <tr>
+                            <th>Lampiran</th>
+                            <td>{{ $suratmasuk->lampiran ?? '-' }}</td>
+                        </tr>
+                        <tr>
+                            <th>Jenis Surat</th>
+                            <td>{{ $suratmasuk->jenisArsip->jenis ?? '-' }}</td>
+                        </tr>
+                        <tr>
+                            <th>Keterangan</th>
+                            <td>{{ $suratmasuk->keterangan ?? '-' }}</td>
+                        </tr>
                     </table>
+                </div>
+
+                {{-- Kolom Kanan: Preview File --}}
+                <div class="col-md-5">
+                    @if ($suratmasuk->file)
+                        <div class="mb-3 text-end">
+                            <a href="{{ route('suratmasuk.download', $suratmasuk->id) }}" class="btn btn-success btn-sm" target="_blank">
+                                <i class="bi bi-download"></i> Download
+                            </a>
+                            <a href="{{ route('suratmasuk.download', ['id' => $suratmasuk->id, 'preview' => 1]) }}" class="btn btn-primary btn-sm" target="_blank">
+                                <i class="bi bi-eye"></i> Lihat Lebih Besar
+                            </a>
+                        </div>
+                        <div class="border rounded shadow-sm" style="height: 400px; overflow: hidden;">
+                            <iframe
+                                src="{{ route('suratmasuk.download', ['id' => $suratmasuk->id, 'preview' => 1]) }}"
+                                width="100%"
+                                height="100%"
+                                style="border: none;">
+                            </iframe>
+                        </div>
+                    @else
+                        <p class="text-muted">Tidak ada file yang diunggah.</p>
+                    @endif
                 </div>
             </div>
         </div>

@@ -19,7 +19,7 @@ class Jurusan extends Model
     {
         return $this->hasMany(LaporanPengabdian::class, 'prodi');
     }
-    
+
     public function laporanKegiatanPengabdians()
     {
     return $this->hasMany(LaporanKegiatanPengabdian::class, 'jurusan');

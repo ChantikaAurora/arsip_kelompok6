@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\SuratMasuk;
 use App\Models\SuratKeluar;
 
-use App\Models\Proposal;
+use App\Models\ProposalDipaPenelitian;
 use App\Models\LaporanPenelitian;
 use App\Models\AnggaranPenelitian;
 
@@ -26,11 +26,11 @@ class DashboardController extends Controller
         // $totalDokumenLainnya = DokumenLainnya::count();  // <-- Dokumen Lainnya
 
         // Hitung total dokumen lainnya dari 3 tabel
-        $totalProposal = Proposal::count();
-        $totalLaporan = LaporanPenelitian::count();
-        $totalAnggaran = AnggaranPenelitian::count();
+ //       $totalProposal = ProposalDipaPenelitian::count();
+        // $totalLaporan = LaporanPenelitian::count();
+        // $totalAnggaran = AnggaranPenelitian::count();
 
-        $totalDokumenLainnya = $totalProposal + $totalLaporan + $totalAnggaran;
+            // $totalDokumenLainnya = $totalProposal + $totalLaporan + $totalAnggaran;
 
         $thirtyDaysAgo = Carbon::now()->subDays(30);
         $suratKeluarLast30Days = SuratKeluar::where('created_at', '>=', $thirtyDaysAgo)->count();
@@ -49,11 +49,11 @@ class DashboardController extends Controller
             'totalSuratMasuk',
             'penggunaTerbaru',
             'suratKeluarLast30Days',
-            'growthPercent',
-            'totalDokumenLainnya',
-            'todayBookings',
-            'totalBookings',
-            'totalDokumenLainnya'
+            // 'growthPercent',
+            // 'totalDokumenLainnya',
+            // 'todayBookings',
+            // 'totalBookings',
+            // 'totalDokumenLainnya'
         ));
     }
     // public function index()
