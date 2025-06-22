@@ -51,10 +51,10 @@
           </a>
           <div class="collapse" id="laporan">
             <ul class="nav flex-column sub-menu">
-              <li class="nav-item"> <a class="nav-link" href="{{ route ('laporan_penelitian.index') }}" >Laporan Kemajuan <br> Penelitian</a></li>
-              <li class="nav-item"> <a class="nav-link" href="" >Laporan Kemajuan <br> Pengabdian</a></li>
-              <li class="nav-item"> <a class="nav-link" href="" >Laporan Akhir <br> Penelitian</a></li>
-              <li class="nav-item"> <a class="nav-link" href="" >Laporan Akhir <br> Pengabdian</a></li>
+              <li class="nav-item"> <a class="nav-link" href="{{ route ('laporan_kemajuan_penelitian.index') }}" >Laporan Kemajuan <br> Penelitian</a></li>
+              <li class="nav-item"> <a class="nav-link" href="{{ route ('laporan_kemajuan_pengabdian.index') }}" >Laporan Kemajuan <br> Pengabdian</a></li>
+              <li class="nav-item"> <a class="nav-link" href="{{ route ('laporan_akhir_penelitian.index') }}" >Laporan Akhir <br> Penelitian</a></li>
+              <li class="nav-item"> <a class="nav-link" href="{{ route ('laporan_akhir_pengabdian.index') }}" >Laporan Akhir <br> Pengabdian</a></li>
               <li class="nav-item"> <a class="nav-link" href="{{ route('anggaran_penelitian.index') }}" >Laporan Keuangan <br> Penelitian</a></li>
               <li class="nav-item"> <a class="nav-link" href="{{ route('anggaran_pengabdian.index') }}" >Laporan Keuangan <br> Pengabdian</a></li>
             </ul>

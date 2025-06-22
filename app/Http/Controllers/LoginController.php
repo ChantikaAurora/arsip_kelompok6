@@ -8,29 +8,23 @@ use Illuminate\Http\RedirectResponse;
 
 class LoginController extends Controller
 {
-    public function login()
+    public function showLoginForm()
     {
         return view('auth.login');
     }
 
-    public function authenticate(Request $request)
+    public function login(Request $request)
     {
-        $credentials = $request->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required'],
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
         ]);
 
-        if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
-
-            return redirect()->intended('/welcome');
+        if (Auth::attempt($request->only('email', 'password'))) {
+            return redirect()->intended('/home');
         }
 
-        dd('Login gagal'); // Tambahkan ini untuk melihat apakah block gagal dieksekusi
-
-        return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
-        ])->onlyInput('email');
+        return back()->withErrors(['email' => 'Email atau password salah']);
     }
 
     public function logout(Request $request)

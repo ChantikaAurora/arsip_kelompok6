@@ -15,8 +15,9 @@
             <div class="col-md-12 grid-margin">
               <div class="row">
                 <div class="col-12 col-xl-8 mb-4 mb-xl-0">
-                  <h3 class="font-weight-bold">Welcome Aamir</h3>
-                  <h6 class="font-weight-normal mb-0">All systems are running smoothly! You have <span class="text-primary">3 unread alerts!</span></h6>
+                  <h3 class="font-weight-bold">Welcome  {{ Auth::user()->username ?? 'Guest' }}</h3>
+                  <h6 class="font-weight-normal mb-0">Senang melihat anda kembali! <br>Sistem E-Arsip P3M siap membantu Anda mengelola dan mencari
+                    dokumen dengan efisien dan aman</h6>
                 </div>
                 <div class="col-12 col-xl-4">
                  <div class="justify-content-end d-flex">
@@ -62,7 +63,7 @@
                   <div class="card card-tale">
                     <div class="card-body">
                       <!-- <p class="mb-4">Pengguna</p> -->
-                         <p class="mb-4"><i class="mdi mdi-account mr-2"></i>Pengguna</p>
+                         <h4 class="mb-4"><i class="mdi mdi-account mr-2"></i>Pengguna</h4>
 
                        <p class="fs-30 mb-2">{{ $totalPengguna }}</p>
                       <!-- <p class="fs-30 mb-2">4006</p> -->
@@ -74,7 +75,7 @@
                   <div class="card card-dark-blue">
                     <div class="card-body">
                       <!-- <p class="mb-4">Surat Masuk</p> -->
-                      <p class="mb-4"><i class="mdi mdi-email-receive mr-2"></i>Surat Masuk</p>
+                      <h4 class="mb-4"><i class="mdi mdi-email-receive mr-2"></i>Surat Masuk</h4>
                       <!-- <p class="fs-30 mb-2">61344</p> -->
                        <p class="fs-30 mb-2">{{ number_format($totalSuratMasuk) }}</p>
 
@@ -95,7 +96,7 @@
 
                       <!-- AGAR REALTIME KE DASHBOARD -->
                       <!-- <p class="mb-4">Surat Keluar</p> -->
-                           <p class="mb-4"><i class="mdi mdi-email-send mr-2"></i>Surat Keluar</p>
+                           <h4 class="mb-4"><i class="mdi mdi-email-send mr-2"></i>Surat Keluar</h4>
                       <p class="fs-30 mb-2">{{ number_format($totalSuratKeluar) }}</p>
                       <!-- <p>{{ $growthPercent }}% (30 days)</p> -->
                      </a>
@@ -109,11 +110,11 @@
                   <div class="card card-light-danger">
                     <div class="card-body">
                       <!-- <p class="mb-4">Dokumen Lainnya</p> -->
-                           <p class="mb-4"><i class="mdi mdi-file-document mdi-30px mr-2"></i>Dokumen Lainnya</p>
+                           <h4 class="mb-4"><i class="mdi mdi-file-document mdi-30px mr-2"></i>Dokumen Lainnya</h4>
                            <!-- mdi-37px -->   <!-- untuk memperbesar ICON  -->
                       <!-- <p class="fs-30 mb-2">47033</p> -->
-                       <!-- <p class="fs-30 mb-2">{{ number_format($totalDokumenLainnya) }}</p> -->
-                        <p class="fs-30 mb-2">{{ number_format($totalDokumenLainnya) }}</p>
+                       {{-- <!-- <p class="fs-30 mb-2">{{ number_format($totalDokumenLainnya) }}</p> --> --}}
+                        {{-- <p class="fs-30 mb-2">{{ number_format($totalDokumenLainnya) }}</p> --}}
 
                       <!-- <p>0.22% (30 days)</p> -->
                     </div>
@@ -144,7 +145,7 @@
                     </div>
                     <div class="mt-3">
                       <p class="text-muted">Dokumen Lainnya</p>
-                      <h3 class="text-primary fs-30 font-weight-medium">{{ number_format($totalDokumenLainnya) }}</h3>
+                      {{-- <h3 class="text-primary fs-30 font-weight-medium">{{ number_format($totalDokumenLainnya) }}</h3> --}}
                     </div>
                   </div>
                   <canvas id="order-chart"></canvas>

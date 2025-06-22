@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Pengguna;
 use Illuminate\Http\Request;
 use Illuminate\Support\facades\DB;
+use Illuminate\Support\Facades\Hash;
+
 
 class PenggunaController extends Controller
 {
@@ -22,7 +24,7 @@ class PenggunaController extends Controller
             }
 
             // Gunakan query builder yang sudah disimpan di $pengguna
-            $pengguna->where('name', 'like', "%{$search}%");
+            $pengguna->where('username', 'like', "%{$search}%");
         }
 
         // Pagination (10 item per halaman)
@@ -40,12 +42,18 @@ class PenggunaController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required',
-            'email' => 'required|email|unique:pengguna',
-            'role' => 'required',
+            'username' => 'required|unique:penggunas',
+            'email' => 'required|email|unique:penggunas',
+            'password' => 'required',
+            'role' => 'required|in:admin,p3m',
         ]);
 
-        Pengguna::create($request->all());
+        Pengguna::create([
+            'username' => $request->username,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'role' => $request->role,
+        ]);
 
         return redirect()->route('pengguna.index')->with('success', 'Pengguna berhasil ditambahkan!');
     }
@@ -58,12 +66,24 @@ class PenggunaController extends Controller
     public function update(Request $request, Pengguna $pengguna)
     {
         $request->validate([
-            'name' => 'required',
-            'email' => 'required|email|unique:pengguna,email,' . $pengguna->id,
-            'role' => 'required',
+            'username' => 'required',
+            'email' => 'required|email|unique:penggunas,email,' . $pengguna->id,
+            'role' => 'required|in:admin,p3m,dosen',
+            'password' => 'nullable|min:6', // password opsional, minimal 6 karakter jika diisi
         ]);
 
-        $pengguna->update($request->all());
+        // Update field selain password
+        $pengguna->username = $request->username;
+        $pengguna->email = $request->email;
+        $pengguna->role = $request->role;
+
+        // Cek jika password diisi
+        if ($request->filled('password')) {
+            $pengguna->password = Hash::make($request->password);
+        }
+
+        // Simpan perubahan
+        $pengguna->save();
 
         return redirect()->route('pengguna.index')->with('success', 'Data pengguna berhasil diperbarui');
     }

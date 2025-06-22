@@ -6,8 +6,8 @@
 
 <div class="container mt-4">
     <div class="border-bottom mb-4 pb-2">
-        <h3 class="mb-3">Formulir Tambah Anggaran Penelitian</h3>
-        <p class="text-muted">Isi data anggaran penelitian dengan lengkap dan benar.</p>
+        <h3 class="mb-3">Formulir Tambah Laporan Keuangan Penelitian</h3>
+        <p class="text-muted">Isi data laporan keuangan penelitian anda dengan lengkap dan benar.</p>
     </div>
 
     @if ($errors->any())
@@ -23,7 +23,7 @@
 
                 {{-- Kode --}}
                 <div class="mb-3 row">
-                    <label class="col-sm-2 col-form-label">Kode</label>
+                    <label class="col-sm-2 col-form-label">Kode Klasifikasi</label>
                     <div class="col-sm-10">
                         <input type="text" name="kode" class="form-control @error('kode') is-invalid @enderror" value="{{ old('kode') }}" placeholder="Contoh: 345123">
                         @error('kode')

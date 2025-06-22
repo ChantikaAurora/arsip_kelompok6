@@ -7,8 +7,8 @@
 <div class="container mt-4">
     {{-- Judul Halaman --}}
     <div class="border-bottom mb-4 pb-2">
-        <h3 class="mb-3">Formulir Edit Anggaran Pengabdian</h3>
-        <p class="text-muted">Perbarui data anggaran pengabdian dengan lengkap dan benar.</p>
+        <h3 class="mb-3">Formulir Edit Laporan Keuangan Pengabdian</h3>
+        <p class="text-muted">Perbarui data laporan keuangan pengabdian dengan lengkap dan benar.</p>
     </div>
 
     {{-- Notifikasi Error --}}

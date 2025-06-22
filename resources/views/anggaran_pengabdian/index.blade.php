@@ -4,11 +4,12 @@
 
 <div class="container mt-4">
     {{-- Judul --}}
-    <h3 class="mb-3">Manajemen Anggaran Pengabdian</h3>
+    <h3 class="mb-3">Manajemen Laporan Keuangan Pengabdian</h3>
 
-    {{-- Tombol Tambah Anggaran Pengabdian --}}
+    {{-- Tombol Tambah Laporan Keuangan Pengabdian --}}
     <div class="mb-4">
-        <a href="{{ route('anggaran_pengabdian.create') }}" class="btn btn-primary">+ Tambah Anggaran Pengabdian</a>
+        <a href="{{ route('anggaran_pengabdian.create') }}" class="btn btn-primary">+ Tambah Laporan</a>
+        <a href="{{ route('anggaran_pengabdian.metadata') }}" class="btn btn-success">📄 Cetak Metadata</a>
     </div>
 
     {{-- Notifikasi sukses --}}
@@ -25,10 +26,10 @@
     <div class="d-flex justify-content-end mb-3">
         <form class="d-flex" method="GET" action="{{ route('anggaran_pengabdian.index') }}">
             <input
-                type="text"
+                type="text "
                 name="search"
-                class="form-control me-2"
-                placeholder="Cari anggaran pengabdian..."
+                class="form-control me-2 text-center"
+                placeholder="Cari"
                 value="{{ request('search') }}">
             <button class="btn btn-primary" type="submit">Cari</button>
         </form>
@@ -54,7 +55,6 @@
                         <td style="white-space: normal; word-wrap: break-word; max-width: 300px;">{{ $item->kegiatan }}</td>
                         <td style="white-space: normal; word-wrap: break-word; max-width: 100px;">{{ $item->volume_usulan }}</td>
                         <td  style="white-space: normal; word-wrap: break-word; max-width: 800px " class="text-center">
-                            <a href="{{ route('anggaran_pengabdian.preview', $item->id) }}" target="_blank" class="btn btn-sm btn-secondary">Lihat</a>
                             <a href="{{ route('anggaran_pengabdian.download', $item->id) }}" class="btn btn-sm btn-success">Unduh</a>
                             <a href="{{ route('anggaran_pengabdian.show', $item->id) }}" class="btn btn-sm btn-primary">Detail</a>
                             <a href="{{ route('anggaran_pengabdian.edit', $item->id) }}" class="btn btn-sm btn-warning">Edit</a>
@@ -66,7 +66,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="7" class="text-center">Belum ada data anggaran pengabdian.</td>
+                        <td colspan="7" class="text-center">Belum ada data laporan keuangan pengabdian.</td>
                     </tr>
                 @endforelse
             </tbody>

@@ -4,52 +4,43 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\LoginController;
-use App\Http\Controllers\ProdiController;
-use App\Http\Controllers\DiagramController;
-use App\Http\Controllers\JurusanController;
-use App\Http\Controllers\PenggunaController;
-use App\Http\Controllers\ProposalController;
-use App\Http\Controllers\RegisterController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\JenisArsipController;
-use App\Http\Controllers\SuratMasukController;
-use App\Http\Controllers\SuratKeluarController;
-use App\Http\Controllers\SkemaPenelitianController;
-use App\Http\Controllers\SkemaPengabdianController;
-use App\Http\Controllers\LaporanPenelitianController;
-use App\Http\Controllers\LaporanPengabdianController;
-use App\Http\Controllers\AnggaranPenelitianController;
+use App\Http\Controllers\{
+    LoginController,
+    DashboardController,
+    PenggunaController,
+    JenisArsipController,
+    SuratMasukController,
+    SuratKeluarController,
+    ProposalController,
+    SkemaPenelitianController,
+    SkemaPengabdianController,
+    AnggaranPenelitianController,
+    AnggaranPengabdianController,
+    DiagramController,
+    ProdiController,
+    JurusanController,
+    LaporanKemajuanPenelitianController,
+    LaporanKemajuanPengabdianController,
+    LaporanAkhirPenelitianController,
+    LaporanAkhirPengabdianController,
+
+};
 use App\Exports\MetadataSuratKeluarExport;
 use Maatwebsite\Excel\Facades\Excel;
 
-// Halaman utama
-Route::get('/home', function () {
-    $jumlahPenggunaAktif = DB::table('users')
-        ->whereDate('last_login', Carbon::today())
-        ->count();
-
-    $jumlahSuratMasuk = DB::table('suratmasuks')->count();
-
-    return view('welcome', compact('jumlahPenggunaAktif', 'jumlahSuratMasuk'));
-});
-
-// use App\Http\Controllers\LogAktivitasController;
-// use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\AnggaranPengabdianController;
-use App\Http\Controllers\LaporanKegiatanPengabdianController;
-
-
-// Halaman utama
-// Route::get('/home', function () {
-//     return view('welcome');
-// });
-
+// ===================
+// Halaman utama / Dashboard
+// ===================
 Route::get('/home', [DashboardController::class, 'index'])->name('home');
+Route::get('/diagram', [DiagramController::class, 'index'])->name('diagram');
+Route::get('/diagram/data', [DiagramController::class, 'getData']);
+Route::get('/test', fn() => 'Route test OK');
 
-// Login & Logout
-Route::get('/', [LoginController::class, 'login'])->name('auth.login');
-Route::post('/', [LoginController::class, 'authenticate']);
+// ===================
+// Auth
+// ===================
+Route::get('/', [LoginController::class, 'showLoginForm'])->name('auth.login');
+Route::post('/', [LoginController::class, 'login'])->name('login.post');
 Route::post('/logout', function () {
     Auth::logout();
     request()->session()->invalidate();
@@ -57,81 +48,89 @@ Route::post('/logout', function () {
     return redirect('/');
 })->name('logout');
 
-// Registrasi
-// Route::post('/register', [RegisterController::class, 'store'])->name('auth.register.store');
-
-
-// Pengguna & Jenis Arsip
+// ===================
+// Master Data
+// ===================
 Route::resource('pengguna', PenggunaController::class);
 Route::resource('jenisarsip', JenisArsipController::class);
+Route::resource('jurusan', JurusanController::class);
+Route::resource('prodi', ProdiController::class);
+Route::resource('skemaPenelitian', SkemaPenelitianController::class);
+Route::resource('skemaPengabdian', SkemaPengabdianController::class);
 
+// ===================
 // Surat Masuk
+// ===================
 Route::resource('suratmasuk', SuratMasukController::class);
 Route::get('suratmasuk/{id}/download', [SuratMasukController::class, 'download'])->name('suratmasuk.download');
 Route::get('suratmasuk/{id}', [SuratMasukController::class, 'show'])->name('suratmasuk.detail');
 
-//metada surat keluar
-Route::get('suratkeluar/download/{id}', [SuratKeluarController::class, 'download'])->name('suratkeluar.download');
-Route::get('/suratkeluar/metadata', [SuratKeluarController::class, 'metadata'])->name('suratkeluar.metadata');
-Route::get('/suratkeluar/metadata/export', [SuratKeluarController::class, 'exportMetadata'])->name('suratkeluar.metadata.export');
+// ===================
 // Surat Keluar
+// ===================
+Route::get('suratkeluar/download/{id}', [SuratKeluarController::class, 'download'])->name('suratkeluar.download');
+Route::get('suratkeluar/metadata', [SuratKeluarController::class, 'metadata'])->name('suratkeluar.metadata');
+Route::get('suratkeluar/metadata/export', [SuratKeluarController::class, 'exportMetadata'])->name('suratkeluar.metadata.export');
 Route::resource('suratkeluar', SuratKeluarController::class);
 
-
-
-
-Route::resource('laporan_penelitian', LaporanPenelitianController::class);
-Route::get('laporan_penelitian/{id}/download', [LaporanPenelitianController::class, 'download'])->name('laporan_penelitian.download');
-Route::get('laporan_penelitian/{id}', [LaporanPenelitianController::class, 'show'])->name('laporan_penelitian.show');
-
+// ===================
+// Proposal
+// ===================
 Route::resource('proposal', ProposalController::class);
 Route::get('proposal/{id}/download', [ProposalController::class, 'download'])->name('proposal.download');
 Route::get('proposal/{id}', [ProposalController::class, 'show'])->name('proposal.show');
 
-// Pengabdian
-Route::get('anggaran_pengabdian/{id}/download', [AnggaranPengabdianController::class, 'download'])->name('anggaran_pengabdian.download');
-Route::get('anggaran_pengabdian/{id}/preview', [AnggaranPengabdianController::class, 'preview'])->name('anggaran_pengabdian.preview');
-Route::resource('anggaran_pengabdian', AnggaranPengabdianController::class);
+// ===================
+// Laporan Kemajuan Penelitian
+// ===================
+Route::get('laporan_kemajuan_penelitian/metadata', [LaporanKemajuanPenelitianController::class, 'metadata'])->name('laporan_kemajuan_penelitian.metadata');
+Route::get('laporan_kemajuan_penelitian/metadata/export', [LaporanKemajuanPenelitianController::class, 'exportMetadata'])->name('laporan_kemajuan_penelitian.metadata.export');
+Route::get('laporan_kemajuan_penelitian/{id}/download', [LaporanKemajuanPenelitianController::class, 'download'])->name('laporan_kemajuan_penelitian.download');
+Route::get('laporan_kemajuan_penelitian/{id}/preview', [LaporanKemajuanPenelitianController::class, 'preview'])->name('laporan_kemajuan_penelitian.preview');
+Route::resource('laporan_kemajuan_penelitian', LaporanKemajuanPenelitianController::class);
 
-// Penelitian
+// ===================
+// Laporan Kemajuan Pengabdian
+// ===================
+Route::get('laporan_kemajuan_pengabdian/metadata', [LaporanKemajuanPengabdianController::class, 'metadata'])->name('laporan_kemajuan_pengabdian.metadata');
+Route::get('laporan_kemajuan_pengabdian/metadata/export', [LaporanKemajuanPengabdianController::class, 'exportMetadata'])->name('laporan_kemajuan_pengabdian.metadata.export');
+Route::get('laporan_kemajuan_pengabdian/{id}/download', [LaporanKemajuanPengabdianController::class, 'download'])->name('laporan_kemajuan_pengabdian.download');
+Route::get('laporan_kemajuan_pengabdian/{id}/preview', [LaporanKemajuanPengabdianController::class, 'preview'])->name('laporan_kemajuan_pengabdian.preview');
+Route::resource('laporan_kemajuan_pengabdian', LaporanKemajuanPengabdianController::class);
+
+// ===================
+// Laporan Akhir Penelitian
+// ===================
+Route::get('laporan_akhir_penelitian/metadata', [LaporanAkhirPenelitianController::class, 'metadata'])->name('laporan_akhir_penelitian.metadata');
+Route::get('laporan_akhir_penelitian/metadata/export', [LaporanAkhirPenelitianController::class, 'exportMetadata'])->name('laporan_akhir_penelitian.metadata.export');
+Route::get('laporan_akhir_penelitian/{id}/download', [LaporanAkhirPenelitianController::class, 'download'])->name('laporan_akhir_penelitian.download');
+Route::get('laporan_akhir_penelitian/{id}/preview', [LaporanAkhirPenelitianController::class, 'preview'])->name('laporan_akhir_penelitian.preview');
+Route::resource('laporan_akhir_penelitian', LaporanAkhirPenelitianController::class);
+
+// ===================
+// Laporan Akhir Pengabdian
+// ===================
+Route::get('laporan_akhir_pengabdian/metadata', [LaporanAkhirPengabdianController::class, 'metadata'])->name('laporan_akhir_pengabdian.metadata');
+Route::get('laporan_akhir_pengabdian/metadata/export', [LaporanAkhirPengabdianController::class, 'exportMetadata'])->name('laporan_akhir_pengabdian.metadata.export');
+Route::get('laporan_akhir_pengabdian/{id}/download', [LaporanAkhirPengabdianController::class, 'download'])->name('laporan_akhir_pengabdian.download');
+Route::get('laporan_akhir_pengabdian/{id}/preview', [LaporanAkhirPengabdianController::class, 'preview'])->name('laporan_akhir_pengabdian.preview');
+Route::resource('laporan_akhir_pengabdian', LaporanAkhirPengabdianController::class);
+
+
+// ===================
+// Laporan Keuangan Penelitian
+// ===================
+Route::get('anggaran_penelitian/metadata', [AnggaranPenelitianController::class, 'metadata'])->name('anggaran_penelitian.metadata');
+Route::get('anggaran_penelitian/metadata/export', [AnggaranPenelitianController::class, 'exportMetadata'])->name('anggaran_penelitian.metadata.export');
 Route::get('anggaran_penelitian/{id}/download', [AnggaranPenelitianController::class, 'download'])->name('anggaran_penelitian.download');
 Route::get('anggaran_penelitian/{id}/preview', [AnggaranPenelitianController::class, 'preview'])->name('anggaran_penelitian.preview');
 Route::resource('anggaran_penelitian', AnggaranPenelitianController::class);
 
-Route::resource('laporan_pengabdian', LaporanPengabdianController::class);
-Route::get('laporan_pengabdian/{id}/download', [LaporanPengabdianController::class, 'download'])->name('laporan_pengabdian.download');
-Route::get('laporan_pengabdian/{id}', [LaporanPengabdianController::class, 'show'])->name('laporan_pengabdian.show');
-
-Route::resource('laporan_kegiatan_pengabdian', LaporanKegiatanPengabdianController::class);
-Route::get('laporan_kegiatan_pengabdian/{id}/download', [LaporanKegiatanPengabdianController::class, 'download'])->name('laporan_kegiatan_pengabdian.download');
-Route::get('laporan_kegiatan_pengabdian/{id}', [LaporanKegiatanPengabdianController::class, 'show'])->name('laporan_kegiatan_pengabdian.show');
-
-
-
-// dashbordsuratkeluar
-
-// Diagram Proposal, Laporan, Anggaran
-// Route::middleware(['auth'])->get('diagram', [DiagramController::class, 'index'])->name('diagram');
-// Route::get('/diagram', [DiagramController::class, 'index']);
-
-Route::get('/diagram', [DiagramController::class, 'index'])->name('diagram');
-Route::get('/diagram/data', [DiagramController::class, 'getData']); // untuk data AJAX
-// // dashbordsuratkeluar
-
-//skemapenelitian
-Route::resource('skemaPenelitian', SkemaPenelitianController::class);
-
-//skemapengabdian
-Route::resource('skemaPengabdian', SkemaPengabdianController::class);
-
-
-//jurusan
-Route::resource('jurusan', JurusanController::class);
-
-//prodi
-Route::resource('prodi', ProdiController::class);
-
-// Route::get('/surat-keluar', [DashboardSuratKeluarController::class, 'index'])->name('dashboardsuratkeluar');
-Route::get('/test', function () {
-    return 'Route test OK';
-});
+// ===================
+// Laporan Keuangan Pengabdian
+// ===================
+Route::get('anggaran_pengabdian/metadata', [AnggaranPengabdianController::class, 'metadata'])->name('anggaran_pengabdian.metadata');
+Route::get('anggaran_pengabdian/metadata/export', [AnggaranPengabdianController::class, 'exportMetadata'])->name('anggaran_pengabdian.metadata.export');
+Route::get('anggaran_pengabdian/{id}/download', [AnggaranPengabdianController::class, 'download'])->name('anggaran_pengabdian.download');
+Route::get('anggaran_pengabdian/{id}/preview', [AnggaranPengabdianController::class, 'preview'])->name('anggaran_pengabdian.preview');
+Route::resource('anggaran_pengabdian', AnggaranPengabdianController::class);

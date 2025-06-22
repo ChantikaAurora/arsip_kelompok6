@@ -2,54 +2,96 @@
 
 @section('content')
 <div class="container mt-4">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <a href="{{ route('anggaran_penelitian.index') }}" class="btn btn-secondary rounded-pill shadow-sm mb-3">Kembali</a>
 
-    <a href="{{ route('anggaran_penelitian.index') }}" class="btn btn-secondary mb-3">
-        <i class="bi bi-arrow-left-circle"></i> Kembali
-    </a>
-
-    <div class="row">
-        <!-- Detail Anggaran Penelitian -->
-        <div class="col-12 mb-4">
-            <div class="card shadow">
-                <div class="card-header bg-success text-white">
-                    <h5>Detail Anggaran Penelitian</h5>
-                </div>
-                <div class="card-body">
-                    <table class="table table-borderless">
-                        <tr>
-                            <th>Kode</th>
-                            <td>{{ $anggaran->kode }}</td>
-                        </tr>
-                        <tr>
-                            <th>Kegiatan</th>
-                            <td style="white-space: normal; word-wrap: break-word; max-width: 300px;">{{ $anggaran->kegiatan }}</td>
-                        </tr>
-                        <tr>
-                            <th>Volume Usulan</th>
-                            <td>{{ $anggaran->volume_usulan }}</td>
-                        </tr>
-                        <tr>
-                            <th>Skema</th>
-                            <td>{{ $anggaran->skemaRelasi->skema_penelitian ?? '-' }}</td>
-                        </tr>
-                        <tr>
-                            <th>Total Anggaran</th>
-                            <td>Rp {{ number_format($anggaran->total_anggaran, 0, ',', '.') }}</td>
-                        </tr>
-                        <tr>
-                            <th>File Anggaran Penelitian</th>
-                            <td>
-                                @if($anggaran->file)
-                                    <a href="{{ route('anggaran_penelitian.preview', [$anggaran->id, 'preview' => 1]) }}" target="_blank" class="text-primary">
-                                        {{ basename($anggaran->file) }}
-                                    </a>
-                                @else
-                                    <span class="text-muted">Tidak ada</span>
-                                @endif
-                            </td>
-                        </tr>
+   <div class="card shadow-lg border-0 rounded-4">
+    <div class="card-header text-white rounded-top-4"
+         style="background: linear-gradient(135deg, #4B49AC, #4B49AC);
+                padding: 1rem 1.5rem;
+                box-shadow: inset 0 -2px 4px rgba(0,0,0,0.1);">
+        <div class="d-flex align-items-center">
+            <div class="me-2">
+                <i class="bi bi-file-earmark-text" style="font-size: 1.5rem;"></i>
+            </div>
+            <div>
+                <h5 class="mb-0 fw-semibold">Detail Laporan Keuangan Penelitian </h5>
+                <small class="text-light fst-italic">Informasi lengkap Laporan Keuangan Penelitian</small>
+            </div>
+        </div>
+    </div>
+        <div class="card-body p-4">
+            <div class="row g-4">
+                {{-- Kolom Kiri: Informasi Anggaran --}}
+                <div class="col-md-7">
+                    <table class="table table-striped table-hover table-bordered mb-0" style="table-layout: fixed; width: 100%;">
+                        <tbody>
+                            <tr>
+                                <th class="bg-light" style="width: 40%;">Kode Klasifikasi</th>
+                                <td style="word-break: break-word;">{{ $anggaran->kode }}</td>
+                            </tr>
+                            <tr>
+                                <th class="bg-light">Kegiatan</th>
+                                <td style="white-space: normal; word-break: break-word; max-width: 300px;">{{ $anggaran->kegiatan }}</td>
+                            </tr>
+                            <tr>
+                                <th class="bg-light">Volume Usulan</th>
+                                <td>{{ $anggaran->volume_usulan }}</td>
+                            </tr>
+                            <tr>
+                                <th class="bg-light">Skema</th>
+                                <td style="word-break: break-word;">{{ $anggaran->skemaRelasi->skema_penelitian ?? '-' }}</td>
+                            </tr>
+                            <tr>
+                                <th class="bg-light">Total Anggaran</th>
+                                <td>Rp {{ number_format($anggaran->total_anggaran, 0, ',', '.') }}</td>
+                            </tr>
+                            <tr>
+                                <th class="bg-light">File Anggaran</th>
+                                <td style="white-space: normal; word-break: break-word; max-width: 300px;">
+                                    @if($anggaran->file)
+                                        <a href="{{ route('anggaran_penelitian.preview', [$anggaran->id, 'preview' => 1]) }}"
+                                           target="_blank" class="text-decoration-none text-primary">
+                                            <i class="bi bi-file-earmark-text"></i> {{ basename($anggaran->file) }}
+                                        </a>
+                                    @else
+                                        <span class="text-muted">Tidak ada</span>
+                                    @endif
+                                </td>
+                            </tr>
+                        </tbody>
                     </table>
+                </div>
+
+                {{-- Kolom Kanan: Preview File --}}
+                <div class="col-md-5">
+                    @if($anggaran->file)
+                        <div class="mb-3 text-end">
+                            <a href="{{ route('anggaran_penelitian.download', $anggaran->id) }}"
+                               class="btn btn-outline-success btn-sm shadow-sm rounded-pill me-1"
+                               target="_blank">
+                                <i class="bi bi-download"></i> Download
+                            </a>
+                            <a href="{{ route('anggaran_penelitian.preview', ['id' => $anggaran->id, 'preview' => 1]) }}"
+                               class="btn btn-outline-primary btn-sm shadow-sm rounded-pill"
+                               target="_blank">
+                                <i class="bi bi-arrows-fullscreen"></i> Lihat Lebih Besar
+                            </a>
+                        </div>
+
+                        <div class="border rounded-4 shadow overflow-hidden" style="height: 400px;">
+                            <iframe
+                                src="{{ route('anggaran_penelitian.preview', ['id' => $anggaran->id, 'preview' => 1]) }}"
+                                width="100%"
+                                height="100%"
+                                style="border: none;"
+                                loading="lazy">
+                            </iframe>
+                        </div>
+                    @else
+                        <div class="alert alert-warning text-center shadow-sm rounded-3">
+                            <i class="bi bi-file-earmark-excel"></i> Tidak ada file yang diunggah.
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>

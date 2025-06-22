@@ -22,4 +22,5 @@ class AnggaranPenelitian extends Model
     {
         return $this->belongsTo(SkemaPenelitian::class, 'skema', 'id');
     }
+
 }

@@ -6,8 +6,8 @@
 
 <div class="container mt-4">
     <div class="border-bottom mb-4 pb-2">
-        <h3 class="mb-3">Formulir Tambah Anggaran Pengabdian</h3>
-        <p class="text-muted">Isi data anggaran pengabdian dengan lengkap dan benar.</p>
+        <h3 class="mb-3">Formulir Tambah Laporan Keuangan Pengabdian</h3>
+        <p class="text-muted">Isi data laporan keuangan pengabdian dengan lengkap dan benar.</p>
     </div>
 
     @if ($errors->any())

@@ -4,11 +4,13 @@
 
 <div class="container mt-4">
     {{-- Judul --}}
-    <h3 class="mb-3">Manajemen Anggaran Penelitian</h3>
+    <h3 class="mb-3">Manajemen Laporan Keuangan Penelitian</h3>
 
     {{-- Tombol Tambah Anggaran Penelitian --}}
     <div class="mb-4">
-        <a href="{{ route('anggaran_penelitian.create') }}" class="btn btn-primary">+ Tambah Anggaran Penelitian</a>
+        <a href="{{ route('anggaran_penelitian.create') }}" class="btn btn-primary">+ Tambah Laporan</a>
+       <a href="{{ route('anggaran_penelitian.metadata') }}" class="btn btn-success">📄 Cetak Metadata</a>
+
     </div>
 
     {{-- Notifikasi sukses --}}
@@ -40,7 +42,7 @@
             <thead class="table-light">
                 <tr class="text-center">
                     <th>No</th>
-                    <th>Kode</th>
+                    <th>Kode Klasifikasi</th>
                     <th>Kegiatan</th>
                     <th>Volume Usulan</th>
                     <th>Aksi</th>
@@ -54,7 +56,6 @@
                         <td style="white-space: normal; word-wrap: break-word; max-width: 300px;">{{ $item->kegiatan }}</td>
                         <td style="white-space: normal; word-wrap: break-word; max-width: 100px;">{{ $item->volume_usulan }}</td>
                         <td class="text-center">
-                            <a href="{{ route('anggaran_penelitian.preview', $item->id) }}" target="_blank" class="btn btn-sm btn-secondary">Lihat</a>
                             <a href="{{ route('anggaran_penelitian.download', $item->id) }}" class="btn btn-sm btn-success">Unduh</a>
                             <a href="{{ route('anggaran_penelitian.show', $item->id) }}" class="btn btn-sm btn-primary">Detail</a>
                             <a href="{{ route('anggaran_penelitian.edit', $item->id) }}" class="btn btn-sm btn-warning">Edit</a>
@@ -67,7 +68,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="5" class="text-center">Belum ada data anggaran penelitian.</td>
+                        <td colspan="5" class="text-center">Belum ada data laporan keuangan penelitian.</td>
                     </tr>
                 @endforelse
             </tbody>
