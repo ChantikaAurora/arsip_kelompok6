@@ -54,34 +54,4 @@ class DashboardController extends Controller
 
         ));
     }
-    // 'totalDokumenLainnya'
-    // public function index()
-    // {
-    //     $totalSuratKeluar = SuratKeluar::count();
-    //     $totalPengguna = User::count();
-    //     // $totalPengguna = User::count(); //
-    //     $penggunaTerbaru = User::latest()->take(5)->get();
-
-    //     // Hitung pertumbuhan 30 hari terakhir
-    //     $thirtyDaysAgo = Carbon::now()->subDays(30);
-    //     $suratKeluarLast30Days = SuratKeluar::where('created_at', '>=', $thirtyDaysAgo)->count();
-
-    //     $growthPercent = $totalSuratKeluar > 0
-    //         ? round(($suratKeluarLast30Days / $totalSuratKeluar) * 100, 2)
-    //         : 0;
-
-    //     // Dummy data lainnya (Anda bisa sesuaikan nanti)
-    //     $todayBookings = 4006;
-    //     $totalBookings = 61344;
-    //     $totalDokumenLainnya = 47033;
-
-    //     return view('welcome', compact(
-    //         'totalSuratKeluar',
-    //         'suratKeluarLast30Days',
-    //         'growthPercent',
-    //         'todayBookings',
-    //         'totalBookings',
-    //         'totalDokumenLainnya'
-    //     ));
-    // }
 }
