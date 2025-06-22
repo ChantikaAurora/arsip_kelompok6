@@ -7,16 +7,20 @@ use Illuminate\Database\Eloquent\Model;
 class SuratKeluar extends Model
 {
     protected $table = 'surat_keluars';
+
     protected $fillable = [
-    'no',
-    'nomor_surat',
-    'tanggal_surat',
-    'tujuan_surat',
-    'perihal',
-    'pengirim',
-    'penerima',
-    'jenis',
-    'file',
+        'nomor_surat',
+        'nomor_agenda',
+        'kode_klasifikasi',
+        'tanggal_surat',
+        'tujuan_surat',
+        'penerima',
+        'perihal',
+        'lampiran',
+        'keterangan',
+        'jenis',
+        'file',
+        'user_id'
     ];
 
     protected $hidden = [

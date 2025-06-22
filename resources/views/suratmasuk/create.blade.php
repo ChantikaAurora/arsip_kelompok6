@@ -35,6 +35,17 @@
                     </div>
                 </div>
 
+                {{-- Kode Klasifikasi --}}
+                <div class="mb-3 row"> {{-- FIELD BARU --}}
+                    <label class="col-sm-2 col-form-label">Kode Klasifikasi</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="kode_klasifikasi" class="form-control @error('kode_klasifikasi') is-invalid @enderror" value="{{ old('kode_klasifikasi') }}">
+                        @error('kode_klasifikasi')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
+
                 {{-- Tanggal Surat --}}
                 <div class="mb-3 row">
                     <label class="col-sm-2 col-form-label">Tanggal Surat</label>
@@ -90,6 +101,17 @@
                     </div>
                 </div>
 
+                {{-- Lampiran --}}
+                <div class="mb-3 row"> {{-- FIELD BARU --}}
+                    <label class="col-sm-2 col-form-label">Lampiran</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="lampiran" class="form-control @error('lampiran') is-invalid @enderror" value="{{ old('lampiran') }}">
+                        @error('lampiran')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
+
                 {{-- Jenis (Dropdown dari tabel jenis) --}}
                 <div class="mb-3 row">
                     <label class="col-sm-2 col-form-label">Jenis</label>
@@ -103,6 +125,17 @@
                             @endforeach
                         </select>
                         @error('jenis')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
+
+                {{-- Keterangan --}}
+                <div class="mb-3 row"> {{-- FIELD BARU --}}
+                    <label class="col-sm-2 col-form-label">Keterangan</label>
+                    <div class="col-sm-10">
+                        <textarea name="keterangan" class="form-control @error('keterangan') is-invalid @enderror" rows="3">{{ old('keterangan') }}</textarea>
+                        @error('keterangan')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>

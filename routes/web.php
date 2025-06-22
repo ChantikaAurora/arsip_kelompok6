@@ -1,9 +1,10 @@
 <?php
 
-use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
+
 use App\Http\Controllers\{
     LoginController,
     DashboardController,
@@ -23,21 +24,16 @@ use App\Http\Controllers\{
     LaporanKemajuanPengabdianController,
     LaporanAkhirPenelitianController,
     LaporanAkhirPengabdianController,
-
+    ProposalDipaPenelitianController,
+    ProposalDipaPengabdianController,
+    ProposalPusatPenelitianController,
+    ProposalPusatPengabdianController,
+    ProposalMandiriPenelitianController,
+    ProposalMandiriPengabdianController
 };
-use App\Exports\MetadataSuratKeluarExport;
-use Maatwebsite\Excel\Facades\Excel;
 
 // ===================
-// Halaman utama / Dashboard
-// ===================
-Route::get('/home', [DashboardController::class, 'index'])->name('home');
-Route::get('/diagram', [DiagramController::class, 'index'])->name('diagram');
-Route::get('/diagram/data', [DiagramController::class, 'getData']);
-Route::get('/test', fn() => 'Route test OK');
-
-// ===================
-// Auth
+// AUTH
 // ===================
 Route::get('/', [LoginController::class, 'showLoginForm'])->name('auth.login');
 Route::post('/', [LoginController::class, 'login'])->name('login.post');
@@ -49,36 +45,73 @@ Route::post('/logout', function () {
 })->name('logout');
 
 // ===================
-// Master Data
+// DASHBOARD
 // ===================
-Route::resource('pengguna', PenggunaController::class);
-Route::resource('jenisarsip', JenisArsipController::class);
-Route::resource('jurusan', JurusanController::class);
-Route::resource('prodi', ProdiController::class);
-Route::resource('skemaPenelitian', SkemaPenelitianController::class);
-Route::resource('skemaPengabdian', SkemaPengabdianController::class);
+Route::get('/home', [DashboardController::class, 'index'])->name('home');
+Route::get('/diagram', [DiagramController::class, 'index'])->name('diagram');
+Route::get('/diagram/data', [DiagramController::class, 'getData']);
+Route::get('/test', fn() => 'Route test OK');
 
 // ===================
-// Surat Masuk
+// MASTER DATA
+// ===================
+Route::resources([
+    'pengguna' => PenggunaController::class,
+    'jenisarsip' => JenisArsipController::class,
+    'jurusan' => JurusanController::class,
+    'prodi' => ProdiController::class,
+    'skemaPenelitian' => SkemaPenelitianController::class,
+    'skemaPengabdian' => SkemaPengabdianController::class,
+]);
+
+// ===================
+// SURAT MASUK
 // ===================
 Route::resource('suratmasuk', SuratMasukController::class);
 Route::get('suratmasuk/{id}/download', [SuratMasukController::class, 'download'])->name('suratmasuk.download');
-Route::get('suratmasuk/{id}', [SuratMasukController::class, 'show'])->name('suratmasuk.detail');
+Route::get('suratmasuk/metadata', [SuratMasukController::class, 'metadata'])->name('suratmasuk.metadata');
+Route::get('suratmasuk/metadata/download', [SuratMasukController::class, 'exportMetadata'])->name('suratmasuk.metadata.download');
 
 // ===================
-// Surat Keluar
+// SURAT KELUAR
 // ===================
-Route::get('suratkeluar/download/{id}', [SuratKeluarController::class, 'download'])->name('suratkeluar.download');
+Route::resource('suratkeluar', SuratKeluarController::class);
+Route::get('suratkeluar/{id}/download', [SuratKeluarController::class, 'download'])->name('suratkeluar.download');
 Route::get('suratkeluar/metadata', [SuratKeluarController::class, 'metadata'])->name('suratkeluar.metadata');
 Route::get('suratkeluar/metadata/export', [SuratKeluarController::class, 'exportMetadata'])->name('suratkeluar.metadata.export');
-Route::resource('suratkeluar', SuratKeluarController::class);
 
-// ===================
-// Proposal
-// ===================
-Route::resource('proposal', ProposalController::class);
-Route::get('proposal/{id}/download', [ProposalController::class, 'download'])->name('proposal.download');
-Route::get('proposal/{id}', [ProposalController::class, 'show'])->name('proposal.show');
+// Proposal DIPA
+Route::resource('proposal_dipa_penelitian', ProposalDipaPenelitianController::class);
+Route::get('proposal_dipa_penelitian/{id}/download', [ProposalDipaPenelitianController::class, 'download'])->name('proposal_dipa_penelitian.download');
+Route::get('proposal_dipa_penelitian/metadata', [ProposalDipaPenelitianController::class, 'metadata'])->name('proposal_dipa_penelitian.metadata');
+Route::get('proposal_dipa_penelitian/metadata/download', [ProposalDipaPenelitianController::class, 'exportMetadata'])->name('proposal_dipa_penelitian.metadata.download');
+
+Route::resource('proposal_dipa_pengabdian', ProposalDipaPengabdianController::class);
+Route::get('proposal_dipa_pengabdian/{id}/download', [ProposalDipaPengabdianController::class, 'download'])->name('proposal_dipa_pengabdian.download');
+Route::get('proposal_dipa_pengabdian/metadata', [ProposalDipaPengabdianController::class, 'metadata'])->name('proposal_dipa_pengabdian.metadata');
+Route::get('proposal_dipa_pengabdian/metadata/download', [ProposalDipaPengabdianController::class, 'exportMetadata'])->name('proposal_dipa_pengabdian.metadata.download');
+
+// Proposal Pusat
+Route::resource('proposal_pusat_penelitian', ProposalPusatPenelitianController::class);
+Route::get('proposal_pusat_penelitian/{id}/download', [ProposalPusatPenelitianController::class, 'download'])->name('proposal_pusat_penelitian.download');
+Route::get('proposal_pusat_penelitian/metadata', [ProposalPusatPenelitianController::class, 'metadata'])->name('proposal_pusat_penelitian.metadata');
+Route::get('proposal_pusat_penelitian/metadata/download', [ProposalPusatPenelitianController::class, 'exportMetadata'])->name('proposal_pusat_penelitian.metadata.download');
+
+Route::resource('proposal_pusat_pengabdian', ProposalPusatPengabdianController::class);
+Route::get('proposal_pusat_pengabdian/{id}/download', [ProposalPusatPengabdianController::class, 'download'])->name('proposal_pusat_pengabdian.download');
+Route::get('proposal_pusat_pengabdian/metadata', [ProposalPusatPengabdianController::class, 'metadata'])->name('proposal_pusat_pengabdian.metadata');
+Route::get('proposal_pusat_pengabdian/metadata/download', [ProposalPusatPengabdianController::class, 'exportMetadata'])->name('proposal_pusat_pengabdian.metadata.download');
+
+// Proposal Mandiri
+Route::resource('proposal_mandiri_penelitian', ProposalMandiriPenelitianController::class);
+Route::get('proposal_mandiri_penelitian/{id}/download', [ProposalMandiriPenelitianController::class, 'download'])->name('proposal_mandiri_penelitian.download');
+Route::get('proposal_mandiri_penelitian/metadata', [ProposalMandiriPenelitianController::class, 'metadata'])->name('proposal_mandiri_penelitian.metadata');
+Route::get('proposal_mandiri_penelitian/metadata/download', [ProposalMandiriPenelitianController::class, 'exportMetadata'])->name('proposal_mandiri_penelitian.metadata.download');
+
+Route::resource('proposal_mandiri_pengabdian', ProposalMandiriPengabdianController::class);
+Route::get('proposal_mandiri_pengabdian/{id}/download', [ProposalMandiriPengabdianController::class, 'download'])->name('proposal_mandiri_pengabdian.download');
+Route::get('proposal_mandiri_pengabdian/metadata', [ProposalMandiriPengabdianController::class, 'metadata'])->name('proposal_mandiri_pengabdian.metadata');
+Route::get('proposal_mandiri_pengabdian/metadata/download', [ProposalMandiriPengabdianController::class, 'exportMetadata'])->name('proposal_mandiri_pengabdian.metadata.download');
 
 // ===================
 // Laporan Kemajuan Penelitian

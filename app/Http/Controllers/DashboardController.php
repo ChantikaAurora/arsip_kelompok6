@@ -5,53 +5,47 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\SuratMasuk;
 use App\Models\SuratKeluar;
-
 use App\Models\Proposal;
-
-use App\Models\User;
 use App\Models\Pengguna;
-use App\Models\Model;
 use Carbon\Carbon;
 
 class DashboardController extends Controller
 {
-     public function index()
+    public function index()
     {
+        // Hitung total data
+        $totalSuratMasuk = SuratMasuk::count();
         $totalSuratKeluar = SuratKeluar::count();
         $totalPengguna = Pengguna::count();
+
+        // Ambil 5 pengguna terbaru
         $penggunaTerbaru = Pengguna::latest()->take(5)->get();
-        $totalSuratMasuk = SuratMasuk::count();       // <-- Surat Masuk
-        // $totalDokumenLainnya = DokumenLainnya::count();  // <-- Dokumen Lainnya
 
-        // Hitung total dokumen lainnya dari 3 tabel
-        $totalProposal = Proposal::count();
-        // $totalLaporan = LaporanPenelitian::count();
-        // $totalAnggaran = AnggaranPenelitian::count();
+        // Hitung surat keluar 30 hari terakhir
+        $suratKeluarLast30Days = SuratKeluar::where('created_at', '>=', Carbon::now()->subDays(30))->count();
 
-        // $totalDokumenLainnya = $totalProposal + $totalLaporan + $totalAnggaran;
-
-        $thirtyDaysAgo = Carbon::now()->subDays(30);
-        $suratKeluarLast30Days = SuratKeluar::where('created_at', '>=', $thirtyDaysAgo)->count();
-
+        // Hitung persentase pertumbuhan
         $growthPercent = $totalSuratKeluar > 0
             ? round(($suratKeluarLast30Days / $totalSuratKeluar) * 100, 2)
             : 0;
 
+        // Dummy data (bisa dihapus atau ganti logika asli nanti)
         $todayBookings = 4006;
         $totalBookings = 61344;
-        // $totalDokumenLainnya = 47033;
+
+        // Hitung dokumen lainnya jika perlu
+
 
         return view('welcome', compact(
+            'totalSuratMasuk',
             'totalSuratKeluar',
             'totalPengguna',
-            'totalSuratMasuk',
+            'totalProposal',
             'penggunaTerbaru',
             'suratKeluarLast30Days',
             'growthPercent',
-
             'todayBookings',
             'totalBookings'
-
         ));
     }
 }
