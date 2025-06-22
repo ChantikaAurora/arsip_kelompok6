@@ -6,6 +6,8 @@ use App\Models\AnggaranPengabdian;
 use App\Models\SkemaPengabdian;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use App\Exports\AnggaranPengabdianExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class AnggaranPengabdianController extends Controller
 {
@@ -50,7 +52,7 @@ class AnggaranPengabdianController extends Controller
 
         AnggaranPengabdian::create($validated);
 
-        return redirect()->route('anggaran_pengabdian.index')->with('success', 'Data anggaran berhasil ditambahkan.');
+        return redirect()->route('anggaran_pengabdian.index')->with('success', 'Laporan Keuangan Pengabdian berhasil ditambahkan.');
     }
 
     public function show($id)
@@ -91,7 +93,7 @@ class AnggaranPengabdianController extends Controller
 
         $anggaran_pengabdian->update($validated);
 
-        return redirect()->route('anggaran_pengabdian.index')->with('success', 'Data anggaran berhasil diperbarui.');
+        return redirect()->route('anggaran_pengabdian.index')->with('success', 'Laporan Keuangan Pengabdian berhasil diperbarui.');
     }
 
     public function destroy($id)
@@ -104,7 +106,7 @@ class AnggaranPengabdianController extends Controller
 
         $anggaran->delete();
 
-        return redirect()->route('anggaran_pengabdian.index')->with('success', 'Data anggaran berhasil dihapus.');
+        return redirect()->route('anggaran_pengabdian.index')->with('success', 'Laporan Keuangan Pengabdian berhasil dihapus.');
     }
 
     public function download($id)
@@ -144,6 +146,29 @@ class AnggaranPengabdianController extends Controller
         } else {
             abort(415, 'Format file tidak didukung untuk preview.');
         }
+    }
+
+    public function metadata(Request $request)
+    {
+        $search = $request->input('search');
+
+        $anggaran = AnggaranPengabdian::when($search, function ($query, $search) {
+                $query->where('kode', 'like', "%{$search}%")
+                    ->orWhere('kegiatan', 'like', "%{$search}%")
+                    ->orWhere('skema', 'like', "%{$search}%");
+            })
+            ->orderBy('created_at', 'desc')
+            ->paginate(10)
+            ->withQueryString();
+
+        return view('anggaran_pengabdian.metadata', compact('anggaran', 'search'));
+    }
+
+    public function exportMetadata(Request $request)
+    {
+        $search = $request->input('search');
+
+        return Excel::download(new AnggaranPengabdianExport($search), 'metadata_anggaran_pengabdian.xlsx');
     }
 }
 

@@ -6,6 +6,8 @@ use App\Models\AnggaranPenelitian;
 use App\Models\SkemaPenelitian;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use App\Exports\AnggaranPenelitianExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class AnggaranPenelitianController extends Controller
 {
@@ -50,7 +52,7 @@ class AnggaranPenelitianController extends Controller
 
         AnggaranPenelitian::create($validated);
 
-        return redirect()->route('anggaran_penelitian.index')->with('success', 'Data anggaran berhasil ditambahkan.');
+        return redirect()->route('anggaran_penelitian.index')->with('success', 'Laporan Keuangan Penelitian berhasil ditambahkan.');
     }
 
     public function show($id)
@@ -87,7 +89,7 @@ class AnggaranPenelitianController extends Controller
 
         $anggaran_penelitian->update($validated);
 
-        return redirect()->route('anggaran_penelitian.index')->with('success', 'Data anggaran berhasil diperbarui.');
+        return redirect()->route('anggaran_penelitian.index')->with('success', 'Laporan Keuangan Penelitian berhasil diperbarui.');
     }
 
     public function destroy($id)
@@ -100,7 +102,7 @@ class AnggaranPenelitianController extends Controller
 
         $anggaran->delete();
 
-        return redirect()->route('anggaran_penelitian.index')->with('success', 'Data anggaran berhasil dihapus.');
+        return redirect()->route('anggaran_penelitian.index')->with('success', 'Laporan Keuangan Penelitian berhasil dihapus.');
     }
 
     public function download($id)
@@ -138,4 +140,29 @@ class AnggaranPenelitianController extends Controller
             abort(415, 'Format file tidak didukung untuk preview.');
         }
     }
+
+    public function metadata(Request $request)
+    {
+        $search = $request->input('search');
+
+        $anggaran = AnggaranPenelitian::when($search, function ($query, $search) {
+                $query->where('kode', 'like', "%{$search}%")
+                    ->orWhere('kegiatan', 'like', "%{$search}%")
+                    ->orWhere('skema', 'like', "%{$search}%");
+            })
+            ->orderBy('created_at', 'desc')
+            ->paginate(10)
+            ->withQueryString();
+
+        return view('anggaran_penelitian.metadata', compact('anggaran', 'search'));
+    }
+
+    public function exportMetadata(Request $request)
+    {
+        $search = $request->input('search');
+
+        return Excel::download(new AnggaranPenelitianExport($search), 'metadata_anggaran_penelitian.xlsx');
+    }
+
+
 }
