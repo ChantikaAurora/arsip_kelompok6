@@ -23,6 +23,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
          Paginator::useBootstrap();
-         Livewire::component('dropdown-jurusan-prodi', DropdownJurusanProdi::class);
+        //  Livewire::component('dropdown-jurusan-prodi', DropdownJurusanProdi::class);
     }
 }
