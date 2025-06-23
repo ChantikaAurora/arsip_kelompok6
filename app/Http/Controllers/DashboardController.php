@@ -40,7 +40,6 @@ class DashboardController extends Controller
             'totalSuratMasuk',
             'totalSuratKeluar',
             'totalPengguna',
-            'totalProposal',
             'penggunaTerbaru',
             'suratKeluarLast30Days',
             'growthPercent',
