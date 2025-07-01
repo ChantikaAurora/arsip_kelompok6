@@ -59,7 +59,7 @@
                     <td>{{ $suratmasuk->jenisArsip->jenis ?? '-' }}</td>
                     <td class="text-center">
                         <a href="{{ route('suratmasuk.download', $suratmasuk->id) }}" class="btn btn-success btn-sm">Unduh</a>
-                        <a href="{{ route('suratmasuk.detail', $suratmasuk->id) }}" class="btn btn-sm btn-primary">Detail</a>
+                        <a href="{{ route('suratmasuk.show', $suratmasuk->id) }}" class="btn btn-sm btn-primary">Detail</a>
                         <a href="{{ route('suratmasuk.edit', $suratmasuk->id) }}" class="btn btn-sm btn-warning">Edit</a>
                         <form action="{{ route('suratmasuk.destroy', $suratmasuk->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin ingin menghapus?')">
                             @csrf
