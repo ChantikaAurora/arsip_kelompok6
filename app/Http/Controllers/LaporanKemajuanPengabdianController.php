@@ -57,7 +57,7 @@ class LaporanKemajuanPengabdianController extends Controller
         if ($request->hasFile('file')) {
             $file = $request->file('file');
             $fileName = time() . '_' . $file->getClientOriginalName();
-            $file->move(public_path('laporan_kemajuan_pengabdian'), $fileName);
+            $file->move(public_path('laporan_kemajuan_pengabdians'), $fileName);
             $validated['file'] = $fileName;
         }
 
@@ -102,7 +102,7 @@ class LaporanKemajuanPengabdianController extends Controller
             }
             $file = $request->file('file');
             $fileName = time() . '_' . $file->getClientOriginalName();
-            $file->move(public_path('laporan_kemajuan_pengabdian'), $fileName);
+            $file->move(public_path('laporan_kemajuan_pengabdians'), $fileName);
             $validated['file'] = $fileName;
         }
 

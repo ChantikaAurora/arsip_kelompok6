@@ -74,48 +74,24 @@
 </div>
 
 <div class="row">
-  <div class="col-md-6 grid-margin stretch-card">
-    <div class="card">
-      <div class="card-body">
-        <p class="card-title">Log Aktivitas</p>
-        <p class="font-weight-500">
-          Total number of sessions within the date range. Period time user is actively engaged.
-        </p>
-        <div class="d-flex flex-wrap mb-5">
-          <div class="mr-5 mt-3">
-            <p class="text-muted">Pengguna</p>
-            <h3 class="text-primary fs-30 font-weight-medium">{{ $totalPengguna }}</h3>
-          </div>
-          <div class="mr-5 mt-3">
-            <p class="text-muted">Surat Masuk</p>
-            <h3 class="text-primary fs-30 font-weight-medium">{{ number_format($totalSuratMasuk) }}</h3>
-          </div>
-          <div class="mr-5 mt-3">
-            <p class="text-muted">Surat Keluar</p>
-            <h3 class="text-primary fs-30 font-weight-medium">{{ number_format($totalSuratKeluar) }}</h3>
-          </div>
-        </div>
-        <canvas id="order-chart"></canvas>
+  <div class="col grid-margin stretch-card">
+  <div class="card">
+    <div class="card-body">
+      <div class="d-flex justify-content-between">
+        <p class="card-title">Diagram Total Arsip Proposal dan Laporan</p>
       </div>
-    </div>
-  </div>
-
-  <div class="col-md-6 grid-margin stretch-card">
-    <div class="card">
-      <div class="card-body">
-        <div class="d-flex justify-content-between">
-          <p class="card-title">Dokumen Lainnya</p>
-          <a href="{{ route('diagram') }}" class="text-info">View all</a>
-        </div>
-        <div id="sales-legend" class="chartjs-legend mt-4 mb-2"></div>
-        <canvas id="sales-chart"></canvas>
-      </div>
+      <div id="sales-legend" class="chartjs-legend mt-4 mb-2"></div>
+      <canvas id="sales-chart" width="300" height="100"></canvas>
     </div>
   </div>
 </div>
+@include('api.diagram')
+</div>
+
 @endsection
 
 @push('scripts')
+
 <script src="{{ asset('assets/js/dashboard.js') }}"></script>
 <script>
 document.addEventListener("DOMContentLoaded", function () {
