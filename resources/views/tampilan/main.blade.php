@@ -5,10 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>Skydash Admin</title>
 
-
-  {{-- tambahan di lay out livewire
-  @livewireStyles --}}
-
+  {{-- tambahan di lay out livewire --}}
+  {{-- @livewireStyles --}}
 
   <!-- plugins:css -->
   <link rel="stylesheet" href="{{ asset('assets/vendors/feather/feather.css') }}">
