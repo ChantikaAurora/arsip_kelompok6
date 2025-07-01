@@ -6,8 +6,8 @@
   <title>Skydash Admin</title>
 
 
-  {{-- tambahan di lay out livewire
-  @livewireStyles --}}
+  {{-- tambahan di lay out livewire --}}
+  {{-- @livewireStyles --}}
 
 
   <!-- plugins:css -->
@@ -172,8 +172,5 @@
   <script src="{{ asset('assets/js/dashboard.js') }}"></script>
   <script src="{{ asset('assets/js/Chart.roundedBarCharts.js') }}"></script>
   <!-- End custom js for this page-->
-
-   {{-- tambahan di lay out livewire --}}
-  {{-- @livewireScripts --}}
 </body>
 </html>

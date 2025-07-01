@@ -12,12 +12,10 @@ use App\Http\Controllers\{
     JenisArsipController,
     SuratMasukController,
     SuratKeluarController,
-    ProposalController,
     SkemaPenelitianController,
     SkemaPengabdianController,
     AnggaranPenelitianController,
     AnggaranPengabdianController,
-    DiagramController,
     ProdiController,
     JurusanController,
     LaporanKemajuanPenelitianController,
@@ -48,9 +46,6 @@ Route::post('/logout', function () {
 // DASHBOARD
 // ===================
 Route::get('/home', [DashboardController::class, 'index'])->name('home');
-Route::get('/diagram', [DiagramController::class, 'index'])->name('diagram');
-Route::get('/diagram/data', [DiagramController::class, 'getData']);
-Route::get('/test', fn() => 'Route test OK');
 
 // ===================
 // MASTER DATA

@@ -5,9 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\SuratMasuk;
 use App\Models\SuratKeluar;
-use App\Models\Proposal;
+
 use App\Models\Pengguna;
 use Carbon\Carbon;
+
 
 class DashboardController extends Controller
 {
@@ -33,19 +34,18 @@ class DashboardController extends Controller
         $todayBookings = 4006;
         $totalBookings = 61344;
 
-        // Hitung dokumen lainnya jika perlu
 
-
+        // Return view dan kirim semua data
         return view('welcome', compact(
             'totalSuratMasuk',
             'totalSuratKeluar',
             'totalPengguna',
-            'totalProposal',
             'penggunaTerbaru',
             'suratKeluarLast30Days',
             'growthPercent',
             'todayBookings',
             'totalBookings'
+
         ));
     }
 }
