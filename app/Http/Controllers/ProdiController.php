@@ -94,4 +94,14 @@ class ProdiController extends Controller
         $prodi->delete();
         return redirect()->route('prodi.index')->with('success', 'Prodi berhasil dihapus.');
     }
+
+    // ProdiController.php
+    public function getProdiByJurusan($jurusan_id)
+    {
+        $prodis = \App\Models\Prodi::where('jurusan_id', $jurusan_id)->get();
+        return response()->json($prodis);
+    }
+
+
+
 }

@@ -1,13 +1,16 @@
 @extends('tampilan.main')
 
-@section('title', 'Edit Proposal Pusat pengabdian')
+@section('title', 'Edit Proposal Pusat Pengabdian')
 @section('navProposalPusat', 'active')
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-
 @section('content')
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
 <div class="container mt-4">
     <div class="border-bottom mb-4 pb-2">
-        <h3 class="mb-3">Formulir Edit Proposal Pusat pengabdian</h3>
+        <h3 class="mb-3">Formulir Edit Proposal Pusat Pengabdian</h3>
         <p class="text-muted">Silakan perbarui data proposal sesuai kebutuhan.</p>
     </div>
 
@@ -63,7 +66,7 @@
                     </div>
                 </div>
 
-                {{-- Skema pengabdian --}}
+                {{-- Skema Penelitian --}}
                 <div class="mb-3 row">
                     <label class="col-sm-2 col-form-label">Skema</label>
                     <div class="col-sm-10">
@@ -89,6 +92,7 @@
                     </div>
                 </div>
 
+
                 {{-- Jurusan --}}
                 <div class="mb-3 row">
                     <label class="col-sm-2 col-form-label">Jurusan</label>
@@ -111,15 +115,12 @@
                     <div class="col-sm-10">
                         <select name="prodi_id" class="form-control @error('prodi_id') is-invalid @enderror" required>
                             <option value="">-- Pilih Prodi --</option>
-                            @foreach ($prodis as $prodi)
-                                <option value="{{ $prodi->id }}" {{ old('prodi_id', $proposal->prodi_id) == $prodi->id ? 'selected' : '' }}>
-                                    {{ $prodi->prodi }}
-                                </option>
-                            @endforeach
+                            {{-- Prodi akan di-load melalui AJAX --}}
                         </select>
                         @error('prodi_id')<div class="invalid-feedback">{{ $message }}</div>@enderror
                     </div>
                 </div>
+
 
                 {{-- Tanggal Pengajuan --}}
                 <div class="mb-3 row">
@@ -170,4 +171,41 @@
         </div>
     </div>
 </div>
+
+{{-- AJAX Script --}}
+<script>
+    $(document).ready(function () {
+        let selectedJurusan = $('select[name="jurusan_id"]').val();
+        let selectedProdi = "{{ old('prodi_id', $proposal->prodi_id) }}";
+
+        function loadProdi(jurusanId, selectedProdiId = null) {
+            let $prodiSelect = $('select[name="prodi_id"]');
+            $prodiSelect.html('<option value="">-- Pilih Prodi --</option>');
+
+            if (jurusanId) {
+                $.ajax({
+                    url: '/get-prodi/' + jurusanId,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+                        $.each(data, function (index, prodi) {
+                            let selected = prodi.id == selectedProdiId ? 'selected' : '';
+                            $prodiSelect.append('<option value="' + prodi.id + '" ' + selected + '>' + prodi.prodi + '</option>');
+                        });
+                    }
+                });
+            }
+        }
+
+        // Load awal untuk form edit
+        if (selectedJurusan) {
+            loadProdi(selectedJurusan, selectedProdi);
+        }
+
+        // Saat jurusan diganti
+        $('select[name="jurusan_id"]').on('change', function () {
+            loadProdi($(this).val());
+        });
+    });
+</script>
 @endsection

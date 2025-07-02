@@ -25,4 +25,9 @@ class Jurusan extends Model
     return $this->hasMany(LaporanKegiatanPengabdian::class, 'jurusan');
     }
 
+    public function prodis()
+    {
+        return $this->hasMany(Prodi::class);
+    }
+
 }

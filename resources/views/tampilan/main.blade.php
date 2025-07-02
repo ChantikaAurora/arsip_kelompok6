@@ -172,5 +172,10 @@
   <script src="{{ asset('assets/js/dashboard.js') }}"></script>
   <script src="{{ asset('assets/js/Chart.roundedBarCharts.js') }}"></script>
   <!-- End custom js for this page-->
+
+    {{-- tambahan di lay out livewire --}}
+  {{-- @livewireScripts --}}
+  @yield('scripts')
+
 </body>
 </html>

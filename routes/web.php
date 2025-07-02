@@ -27,8 +27,14 @@ use App\Http\Controllers\{
     ProposalPusatPenelitianController,
     ProposalPusatPengabdianController,
     ProposalMandiriPenelitianController,
-    ProposalMandiriPengabdianController
+    ProposalMandiriPengabdianController,
+    AjaxController
 };
+
+// =====================
+// dropdown dinamis
+// =====================
+Route::get('/get-prodi/{jurusan_id}', [ProdiController::class, 'getProdiByJurusan']);
 
 // ===================
 // AUTH

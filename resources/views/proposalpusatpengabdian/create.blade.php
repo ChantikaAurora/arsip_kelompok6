@@ -2,11 +2,13 @@
 
 @section('navProposalPusat', 'active')
 @section('content')
+
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <div class="container mt-4">
     <div class="border-bottom mb-4 pb-2">
-        <h3 class="mb-3">Formulir Tambah Proposal Pusat pengabdian</h3>
+        <h3 class="mb-3">Formulir Tambah Proposal Pusat Pengabdian</h3>
         <p class="text-muted">Silakan lengkapi data proposal dengan benar untuk ditambahkan ke sistem.</p>
     </div>
 
@@ -34,7 +36,7 @@
                 <div class="mb-3 row">
                     <label class="col-sm-2 col-form-label">Kode Klasifikasi</label>
                     <div class="col-sm-10">
-                        <input type="text" name="kode_klasifikasi" class="form-control @error('kode_klasifikasi') is-invalid @enderror" value="{{ old('kode_klasifikasi') }}" placeholder="Contoh: 123/pusat">
+                        <input type="text" name="kode_klasifikasi" class="form-control @error('kode_klasifikasi') is-invalid @enderror" value="{{ old('kode_klasifikasi') }}" placeholder="Contoh: 123/Pusat">
                         @error('kode_klasifikasi') <div class="invalid-feedback">{{ $message }}</div> @enderror
                     </div>
                 </div>
@@ -57,9 +59,9 @@
                     </div>
                 </div>
 
-                {{-- Skema pengabdian --}}
+                {{-- Skema Penelitian --}}
                 <div class="mb-3 row">
-                    <label class="col-sm-2 col-form-label">Skema pengabdian</label>
+                    <label class="col-sm-2 col-form-label">Skema Penelitian</label>
                     <div class="col-sm-10">
                         <select name="skema_pengabdian_id" class="form-control @error('skema_pengabdian_id') is-invalid @enderror">
                             <option value="">-- Pilih Skema --</option>
@@ -86,35 +88,27 @@
                 <div class="mb-3 row">
                     <label class="col-sm-2 col-form-label">Jurusan</label>
                     <div class="col-sm-10">
-                        <select name="jurusan_id" class="form-control @error('jurusan_id') is-invalid @enderror">
+                        <select name="jurusan_id" class="form-control @error('jurusan_id') is-invalid @enderror" required>
                             <option value="">-- Pilih Jurusan --</option>
-                            @foreach($jurusans as $jurusan)
-                                <option value="{{ $jurusan->id }}" {{ old('jurusan_id') == $jurusan->id ? 'selected' : '' }}>
-                                    {{ $jurusan->jurusan }}
-                                </option>
+                            @foreach ($jurusans as $jurusan)
+                                <option value="{{ $jurusan->id }}">{{ $jurusan->jurusan }}</option>
                             @endforeach
                         </select>
-                        @error('jurusan_id') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                        @error('jurusan_id')<div class="invalid-feedback">{{ $message }}</div>@enderror
                     </div>
                 </div>
-
-               {{-- @livewire('DropdownJurusanProdi') --}}
 
                 {{-- Prodi --}}
                 <div class="mb-3 row">
-                    <label class="col-sm-2 col-form-label">Program Studi</label>
+                    <label class="col-sm-2 col-form-label">Prodi</label>
                     <div class="col-sm-10">
-                        <select name="prodi_id" class="form-control @error('prodi_id') is-invalid @enderror">
+                        <select name="prodi_id" class="form-control @error('prodi_id') is-invalid @enderror" required>
                             <option value="">-- Pilih Prodi --</option>
-                            @foreach($prodis as $prodi)
-                                <option value="{{ $prodi->id }}" {{ old('prodi_id') == $prodi->id ? 'selected' : '' }}>
-                                    {{ $prodi->prodi }}
-                                </option>
-                            @endforeach
                         </select>
-                        @error('prodi_id') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                        @error('prodi_id')<div class="invalid-feedback">{{ $message }}</div>@enderror
                     </div>
                 </div>
+
 
                 {{-- Tanggal Pengajuan --}}
                 <div class="mb-3 row">
@@ -156,4 +150,36 @@
         </div>
     </div>
 </div>
+
+{{-- AJAX Script --}}
+<script>
+    $(document).ready(function () {
+        // Pakai name, bukan id
+        $('select[name="jurusan_id"]').on('change', function () {
+            let jurusanId = $(this).val();
+
+            // Targetkan dropdown Prodi juga pakai name, bukan id
+            let $prodiSelect = $('select[name="prodi_id"]');
+            $prodiSelect.html('<option value="">-- Pilih Prodi --</option>');
+
+            if (jurusanId) {
+                $.ajax({
+                    url: '/get-prodi/' + jurusanId, // pastikan route kamu pakai path ini
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+                        $.each(data, function (index, prodi) {
+                            $prodiSelect.append('<option value="' + prodi.id + '">' + prodi.prodi + '</option>');
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        alert("Gagal load Prodi: " + error);
+                        console.error(xhr.responseText);
+                    }
+                });
+            }
+        });
+    });
+</script>
+
 @endsection
