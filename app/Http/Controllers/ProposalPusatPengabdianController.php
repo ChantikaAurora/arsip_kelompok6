@@ -212,7 +212,7 @@ class ProposalPusatPengabdianController extends Controller
     }
 
 
-    public function export(Request $request)
+    public function exportMetadata(Request $request)
     {
         $search = $request->input('search');
         return Excel::download(new PusatPengabdianExport($search), 'metadata_proposal_pusat.xlsx');

@@ -1,111 +1,133 @@
-@extends('tampilan.main')
-
+@extends('tampilan.navbar')
+@section('page-title', 'Laporan')
 @section('navAnggaranPengabdian', 'active')
 @section('content')
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
 
 <div class="container mt-4">
+    {{-- Judul Halaman --}}
     <div class="border-bottom mb-4 pb-2">
-        <h3 class="mb-3">Formulir Tambah Laporan Keuangan Pengabdian</h3>
-        <p class="text-muted">Isi data laporan keuangan pengabdian dengan lengkap dan benar.</p>
+        <h3 class="mb-2">Formulir Tambah Laporan Keuangan Pengabdian</h3>
+        <p class="text-muted mb-0">Silakan lengkapi informasi laporan keuangan pengabdian dengan benar.</p>
     </div>
 
+    {{-- Alert Validasi --}}
     @if ($errors->any())
-        <div class="alert alert-danger">
-            <strong>Oops!</strong> Ada beberapa kesalahan pada input Anda. Silakan periksa kembali.
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong><i class="bi bi-exclamation-triangle-fill"></i> Oops!</strong> Terjadi kesalahan dalam pengisian data. Silakan cek kembali.
         </div>
     @endif
 
+    {{-- Card Form --}}
     <div class="card shadow-sm">
-    <div class="card-body">
-        <form action="{{ route('anggaran_pengabdian.store') }}" method="POST" enctype="multipart/form-data">
-            @csrf
+        <div class="card-body px-4 py-4">
+            <form method="POST" action="{{ route('anggaran_pengabdian.store') }}" enctype="multipart/form-data">
+                @csrf
 
-            {{-- Kode --}}
-            <div class="mb-3 row">
-                <label class="col-sm-2 col-form-label">Kode</label>
-                <div class="col-sm-10">
-                    <input type="text" name="kode" class="form-control @error('kode') is-invalid @enderror" value="{{ old('kode') }}" placeholder="Contoh: 12345">
-                    @error('kode')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                </div>
-            </div>
-
-            {{-- Kegiatan --}}
-            <div class="mb-3 row">
-                <label class="col-sm-2 col-form-label">Kegiatan</label>
-                <div class="col-sm-10">
-                    <input type="text" name="kegiatan" class="form-control @error('kegiatan') is-invalid @enderror" value="{{ old('kegiatan') }}" placeholder="Contoh: Penerapan Iptek Masyarakat">
-                    @error('kegiatan')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                </div>
-            </div>
-
-            {{-- Volume Usulan --}}
-            <div class="mb-3 row">
-                <label class="col-sm-2 col-form-label">Volume Usulan</label>
-                <div class="col-sm-10">
-                    <input type="number" name="volume_usulan" class="form-control @error('volume_usulan') is-invalid @enderror" value="{{ old('volume_usulan') }}" placeholder="Contoh: 5">
-                    @error('volume_usulan')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                </div>
-            </div>
-
-            {{-- Skema --}}
-            <div class="mb-3 row">
-                <label class="col-sm-2 col-form-label">Skema</label>
-                <div class="col-sm-10">
-                    <select name="skema" class="form-control @error('skema') is-invalid @enderror" required>
-                        <option value="">-- Pilih Skema --</option>
-                        @foreach ($skemas as $skema)
-                            <option value="{{ $skema->id }}" {{ old('skema') == $skema->id ? 'selected' : '' }}>
-                                {{ $skema->skema_pengabdian }}
-                            </option>
-                        @endforeach
-                    </select>
-                    @error('skema')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                </div>
-            </div>
-
-            {{-- Total Anggaran --}}
-            <div class="mb-3 row">
-                    <label class="col-sm-2 col-form-label">Total Anggaran</label>
-                    <div class="col-sm-10">
-                        <input type="number" step="0.01" name="total_anggaran" class="form-control @error('total_anggaran') is-invalid @enderror" value="{{ old('total_anggaran') }}" placeholder="Contoh: 1000000">
-                        @error('total_anggaran')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
+                {{-- Row 1 --}}
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-4 col-form-label">Kode</label>
+                            <div class="col-sm-8">
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-hash"></i></span>
+                                    <input type="text" name="kode" class="form-control @error('kode') is-invalid @enderror" value="{{ old('kode') }}" placeholder="Contoh: 12345">
+                                </div>
+                                @error('kode')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-4 col-form-label">Kegiatan</label>
+                            <div class="col-sm-8">
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-journal-text"></i></span>
+                                    <input type="text" name="kegiatan" class="form-control @error('kegiatan') is-invalid @enderror" value="{{ old('kegiatan') }}" placeholder="Contoh: Penerapan Iptek Masyarakat">
+                                </div>
+                                @error('kegiatan')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-            {{-- File --}}
-            <div class="mb-3 row">
-                <label class="col-sm-2 col-form-label">Upload File</label>
-                <div class="col-sm-10">
-                    <input type="file" name="file" class="form-control @error('file') is-invalid @enderror" required placeholder="Pilih file anggaran (.pdf, .docx)">
-                    @error('file')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
+                {{-- Row 2 --}}
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-4 col-form-label">Volume Usulan</label>
+                            <div class="col-sm-8">
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-layers"></i></span>
+                                    <input type="number" name="volume_usulan" class="form-control @error('volume_usulan') is-invalid @enderror" value="{{ old('volume_usulan') }}" placeholder="Contoh: 5">
+                                </div>
+                                @error('volume_usulan')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-4 col-form-label">Skema</label>
+                            <div class="col-sm-8">
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-diagram-3"></i></span>
+                                    <select name="skema" class="form-control @error('skema') is-invalid @enderror" required>
+                                        <option value="">-- Pilih Skema --</option>
+                                        @foreach ($skemas as $skema)
+                                            <option value="{{ $skema->id }}" {{ old('skema') == $skema->id ? 'selected' : '' }}>
+                                                {{ $skema->skema_pengabdian }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                @error('skema')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
 
-            {{-- Tombol --}}
-            <div class="text-end">
-                <a href="{{ route('anggaran_pengabdian.index') }}" class="btn btn-secondary">
-                    <i class="bi bi-arrow-left-circle"></i> Kembali
-                </a>
-                <button type="submit" class="btn btn-primary me-2">
-                    <i class="bi bi-save"></i> Simpan
-                </button>
-            </div>
-        </form>
-    </div> <!-- tutup card-body -->
-</div> <!-- tutup card -->
+                {{-- Row 3 --}}
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-4 col-form-label">Total Anggaran</label>
+                            <div class="col-sm-8">
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-currency-dollar"></i></span>
+                                    <input type="number" step="0.01" name="total_anggaran" class="form-control @error('total_anggaran') is-invalid @enderror" value="{{ old('total_anggaran') }}" placeholder="Contoh: 1000000">
+                                </div>
+                                @error('total_anggaran')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-4 col-form-label">Upload File</label>
+                            <div class="col-sm-8">
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-upload"></i></span>
+                                    <input type="file" name="file" class="form-control @error('file') is-invalid @enderror" required>
+                                </div>
+                                @error('file')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-</div> <!-- tutup container -->
+                {{-- Tombol --}}
+                <div class="form-group row mt-4">
+                    <div class="col-sm-10 offset-sm-2 d-flex">
+                        <a href="{{ route('anggaran_pengabdian.index') }}" class="btn btn-secondary">
+                            <i class="icon-action-undo me-1"></i> Kembali
+                        </a>
+                        <button type="submit" class="btn btn-primary ms-2 " style="margin-left: 0.5rem;">
+                            <i class="bi bi-save me-1"></i> Simpan
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 @endsection

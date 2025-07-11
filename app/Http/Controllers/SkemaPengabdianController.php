@@ -41,21 +41,25 @@ class SkemaPengabdianController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'skema_pengabdian' => 'required|string|max:255',
+            'skema_pengabdian' => [
+                'required',
+                'string',
+                'max:255',
+                'regex:/^[a-zA-Z\s]+$/',
+            ],
+        ], [
+            'skema_pengabdian.required' => 'Nama skema pengabdian wajib diisi.',
+            'skema_pengabdian.string' => 'Nama skema pengabdian harus berupa teks.',
+            'skema_pengabdian.max' => 'Nama skema pengabdian maksimal 255 karakter.',
+            'skema_pengabdian.regex' => 'Nama skema pengabdian hanya boleh berisi huruf dan spasi.',
         ]);
 
-        SkemaPengabdian::create($request->only('skema_pengabdian'));
+        // Simpan data skema pengabdian
+        SkemaPengabdian::create([
+            'skema_pengabdian' => $request->skema_pengabdian,
+        ]);
 
-        return redirect()->route('skemaPengabdian.index')->with('success', 'Skema berhasil ditambahkan.');
-
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(SkemaPengabdian $skemaPengabdian)
-    {
-        //
+        return redirect()->route('skemaPengabdian.index')->with('success', 'Skema pengabdian berhasil ditambahkan.');
     }
 
     /**
@@ -71,14 +75,28 @@ class SkemaPengabdianController extends Controller
      */
     public function update(Request $request, SkemaPengabdian $skemaPengabdian)
     {
-         $request->validate([
-            'skema_pengabdian' => 'required|string|max:255',
+        $request->validate([
+            'skema_pengabdian' => [
+                'required',
+                'string',
+                'max:255',
+                'regex:/^[a-zA-Z\s]+$/',
+            ],
+        ], [
+            'skema_pengabdian.required' => 'Nama skema pengabdian wajib diisi.',
+            'skema_pengabdian.string' => 'Nama skema pengabdian harus berupa teks.',
+            'skema_pengabdian.max' => 'Nama skema pengabdian maksimal 255 karakter.',
+            'skema_pengabdian.regex' => 'Nama skema pengabdian hanya boleh berisi huruf dan spasi.',
         ]);
 
-        $skemaPengabdian->update($request->only('skema_pengabdian'));
+        // Perbarui data skema pengabdian
+        $skemaPengabdian->update([
+            'skema_pengabdian' => $request->skema_pengabdian,
+        ]);
 
-        return redirect()->route('skemaPengabdian.index')->with('success', 'Skema berhasil diperbarui.');
+        return redirect()->route('skemaPengabdian.index')->with('success', 'Skema pengabdian berhasil diperbarui.');
     }
+
 
     /**
      * Remove the specified resource from storage.

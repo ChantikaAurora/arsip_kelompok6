@@ -179,7 +179,7 @@ class ProposalMandiriPenelitianController extends Controller
         return view('proposalmandiripenelitian.metadata', compact('data'));
     }
 
-    public function export(Request $request)
+    public function exportMetadata(Request $request)
     {
         $search = $request->input('search');
         return Excel::download(new MandiriPenelitianExport($search), 'metadata_proposal_mandiri_penelitian.xlsx');

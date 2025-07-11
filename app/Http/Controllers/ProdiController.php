@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Prodi;
 use App\Models\Jurusan;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class ProdiController extends Controller
 {
@@ -43,15 +44,44 @@ class ProdiController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'jurusan_id' => 'required|exists:jurusans,id',
-            'kode_prodi' => 'required|string|max:10|unique:prodis,kode_prodi',
-            'prodi' => 'required|string|max:255',
+            'jurusan_id' => [
+                'required',
+                'exists:jurusans,id',
+            ],
+            'kode_prodi' => [
+                'required',
+                'string',
+                'max:10',
+                'unique:prodis,kode_prodi',
+            ],
+            'prodi' => [
+                'required',
+                'string',
+                'max:255',
+            ],
+        ], [
+            'jurusan_id.required' => 'Jurusan wajib dipilih.',
+            'jurusan_id.exists' => 'Jurusan tidak ditemukan dalam sistem.',
+
+            'kode_prodi.required' => 'Kode prodi wajib diisi.',
+            'kode_prodi.string' => 'Kode prodi harus berupa teks.',
+            'kode_prodi.max' => 'Kode prodi maksimal 10 karakter.',
+            'kode_prodi.unique' => 'Kode prodi sudah terdaftar.',
+
+            'prodi.required' => 'Nama prodi wajib diisi.',
+            'prodi.string' => 'Nama prodi harus berupa teks.',
+            'prodi.max' => 'Nama prodi maksimal 255 karakter.',
         ]);
 
-        Prodi::create($request->all());
+        Prodi::create([
+            'jurusan_id' => $request->jurusan_id,
+            'kode_prodi' => $request->kode_prodi,
+            'prodi' => $request->prodi,
+        ]);
 
         return redirect()->route('prodi.index')->with('success', 'Prodi berhasil ditambahkan.');
     }
+
 
     /**
      * Display the specified resource.
@@ -73,15 +103,44 @@ class ProdiController extends Controller
     /**
      * Update the specified resource in storage.
      */
+
     public function update(Request $request, Prodi $prodi)
     {
         $request->validate([
-            'jurusan_id' => 'required|exists:jurusans,id',
-            'kode_prodi' => 'required|string|max:10|unique:prodis,kode_prodi,' . $prodi->id,
-            'prodi' => 'required|string|max:255',
+            'jurusan_id' => [
+                'required',
+                'exists:jurusans,id',
+            ],
+            'kode_prodi' => [
+                'required',
+                'string',
+                'max:10',
+                Rule::unique('prodis', 'kode_prodi')->ignore($prodi->id),
+            ],
+            'prodi' => [
+                'required',
+                'string',
+                'max:255',
+            ],
+        ], [
+            'jurusan_id.required' => 'Jurusan wajib dipilih.',
+            'jurusan_id.exists' => 'Jurusan tidak ditemukan dalam sistem.',
+
+            'kode_prodi.required' => 'Kode prodi wajib diisi.',
+            'kode_prodi.string' => 'Kode prodi harus berupa teks.',
+            'kode_prodi.max' => 'Kode prodi maksimal 10 karakter.',
+            'kode_prodi.unique' => 'Kode prodi sudah terdaftar.',
+
+            'prodi.required' => 'Nama prodi wajib diisi.',
+            'prodi.string' => 'Nama prodi harus berupa teks.',
+            'prodi.max' => 'Nama prodi maksimal 255 karakter.',
         ]);
 
-        $prodi->update($request->all());
+        $prodi->update([
+            'jurusan_id' => $request->jurusan_id,
+            'kode_prodi' => $request->kode_prodi,
+            'prodi' => $request->prodi,
+        ]);
 
         return redirect()->route('prodi.index')->with('success', 'Prodi berhasil diperbarui.');
     }

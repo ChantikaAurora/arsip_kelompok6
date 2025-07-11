@@ -18,8 +18,6 @@ class LaporanAkhirPenelitian extends Model
     // Jika menggunakan UUID, non-incrementing
     public $incrementing = false;
 
-    // Tipe primary key UUID
-    protected $keyType = 'string';
 
     // Mass assignment
     protected $fillable = [

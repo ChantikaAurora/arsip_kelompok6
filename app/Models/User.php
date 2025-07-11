@@ -11,7 +11,15 @@ use Illuminate\Database\Eloquent\Model;
 class User extends Model
 {
     protected $fillable = ['name', 'email', 'role'];
+
+    public function pengguna()
+    {
+        return $this->hasOne(\App\Models\Pengguna::class, 'id');
+    }
+
+
 }
+
 
 // class User extends Authenticatable
 // {

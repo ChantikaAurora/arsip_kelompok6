@@ -180,7 +180,7 @@ public function index(Request $request)
         return view('proposalpusatpenelitian.metadata', compact('data'));
     }
 
-    public function export(Request $request)
+    public function exportMetadata(Request $request)
     {
         $search = $request->input('search');
         return Excel::download(new PusatPenelitianExport($search), 'metadata_proposal_pusat.xlsx');

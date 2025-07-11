@@ -36,21 +36,55 @@ class SuratMasukController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nomor_surat'    => 'required|string|max:255',
-            'kode_klasifikasi' => 'required',
-            'tanggal_surat'  => 'required|date',
-            'tanggal_terima' => 'required|date',
+            'nomor_surat'      => 'required|string|max:255',
+            'kode_klasifikasi' => 'required|string|max:255',
+            'tanggal_surat'    => 'required|date',
+            'tanggal_terima'   => 'required|date',
             'asal_surat'       => 'required|string|max:255',
-            'pengirim'       => 'required|string|max:255',
-            'perihal'        => 'required|string|max:255',
-            'lampiran' => 'nullable|string',
-            'jenis'          => 'required|integer',
-            'keterangan' => 'nullable|string',
-            'file'           => 'required|mimes:pdf,doc,docx|max:2048',
+            'pengirim'         => 'required|string|max:255',
+            'perihal'          => 'required|string|max:255',
+            'lampiran'         => 'required|string|max:255',
+            'jenis'            => 'required|integer',
+            'keterangan'       => 'nullable|string|max:1000',
+            'file'             => 'required|mimes:pdf,doc,docx|max:2048',
+        ], [
+            'nomor_surat.required'      => 'Nomor surat wajib diisi.',
+            'nomor_surat.max'           => 'Nomor surat maksimal 255 karakter.',
+
+            'kode_klasifikasi.required' => 'Kode klasifikasi wajib diisi.',
+            'kode_klasifikasi.max'      => 'Kode klasifikasi maksimal 255 karakter.',
+
+            'tanggal_surat.required'    => 'Tanggal surat wajib diisi.',
+            'tanggal_surat.date'        => 'Tanggal surat harus berupa tanggal yang valid.',
+
+            'tanggal_terima.required'   => 'Tanggal terima wajib diisi.',
+            'tanggal_terima.date'       => 'Tanggal terima harus berupa tanggal yang valid.',
+
+            'asal_surat.required'       => 'Asal surat wajib diisi.',
+            'asal_surat.max'            => 'Asal surat maksimal 255 karakter.',
+
+            'pengirim.required'         => 'Nama pengirim wajib diisi.',
+            'pengirim.max'              => 'Nama pengirim maksimal 255 karakter.',
+
+            'perihal.required'          => 'Perihal wajib diisi.',
+            'perihal.max'               => 'Perihal maksimal 255 karakter.',
+
+            'lampiran.max'              => 'Lampiran maksimal 255 karakter.',
+
+            'jenis.required'            => 'Jenis arsip wajib dipilih.',
+            'jenis.integer'             => 'Jenis arsip tidak valid.',
+
+            'keterangan.max'            => 'Keterangan maksimal 1000 karakter.',
+
+            'file.required'             => 'File wajib diunggah.',
+            'file.mimes'                => 'File harus berformat PDF, DOC, atau DOCX.',
+            'file.max'                  => 'Ukuran file maksimal 2MB.',
         ]);
 
+        // Simpan file
         $path = $request->file('file')->store('suratmasuk', 'public');
 
+        // Simpan ke database
         SuratMasuk::create([
             'nomor_surat'      => $request->nomor_surat,
             'kode_klasifikasi' => $request->kode_klasifikasi,
@@ -65,9 +99,9 @@ class SuratMasukController extends Controller
             'file'             => $path,
         ]);
 
-
         return redirect()->route('suratmasuk.index')->with('success', 'Surat Masuk berhasil ditambahkan.');
     }
+
 
     public function create()
     {
@@ -84,24 +118,65 @@ class SuratMasukController extends Controller
     public function update(Request $request, SuratMasuk $suratmasuk)
     {
         $request->validate([
-            'nomor_surat'    => 'required|string|max:255',
+            'nomor_surat'      => 'required|string|max:255',
             'kode_klasifikasi' => 'required',
-            'tanggal_surat'  => 'required|date',
-            'tanggal_terima' => 'required|date',
+            'tanggal_surat'    => 'required|date',
             'tanggal_terima'   => 'required|date',
-            'pengirim'       => 'required|string|max:255',
-            'perihal'        => 'required|string|max:255',
-            'lampiran' => 'nullable|string',
-            'jenis'          => 'required|integer',
-            'keterangan' => 'nullable|string',
-            'file'           => 'required|mimes:pdf,doc,docx|max:2048',
+            'asal_surat'       => 'required|string|max:255',
+            'pengirim'         => 'required|string|max:255',
+            'perihal'          => 'required|string|max:255',
+            'lampiran'         => 'required|string',
+            'jenis'            => 'required|integer',
+            'keterangan'       => 'nullable|string',
+            'file'             => 'nullable|mimes:pdf,doc,docx|max:2048',
+        ], [
+            'nomor_surat.required' => 'Nomor surat wajib diisi.',
+            'nomor_surat.max'      => 'Nomor surat maksimal 255 karakter.',
+
+            'kode_klasifikasi.required' => 'Kode klasifikasi wajib diisi.',
+
+            'tanggal_surat.required' => 'Tanggal surat wajib diisi.',
+            'tanggal_surat.date'     => 'Tanggal surat tidak valid.',
+
+            'tanggal_terima.required' => 'Tanggal terima wajib diisi.',
+            'tanggal_terima.date'     => 'Tanggal terima tidak valid.',
+
+            'asal_surat.required' => 'Asal surat wajib diisi.',
+            'asal_surat.max'      => 'Asal surat maksimal 255 karakter.',
+
+            'pengirim.required' => 'Nama pengirim wajib diisi.',
+            'pengirim.max'      => 'Nama pengirim maksimal 255 karakter.',
+
+            'perihal.required' => 'Perihal wajib diisi.',
+            'perihal.max'      => 'Perihal maksimal 255 karakter.',
+
+            'lampiran.required'  => 'Lampiran wajib diisi.',
+            'lampiran.string' => 'Lampiran harus berupa teks.',
+
+            'jenis.required' => 'Jenis arsip wajib dipilih.',
+            'jenis.integer'  => 'Jenis arsip tidak valid.',
+
+            'keterangan.string' => 'Keterangan harus berupa teks.',
+
+            'file.mimes'    => 'File harus berformat pdf, doc, atau docx.',
+            'file.max'      => 'Ukuran file maksimal 2MB.',
         ]);
 
+        // Ambil field yang boleh diupdate
         $data = $request->only([
-            'nomor_surat', 'tanggal_surat', 'tanggal_terima', 'asal_surat',
-            'perihal', 'pengirim', 'jenis'
+            'nomor_surat',
+            'kode_klasifikasi',
+            'tanggal_surat',
+            'tanggal_terima',
+            'asal_surat',
+            'pengirim',
+            'perihal',
+            'lampiran',
+            'jenis',
+            'keterangan',
         ]);
 
+        // Handle upload file jika ada
         if ($request->hasFile('file')) {
             if ($suratmasuk->file && Storage::disk('public')->exists($suratmasuk->file)) {
                 Storage::disk('public')->delete($suratmasuk->file);
@@ -114,6 +189,7 @@ class SuratMasukController extends Controller
 
         return redirect()->route('suratmasuk.index')->with('success', 'Surat Masuk berhasil diperbarui.');
     }
+
 
 
     public function destroy(SuratMasuk $suratmasuk)
@@ -163,7 +239,14 @@ class SuratMasukController extends Controller
         $data = SuratMasuk::with('jenisArsip')
             ->when($search, function ($query, $search) {
                 $query->where('nomor_surat', 'like', "%$search%")
+                    ->orWhere('kode_klasifikasi', 'like', "%$search%")
+                    ->orWhere('tanggal_surat', 'like', "%$search%")
+                    ->orWhere('tanggal_terima', 'like', "%$search%")
+                    ->orWhere('asal_surat', 'like', "%$search%")
+                    ->orWhere('pengirim', 'like', "%$search%")
                     ->orWhere('perihal', 'like', "%$search%")
+                    ->orWhere('lampiran', 'like', "%$search%")
+                    ->orWhere('jenis', 'like', "%$search%")
                     ->orWhere('pengirim', 'like', "%$search%");
             })
             ->get();

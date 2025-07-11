@@ -30,17 +30,28 @@ class JenisArsipController extends Controller
         return view('jenisarsip.create');
     }
 
-    public function store(Request $request)
+   public function store(Request $request)
     {
         $request->validate([
             'jenis' => 'required|string|max:255|unique:jenis_arsips',
             'keterangan' => 'nullable|string',
+        ], [
+            'jenis.required' => 'Jenis arsip wajib diisi.',
+            'jenis.string' => 'Jenis arsip harus berupa teks.',
+            'jenis.max' => 'Jenis arsip maksimal 255 karakter.',
+            'jenis.unique' => 'Jenis arsip sudah tersedia dalam sistem.',
+
+            'keterangan.string' => 'Keterangan harus berupa teks.',
         ]);
 
-        JenisArsip::create($request->all());
+        JenisArsip::create([
+            'jenis' => $request->jenis,
+            'keterangan' => $request->keterangan ?? '', // bisa null, tidak masalah
+        ]);
 
         return redirect()->route('jenisarsip.index')->with('success', 'Jenis Arsip berhasil ditambahkan.');
     }
+
 
     public function edit(JenisArsip $jenisarsip)
     {

@@ -6,6 +6,7 @@ use App\Models\Pengguna;
 use Illuminate\Http\Request;
 use Illuminate\Support\facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 
 
 class PenggunaController extends Controller
@@ -39,15 +40,34 @@ class PenggunaController extends Controller
         return view('pengguna.create');
     }
 
-    public function store(Request $request)
+   public function store(Request $request)
     {
         $request->validate([
-            'username' => 'required|unique:penggunas',
+            'username' => [
+                'required',
+                'regex:/^[a-zA-Z\s]+$/',
+                'unique:penggunas',
+            ],
             'email' => 'required|email|unique:penggunas',
-            'password' => 'required',
+            'password' => 'required|string|min:8',
             'role' => 'required|in:admin,p3m',
+        ], [
+            'username.required' => 'Username wajib diisi.',
+            'username.regex' => 'Username hanya boleh berisi huruf dan spasi, tanpa angka atau simbol.',
+            'username.unique' => 'Username sudah digunakan.',
+
+            'email.required' => 'Email wajib diisi.',
+            'email.email' => 'Format email tidak valid.',
+            'email.unique' => 'Email sudah digunakan.',
+
+            'password.required' => 'Password wajib diisi.',
+            'password.min' => 'Password minimal harus 8 karakter.',
+
+            'role.required' => 'Role wajib dipilih.',
+            'role.in' => 'Role hanya boleh admin atau p3m.',
         ]);
 
+        // Simpan pengguna
         Pengguna::create([
             'username' => $request->username,
             'email' => $request->email,
@@ -58,6 +78,7 @@ class PenggunaController extends Controller
         return redirect()->route('pengguna.index')->with('success', 'Pengguna berhasil ditambahkan!');
     }
 
+
     public function edit(Pengguna $pengguna)
     {
         return view('pengguna.edit', compact('pengguna'));
@@ -66,23 +87,42 @@ class PenggunaController extends Controller
     public function update(Request $request, Pengguna $pengguna)
     {
         $request->validate([
-            'username' => 'required',
-            'email' => 'required|email|unique:penggunas,email,' . $pengguna->id,
-            'role' => 'required|in:admin,p3m,dosen',
-            'password' => 'nullable|min:6', // password opsional, minimal 6 karakter jika diisi
+            'username' => [
+                'required',
+                'regex:/^[a-zA-Z\s]+$/',
+                Rule::unique('penggunas')->ignore($pengguna->id),
+            ],
+            'email' => [
+                'required',
+                'email',
+                Rule::unique('penggunas')->ignore($pengguna->id),
+            ],
+            'role' => 'required|in:admin,p3m',
+            'password' => 'nullable|min:8',
+        ], [
+            'username.required' => 'Username wajib diisi.',
+            'username.regex' => 'Username hanya boleh berisi huruf dan spasi, tanpa angka atau simbol.',
+            'username.unique' => 'Username sudah digunakan.',
+
+            'email.required' => 'Email wajib diisi.',
+            'email.email' => 'Format email tidak valid.',
+            'email.unique' => 'Email sudah digunakan.',
+
+            'password.min' => 'Password minimal harus 8 karakter.',
+
+            'role.required' => 'Role wajib dipilih.',
+            'role.in' => 'Role hanya boleh admin atau p3m.',
         ]);
 
-        // Update field selain password
+        // Update data
         $pengguna->username = $request->username;
         $pengguna->email = $request->email;
         $pengguna->role = $request->role;
 
-        // Cek jika password diisi
         if ($request->filled('password')) {
             $pengguna->password = Hash::make($request->password);
         }
 
-        // Simpan perubahan
         $pengguna->save();
 
         return redirect()->route('pengguna.index')->with('success', 'Data pengguna berhasil diperbarui');
