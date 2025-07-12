@@ -5,8 +5,19 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\SuratMasuk;
 use App\Models\SuratKeluar;
-
 use App\Models\Pengguna;
+use App\Models\ProposalDipaPenelitian;
+use App\Models\ProposalDipaPengabdian;
+use App\Models\ProposalMandiriPenelitian;
+use App\Models\ProposalMandiriPengabdian;
+use App\Models\ProposalPusatPenelitian;
+use App\Models\ProposalPusatPengabdian;
+use App\Models\AnggaranPenelitian;
+use App\Models\AnggaranPengabdian;
+use App\Models\LaporanAkhirPengabdian;
+use App\Models\LaporanAkhirPenelitian;
+use App\Models\LaporanKemajuanPengabdian;
+use App\Models\LaporanKemajuanPenelitian;
 use Carbon\Carbon;
 
 
@@ -19,6 +30,38 @@ class DashboardController extends Controller
         $totalSuratKeluar = SuratKeluar::count();
         $totalPengguna = Pengguna::count();
 
+        // Hitung total semua proposal
+        $totalProposalDipaPenelitian = ProposalDipaPenelitian::count();
+        $totalProposalDipaPengabdian = ProposalDipaPengabdian::count();
+        $totalProposalMandiriPenelitian = ProposalMandiriPenelitian::count();
+        $totalProposalMandiriPengabdian = ProposalMandiriPengabdian::count();
+        $totalProposalPusatPenelitian = ProposalPusatPenelitian::count();
+        $totalProposalPusatPengabdian = ProposalPusatPengabdian::count();
+
+        $totalProposal =
+            $totalProposalDipaPenelitian +
+            $totalProposalDipaPengabdian +
+            $totalProposalMandiriPenelitian +
+            $totalProposalMandiriPengabdian +
+            $totalProposalPusatPenelitian +
+            $totalProposalPusatPengabdian;
+
+        // Total Laporan
+        $totalAnggaranPenelitian = AnggaranPenelitian::count();
+        $totalAnggaranPengabdian = AnggaranPengabdian::count();
+        $totalLaporanAkhirPengabdian = LaporanAkhirPengabdian::count();
+        $totalLaporanAkhirPenelitian = LaporanAkhirPenelitian::count();
+        $totalLaporanKemajuanPengabdian = LaporanKemajuanPengabdian::count();
+        $totalLaporanKemajuanPenelitian = LaporanKemajuanPenelitian::count();
+
+        $totalLaporan =
+            $totalAnggaranPenelitian +
+            $totalAnggaranPengabdian +
+            $totalLaporanAkhirPengabdian +
+            $totalLaporanAkhirPenelitian +
+            $totalLaporanKemajuanPengabdian +
+            $totalLaporanKemajuanPenelitian;
+
         // Ambil 5 pengguna terbaru
         $penggunaTerbaru = Pengguna::latest()->take(5)->get();
 
@@ -30,10 +73,6 @@ class DashboardController extends Controller
             ? round(($suratKeluarLast30Days / $totalSuratKeluar) * 100, 2)
             : 0;
 
-        // Dummy data (bisa dihapus atau ganti logika asli nanti)
-        $todayBookings = 4006;
-        $totalBookings = 61344;
-
 
         // Return view dan kirim semua data
         return view('welcome', compact(
@@ -43,8 +82,8 @@ class DashboardController extends Controller
             'penggunaTerbaru',
             'suratKeluarLast30Days',
             'growthPercent',
-            'todayBookings',
-            'totalBookings'
+            'totalProposal',
+            'totalLaporan'
 
         ));
     }

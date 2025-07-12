@@ -55,17 +55,28 @@ class ProposalDipaPengabdianController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'no' => 'required|string|max:255',
-            'kode_klasifikasi' => 'required|string|max:255',
-            'judul' => 'required|string|max:255',
-            'peneliti' => 'required|string|max:255',
-            'skema_pengabdian_id' => 'required|exists:skema_pengabdians,id',
-            'anggota' => 'nullable|string',
-            'jurusan_id' => 'required|exists:jurusans,id',
-            'prodi_id' => 'required|exists:prodis,id',
-            'tanggal_pengajuan' => 'required|date',
-            'keterangan' => 'nullable|string',
-            'file' => 'nullable|mimes:pdf|max:2048',
+            'no'                   => 'required|string|max:255',
+            'kode_klasifikasi'     => 'required|string|max:255',
+            'judul'                => 'required|string|max:255',
+            'peneliti'             => 'required|string|max:255',
+            'skema_pengabdian_id'  => 'required|exists:skema_pengabdians,id',
+            'anggota'              => 'nullable|string',
+            'jurusan_id'           => 'required|exists:jurusans,id',
+            'prodi_id'             => 'required|exists:prodis,id',
+            'tanggal_pengajuan'    => 'required|date',
+            'keterangan'           => 'nullable|string|max:1000',
+            'file'                 => 'nullable|mimes:pdf|max:2048',
+        ], [
+            'no.required'                   => 'Nomor proposal wajib diisi.',
+            'kode_klasifikasi.required'     => 'Kode klasifikasi wajib diisi.',
+            'judul.required'                => 'Judul wajib diisi.',
+            'peneliti.required'             => 'Nama peneliti wajib diisi.',
+            'skema_pengabdian_id.required'  => 'Skema pengabdian wajib dipilih.',
+            'jurusan_id.required'           => 'Jurusan wajib dipilih.',
+            'prodi_id.required'             => 'Program studi wajib dipilih.',
+            'tanggal_pengajuan.required'    => 'Tanggal pengajuan wajib diisi.',
+            'file.mimes'                    => 'File harus berformat PDF.',
+            'file.max'                      => 'Ukuran file maksimal 2MB.',
         ]);
 
         $data = $request->only([
@@ -82,6 +93,7 @@ class ProposalDipaPengabdianController extends Controller
 
         return redirect()->route('proposal_dipa_pengabdian.index')->with('success', 'Proposal berhasil ditambahkan.');
     }
+
 
     /**
      * Display the specified resource.
@@ -115,17 +127,28 @@ class ProposalDipaPengabdianController extends Controller
     public function update(Request $request, ProposalDipaPengabdian $proposalDipaPengabdian)
     {
         $request->validate([
-            'no' => 'required|string|max:255',
-            'kode_klasifikasi' => 'required|string|max:255',
-            'judul' => 'required|string|max:255',
-            'peneliti' => 'required|string|max:255',
-            'skema_pengabdian_id' => 'required|exists:skema_pengabdians,id',
-            'anggota' => 'nullable|string',
-            'jurusan_id' => 'required|exists:jurusans,id',
-            'prodi_id' => 'required|exists:prodis,id',
-            'tanggal_pengajuan' => 'required|date',
-            'keterangan' => 'nullable|string',
-            'file' => 'nullable|mimes:pdf|max:2048',
+            'no'                   => 'required|string|max:255',
+            'kode_klasifikasi'     => 'required|string|max:255',
+            'judul'                => 'required|string|max:255',
+            'peneliti'             => 'required|string|max:255',
+            'skema_pengabdian_id'  => 'required|exists:skema_pengabdians,id',
+            'anggota'              => 'nullable|string',
+            'jurusan_id'           => 'required|exists:jurusans,id',
+            'prodi_id'             => 'required|exists:prodis,id',
+            'tanggal_pengajuan'    => 'required|date',
+            'keterangan'           => 'nullable|string|max:1000',
+            'file'                 => 'nullable|mimes:pdf|max:2048',
+        ], [
+            'no.required'                   => 'Nomor proposal wajib diisi.',
+            'kode_klasifikasi.required'     => 'Kode klasifikasi wajib diisi.',
+            'judul.required'                => 'Judul wajib diisi.',
+            'peneliti.required'             => 'Nama peneliti wajib diisi.',
+            'skema_pengabdian_id.required'  => 'Skema pengabdian wajib dipilih.',
+            'jurusan_id.required'           => 'Jurusan wajib dipilih.',
+            'prodi_id.required'             => 'Program studi wajib dipilih.',
+            'tanggal_pengajuan.required'    => 'Tanggal pengajuan wajib diisi.',
+            'file.mimes'                    => 'File harus berformat PDF.',
+            'file.max'                      => 'Ukuran file maksimal 2MB.',
         ]);
 
         $data = $request->only([
@@ -135,10 +158,10 @@ class ProposalDipaPengabdianController extends Controller
         ]);
 
         if ($request->hasFile('file')) {
-            // Hapus file lama
-            if ($proposal_dipa_pengabdian->file && Storage::disk('public')->exists($proposal_dipa_pengabdian->file)) {
-                Storage::disk('public')->delete($proposal_dipa_pengabdian->file);
+            if ($proposalDipaPengabdian->file && Storage::disk('public')->exists($proposalDipaPengabdian->file)) {
+                Storage::disk('public')->delete($proposalDipaPengabdian->file);
             }
+
             $data['file'] = $request->file('file')->store('proposal_dipa_pengabdian', 'public');
         }
 
@@ -146,6 +169,7 @@ class ProposalDipaPengabdianController extends Controller
 
         return redirect()->route('proposal_dipa_pengabdian.index')->with('success', 'Proposal berhasil diperbarui.');
     }
+
 
     /**
      * Remove the specified resource from storage.
@@ -211,7 +235,7 @@ class ProposalDipaPengabdianController extends Controller
         return view('proposaldipapengabdian.metadata', compact('data'));
     }
 
-    public function export(Request $request)
+    public function exportMetadata(Request $request)
     {
         $search = $request->input('search');
         return Excel::download(new DipaPengabdianExport($search), 'metadata_proposal_dipa.xlsx');

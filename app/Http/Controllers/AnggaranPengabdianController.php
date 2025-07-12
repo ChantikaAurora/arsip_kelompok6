@@ -11,17 +11,18 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class AnggaranPengabdianController extends Controller
 {
-  public function index(Request $request)
+    public function index(Request $request)
     {
         $search = $request->input('search');
 
         $anggaran = AnggaranPengabdian::when($search, function ($query, $search) {
-            $query->where('kode', 'like', "%{$search}%")
-                ->orWhere('kegiatan', 'like', "%{$search}%")
-                ->orWhere('skema', 'like', "%{$search}%");
-        })
-        ->orderBy('created_at', 'desc')
-        ->paginate(10)->withQueryString();
+                $query->where('kode', 'like', "%{$search}%")
+                    ->orWhere('kegiatan', 'like', "%{$search}%")
+                    ->orWhere('skema', 'like', "%{$search}%");
+            })
+            ->orderBy('created_at', 'desc')
+            ->paginate(10)
+            ->withQueryString();
 
         return view('anggaran_pengabdian.index', compact('anggaran'));
     }
@@ -32,25 +33,43 @@ class AnggaranPengabdianController extends Controller
         return view('anggaran_pengabdian.create', compact('skemas'));
     }
 
-     public function store(Request $request)
+    public function store(Request $request)
     {
-        $validated = $request->validate([
+        $request->validate([
             'kode'           => 'required|string|max:100',
             'kegiatan'       => 'required|string|max:255',
             'volume_usulan'  => 'required|integer|min:1',
             'skema'          => 'required|string|max:100',
             'total_anggaran' => 'required|numeric|min:0',
-            'file'           => 'nullable|file|mimes:pdf,doc,docx|max:5120',
+            'file'           => 'required|mimes:pdf,doc,docx|max:5120',
+        ], [
+            'kode.required'           => 'Kode wajib diisi.',
+            'kode.max'                => 'Kode maksimal 100 karakter.',
+            'kegiatan.required'       => 'Nama kegiatan wajib diisi.',
+            'kegiatan.max'            => 'Nama kegiatan maksimal 255 karakter.',
+            'volume_usulan.required' => 'Volume usulan wajib diisi.',
+            'volume_usulan.integer'  => 'Volume usulan harus berupa angka.',
+            'volume_usulan.min'      => 'Volume usulan minimal 1.',
+            'skema.required'         => 'Skema wajib diisi.',
+            'skema.max'              => 'Skema maksimal 100 karakter.',
+            'total_anggaran.required'=> 'Total anggaran wajib diisi.',
+            'total_anggaran.numeric' => 'Total anggaran harus berupa angka.',
+            'total_anggaran.min'     => 'Total anggaran tidak boleh negatif.',
+            'file.required'          => 'File wajib diunggah.',
+            'file.mimes'             => 'File harus berformat PDF, DOC, atau DOCX.',
+            'file.max'               => 'Ukuran file maksimal 5MB.',
         ]);
 
-        if ($request->hasFile('file')) {
-            $file = $request->file('file');
-            $fileName = time() . '_' . $file->getClientOriginalName();
-            $file->move(public_path('anggaran'), $fileName);
-            $validated['file'] = $fileName;
-        }
+        $path = $request->file('file')->store('anggaran_pengabdian', 'public');
 
-        AnggaranPengabdian::create($validated);
+        AnggaranPengabdian::create([
+            'kode'           => $request->kode,
+            'kegiatan'       => $request->kegiatan,
+            'volume_usulan'  => $request->volume_usulan,
+            'skema'          => $request->skema,
+            'total_anggaran' => $request->total_anggaran,
+            'file'           => $path,
+        ]);
 
         return redirect()->route('anggaran_pengabdian.index')->with('success', 'Laporan Keuangan Pengabdian berhasil ditambahkan.');
     }
@@ -61,37 +80,50 @@ class AnggaranPengabdianController extends Controller
         return view('anggaran_pengabdian.detail', compact('anggaran'));
     }
 
-
     public function edit(AnggaranPengabdian $anggaran_pengabdian)
     {
         return view('anggaran_pengabdian.edit', compact('anggaran_pengabdian'));
     }
 
-
     public function update(Request $request, AnggaranPengabdian $anggaran_pengabdian)
     {
-        $validated = $request->validate([
+        $request->validate([
             'kode'           => 'required|string|max:100',
             'kegiatan'       => 'required|string|max:255',
             'volume_usulan'  => 'required|integer|min:1',
             'skema'          => 'required|string|max:100',
             'total_anggaran' => 'required|numeric|min:0',
-            'file'           => 'nullable|file|mimes:pdf,doc,docx|max:5120',
+            'file'           => 'nullable|mimes:pdf,doc,docx|max:5120',
+        ], [
+            'kode.required'           => 'Kode wajib diisi.',
+            'kode.max'                => 'Kode maksimal 100 karakter.',
+            'kegiatan.required'       => 'Nama kegiatan wajib diisi.',
+            'kegiatan.max'            => 'Nama kegiatan maksimal 255 karakter.',
+            'volume_usulan.required' => 'Volume usulan wajib diisi.',
+            'volume_usulan.integer'  => 'Volume usulan harus berupa angka.',
+            'volume_usulan.min'      => 'Volume usulan minimal 1.',
+            'skema.required'         => 'Skema wajib diisi.',
+            'skema.max'              => 'Skema maksimal 100 karakter.',
+            'total_anggaran.required'=> 'Total anggaran wajib diisi.',
+            'total_anggaran.numeric' => 'Total anggaran harus berupa angka.',
+            'total_anggaran.min'     => 'Total anggaran tidak boleh negatif.',
+            'file.mimes'             => 'File harus berformat PDF, DOC, atau DOCX.',
+            'file.max'               => 'Ukuran file maksimal 5MB.',
+        ]);
+
+        $data = $request->only([
+            'kode', 'kegiatan', 'volume_usulan', 'skema', 'total_anggaran'
         ]);
 
         if ($request->hasFile('file')) {
-            // hapus file lama jika ada
-            if ($anggaran_pengabdian->file && file_exists(public_path('anggaran/' . $anggaran_pengabdian->file))) {
-                unlink(public_path('anggaran/' . $anggaran_pengabdian->file));
+            if ($anggaran_pengabdian->file && Storage::disk('public')->exists($anggaran_pengabdian->file)) {
+                Storage::disk('public')->delete($anggaran_pengabdian->file);
             }
-            $file = $request->file('file');
-            $fileName = time() . '_' . $file->getClientOriginalName();
-            $file->move(public_path('anggaran'), $fileName);
-            $validated['file'] = $fileName;
+
+            $data['file'] = $request->file('file')->store('anggaran_pengabdian', 'public');
         }
 
-
-        $anggaran_pengabdian->update($validated);
+        $anggaran_pengabdian->update($data);
 
         return redirect()->route('anggaran_pengabdian.index')->with('success', 'Laporan Keuangan Pengabdian berhasil diperbarui.');
     }
@@ -118,8 +150,7 @@ class AnggaranPengabdianController extends Controller
             abort(404, 'File tidak ditemukan.');
         }
 
-        return response()->download($filePath, $anggaran->file);
-
+        return response()->download($filePath, basename($filePath));
     }
 
     public function preview($id)
@@ -135,17 +166,15 @@ class AnggaranPengabdianController extends Controller
 
         if (in_array($extension, ['pdf'])) {
             return response()->file($filePath, [
-                'Content-Type' => 'application/pdf',
-                'Content-Disposition' => 'inline; filename="'.basename($filePath).'"'
+                'Content-Type'        => 'application/pdf',
+                'Content-Disposition' => 'inline; filename="' . basename($filePath) . '"',
             ]);
         } elseif (in_array($extension, ['doc', 'docx'])) {
-            // Untuk doc/docx, browser biasanya tidak punya viewer bawaan
-            // Solusi: Redirect atau sarankan user download, atau gunakan Google Docs Viewer
             $url = asset('anggaran/' . $anggaran->file);
             return redirect("https://docs.google.com/gview?url=$url&embedded=true");
-        } else {
-            abort(415, 'Format file tidak didukung untuk preview.');
         }
+
+        abort(415, 'Format file tidak didukung untuk preview.');
     }
 
     public function metadata(Request $request)
@@ -154,8 +183,8 @@ class AnggaranPengabdianController extends Controller
 
         $anggaran = AnggaranPengabdian::when($search, function ($query, $search) {
                 $query->where('kode', 'like', "%{$search}%")
-                    ->orWhere('kegiatan', 'like', "%{$search}%")
-                    ->orWhere('skema', 'like', "%{$search}%");
+                      ->orWhere('kegiatan', 'like', "%{$search}%")
+                      ->orWhere('skema', 'like', "%{$search}%");
             })
             ->orderBy('created_at', 'desc')
             ->paginate(10)
@@ -167,8 +196,6 @@ class AnggaranPengabdianController extends Controller
     public function exportMetadata(Request $request)
     {
         $search = $request->input('search');
-
         return Excel::download(new AnggaranPengabdianExport($search), 'metadata_anggaran_pengabdian.xlsx');
     }
 }
-

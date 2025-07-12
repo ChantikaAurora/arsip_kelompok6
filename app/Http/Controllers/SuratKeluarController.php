@@ -42,20 +42,53 @@ class SuratKeluarController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-        'nomor_surat' => 'required|string|max:255',
-        'nomor_agenda' => 'nullable|string|max:255',
-        'kode_klasifikasi' => 'required|string|max:100',
-        'tanggal_surat' => 'required|date',
-        'tujuan_surat' => 'required|string|max:255',
-        'penerima' => 'required|string|max:255',
-        'perihal' => 'required|string|max:255',
-        'lampiran' => 'nullable|string|max:100',
-        'keterangan' => 'nullable|string',
-        'jenis' => 'required|exists:jenis_arsips,id',
-        'file' => 'nullable|file|mimes:pdf,doc,docx,txt|max:10240',
+        $request->validate([
+            'nomor_surat'      => 'required|string|max:255',
+            'nomor_agenda'     => 'required|string|max:255',
+            'kode_klasifikasi' => 'required|string|max:100',
+            'tanggal_surat'    => 'required|date',
+            'tujuan_surat'     => 'required|string|max:255',
+            'penerima'         => 'required|string|max:255',
+            'perihal'          => 'required|string|max:255',
+            'lampiran'         => 'required|string|max:100',
+            'jenis'            => 'required|integer|exists:jenis_arsips,id',
+            'keterangan'       => 'nullable|string|max:1000',
+            'file'             => 'required|mimes:pdf,doc,docx,txt|max:10240',
+        ], [
+            'nomor_surat.required'      => 'Nomor surat wajib diisi.',
+            'nomor_surat.max'           => 'Nomor surat maksimal 255 karakter.',
+
+            'nomor_agenda.max'          => 'Nomor agenda maksimal 255 karakter.',
+
+            'kode_klasifikasi.required' => 'Kode klasifikasi wajib diisi.',
+            'kode_klasifikasi.max'      => 'Kode klasifikasi maksimal 100 karakter.',
+
+            'tanggal_surat.required'    => 'Tanggal surat wajib diisi.',
+            'tanggal_surat.date'        => 'Tanggal surat harus berupa tanggal yang valid.',
+
+            'tujuan_surat.required'     => 'Tujuan surat wajib diisi.',
+            'tujuan_surat.max'          => 'Tujuan surat maksimal 255 karakter.',
+
+            'penerima.required'         => 'Nama penerima wajib diisi.',
+            'penerima.max'              => 'Nama penerima maksimal 255 karakter.',
+
+            'perihal.required'          => 'Perihal wajib diisi.',
+            'perihal.max'               => 'Perihal maksimal 255 karakter.',
+
+            'lampiran.required'         => 'Lampiran wajib diisi.',
+            'lampiran.max'              => 'Lampiran maksimal 100 karakter.',
+
+            'jenis.required'            => 'Jenis arsip wajib dipilih.',
+            'jenis.integer'             => 'Jenis arsip tidak valid.',
+
+            'keterangan.max'            => 'Keterangan maksimal 1000 karakter.',
+
+            'file.required'             => 'File wajib diisi.',
+            'file.mimes'                => 'File harus berformat PDF, DOC, DOCX, atau TXT.',
+            'file.max'                  => 'Ukuran file maksimal 10MB.',
         ]);
 
+        // Simpan file jika ada
         $filePath = null;
         if ($request->hasFile('file')) {
             $file = $request->file('file');
@@ -63,27 +96,23 @@ class SuratKeluarController extends Controller
             $filePath = $file->storeAs('suratkeluar', $originalName, 'public');
         }
 
-        // Dapatkan nomor urut terakhir
-        $autoNo = SuratKeluar::count() + 1;
-
+        // Simpan data ke database
         SuratKeluar::create([
-        'nomor_surat' => $request->nomor_surat,
-        'nomor_agenda' => $request->nomor_agenda,
-        'kode_klasifikasi' => $request->kode_klasifikasi,
-        'tanggal_surat' => $request->tanggal_surat,
-        'tujuan_surat' => $request->tujuan_surat,
-        'penerima' => $request->penerima,
-        'perihal' => $request->perihal,
-        'lampiran' => $request->lampiran,
-        'keterangan' => $request->keterangan,
-        'jenis' => $request->jenis,
-        'file' => $filePath,
-
+            'nomor_surat'      => $request->nomor_surat,
+            'nomor_agenda'     => $request->nomor_agenda,
+            'kode_klasifikasi' => $request->kode_klasifikasi,
+            'tanggal_surat'    => $request->tanggal_surat,
+            'tujuan_surat'     => $request->tujuan_surat,
+            'penerima'         => $request->penerima,
+            'perihal'          => $request->perihal,
+            'lampiran'         => $request->lampiran,
+            'jenis'            => $request->jenis,
+            'keterangan'       => $request->keterangan,
+            'file'             => $filePath,
         ]);
 
-        return redirect()->route('suratkeluar.index')->with('success', 'Data berhasil disimpan');
+        return redirect()->route('suratkeluar.index')->with('success', 'Surat Keluar berhasil ditambahkan.');
     }
-
 
     /**
      * Display the specified resource.
@@ -109,40 +138,87 @@ class SuratKeluarController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, SuratKeluar $suratkeluar)
     {
-        $validated = $request->validate([
-            'nomor_surat' => 'required|string|max:255',
-            'nomor_agenda' => 'nullable|string|max:255',
+        $request->validate([
+            'nomor_surat'      => 'required|string|max:255',
+            'nomor_agenda'     => 'required|string|max:255',
             'kode_klasifikasi' => 'required|string|max:100',
-            'tanggal_surat' => 'required|date',
-            'tujuan_surat' => 'required|string|max:255',
-            'penerima' => 'required|string|max:255',
-            'perihal' => 'required|string|max:255',
-            'lampiran' => 'nullable|string|max:100',
-            'keterangan' => 'nullable|string',
-            'jenis' => 'required|exists:jenis_arsips,id',
-            'file' => 'nullable|file|mimes:pdf,doc,docx,txt|max:10240',
+            'tanggal_surat'    => 'required|date',
+            'tujuan_surat'     => 'required|string|max:255',
+            'penerima'         => 'required|string|max:255',
+            'perihal'          => 'required|string|max:255',
+            'lampiran'         => 'required|string|max:100',
+            'jenis'            => 'required|integer|exists:jenis_arsips,id',
+            'keterangan'       => 'nullable|string|max:1000',
+            'file'             => 'nullable|mimes:pdf,doc,docx,txt|max:10240',
+        ], [
+            'nomor_surat.required'      => 'Nomor surat wajib diisi.',
+            'nomor_surat.max'           => 'Nomor surat maksimal 255 karakter.',
+
+            'nomor_agenda.max'          => 'Nomor agenda maksimal 255 karakter.',
+
+            'kode_klasifikasi.required' => 'Kode klasifikasi wajib diisi.',
+            'kode_klasifikasi.max'      => 'Kode klasifikasi maksimal 100 karakter.',
+
+            'tanggal_surat.required'    => 'Tanggal surat wajib diisi.',
+            'tanggal_surat.date'        => 'Tanggal surat tidak valid.',
+
+            'tujuan_surat.required'     => 'Tujuan surat wajib diisi.',
+            'tujuan_surat.max'          => 'Tujuan surat maksimal 255 karakter.',
+
+            'penerima.required'         => 'Nama penerima wajib diisi.',
+            'penerima.max'              => 'Nama penerima maksimal 255 karakter.',
+
+            'perihal.required'          => 'Perihal wajib diisi.',
+            'perihal.max'               => 'Perihal maksimal 255 karakter.',
+
+            'lampiran.required'         => 'Lampiran wajib diisi.',
+            'lampiran.max'              => 'Lampiran maksimal 100 karakter.',
+
+            'jenis.required'            => 'Jenis arsip wajib dipilih.',
+            'jenis.integer'             => 'Jenis arsip tidak valid.',
+
+            'keterangan.max'            => 'Keterangan maksimal 1000 karakter.',
+
+            'file.mimes'                => 'File harus berformat PDF, DOC, DOCX, atau TXT.',
+            'file.max'                  => 'Ukuran file maksimal 10MB.',
         ]);
 
-        $data = SuratKeluar::findOrFail($id);
+        // Ambil field yang akan diupdate
+        $data = $request->only([
+            'nomor_surat',
+            'nomor_agenda',
+            'kode_klasifikasi',
+            'tanggal_surat',
+            'tujuan_surat',
+            'penerima',
+            'perihal',
+            'lampiran',
+            'jenis',
+            'keterangan',
+        ]);
 
-        // Hindari perubahan pada kolom 'no'
-        $validatedData = $validated;
-        $validatedData['no'] = $data->no;
-
+        // Handle file baru jika ada
         if ($request->hasFile('file')) {
-            if ($data->file) {
-                Storage::disk('public')->delete($data->file);
+            // Hapus file lama jika ada
+            if ($suratkeluar->file && Storage::disk('public')->exists($suratkeluar->file)) {
+                Storage::disk('public')->delete($suratkeluar->file);
             }
-            $file = $request->file('file');
-            $originalName = $file->getClientOriginalName();
-            $validated['file'] = $file->storeAs('suratkeluar', $originalName, 'public');
+
+            // Simpan file baru
+            $data['file'] = $request->file('file')->storeAs(
+                'suratkeluar',
+                $request->file('file')->getClientOriginalName(),
+                'public'
+            );
         }
 
-        $data->update($validatedData);
-        return redirect('/suratkeluar')->with('success', 'Data berhasil diupdate');
+        $suratkeluar->update($data);
+
+        return redirect()->route('suratkeluar.index')->with('success', 'Surat Keluar berhasil diperbarui.');
     }
+
     /**
      * Remove the specified resource from storage.
      */
@@ -205,7 +281,7 @@ class SuratKeluarController extends Controller
         return view('suratkeluar.metadata', compact('data'));
     }
 
-    public function exportMetadataKeluar(Request $request)
+    public function exportMetadata(Request $request)
     {
         return Excel::download(new MetadataKeluarExport($request->search), 'metadata_suratkeluar.xlsx');
     }

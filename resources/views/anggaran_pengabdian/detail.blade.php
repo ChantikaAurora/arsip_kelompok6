@@ -1,11 +1,14 @@
-@extends('tampilan.main')
-
+@extends('tampilan.navbar')
+@section('page-title', 'Laporan')
 @section('content')
-<div class="container mt-4">
-    <a href="{{ route('anggaran_pengabdian.index') }}" class="btn btn-secondary rounded-pill shadow-sm mb-3">
-        Kembali
+<div class="container">
+
+    {{-- Tombol Kembali --}}
+    <a href="{{ route('anggaran_pengabdian.index') }}" class="btn btn-secondary shadow-sm mb-3">
+        <i class="icon-action-undo mr-1"></i> Kembali
     </a>
 
+    {{-- Card Detail --}}
     <div class="card shadow-lg border-0 rounded-4">
         <div class="card-header text-white rounded-top-4"
              style="background: linear-gradient(135deg, #4B49AC, #4B49AC);
@@ -13,18 +16,19 @@
                     box-shadow: inset 0 -2px 4px rgba(0,0,0,0.1);">
             <div class="d-flex align-items-center">
                 <div class="me-2">
-                    <i class="bi bi-file-earmark-text" style="font-size: 1.5rem;"></i>
+                    <i class="bi bi-journal-text" style="font-size: 1.5rem;"></i>
                 </div>
                 <div>
                     <h5 class="mb-0 fw-semibold">Detail Laporan Keuangan Pengabdian</h5>
-                    <small class="text-light fst-italic">Informasi lengkap Laporan Keuangan Pengabdian</small>
+                    <small class="text-light fst-italic">Informasi lengkap laporan keuangan pengabdian yang tercatat dalam sistem.</small>
                 </div>
             </div>
         </div>
 
         <div class="card-body p-4">
             <div class="row g-4">
-                {{-- Kolom Kiri: Informasi Anggaran --}}
+
+                {{-- Kolom Kiri: Detail --}}
                 <div class="col-md-7">
                     <table class="table table-striped table-hover table-bordered mb-0" style="table-layout: fixed; width: 100%;">
                         <tbody>
@@ -34,7 +38,7 @@
                             </tr>
                             <tr>
                                 <th class="bg-light">Kegiatan</th>
-                                <td style="white-space: normal; word-break: break-word; max-width: 300px;">{{ $anggaran->kegiatan }}</td>
+                                <td style="white-space: normal; word-break: break-word;">{{ $anggaran->kegiatan }}</td>
                             </tr>
                             <tr>
                                 <th class="bg-light">Volume Usulan</th>
@@ -42,7 +46,7 @@
                             </tr>
                             <tr>
                                 <th class="bg-light">Skema</th>
-                                <td style="word-break: break-word;">{{ $anggaran->skemaRelasi->skema_pengabdian ?? '-' }}</td>
+                                <td>{{ $anggaran->skemaRelasi->skema_pengabdian ?? '-' }}</td>
                             </tr>
                             <tr>
                                 <th class="bg-light">Total Anggaran</th>
@@ -70,18 +74,18 @@
                     @if($anggaran->file)
                         <div class="mb-3 text-end">
                             <a href="{{ route('anggaran_pengabdian.download', $anggaran->id) }}"
-                               class="btn btn-outline-success btn-sm shadow-sm rounded-pill me-1"
+                               class="btn btn-inverse-success btn-sm shadow-sm rounded-pill me-1 d-inline-flex align-items-center"
                                target="_blank">
-                                <i class="bi bi-download"></i> Download
+                                <i class="icon-cloud-download me-1 align-middle mr-1"></i> Download
                             </a>
                             <a href="{{ route('anggaran_pengabdian.preview', ['id' => $anggaran->id, 'preview' => 1]) }}"
-                               class="btn btn-outline-primary btn-sm shadow-sm rounded-pill"
+                               class="btn btn-inverse-primary btn-sm shadow-sm rounded-pill d-inline-flex align-items-center"
                                target="_blank">
-                                <i class="bi bi-arrows-fullscreen"></i> Lihat Lebih Besar
+                                <i class="icon-eye me-1 align-middle mr-1"></i> Lihat Lebih Besar
                             </a>
                         </div>
 
-                        <div class="border rounded-4 shadow overflow-hidden" style="height: 400px;">
+                        <div class="border rounded-4 shadow overflow-hidden" style="height: 547px;">
                             <iframe
                                 src="{{ route('anggaran_pengabdian.preview', ['id' => $anggaran->id, 'preview' => 1]) }}"
                                 width="100%"
@@ -96,6 +100,7 @@
                         </div>
                     @endif
                 </div>
+
             </div>
         </div>
     </div>

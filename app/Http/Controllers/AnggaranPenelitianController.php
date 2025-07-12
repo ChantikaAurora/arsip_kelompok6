@@ -16,12 +16,13 @@ class AnggaranPenelitianController extends Controller
         $search = $request->input('search');
 
         $anggaran = AnggaranPenelitian::when($search, function ($query, $search) {
-            $query->where('kode', 'like', "%{$search}%")
-                  ->orWhere('kegiatan', 'like', "%{$search}%")
-                  ->orWhere('skema', 'like', "%{$search}%");
-        })
-        ->orderBy('created_at', 'desc')
-        ->paginate(10)->withQueryString();
+                $query->where('kode', 'like', "%{$search}%")
+                      ->orWhere('kegiatan', 'like', "%{$search}%")
+                      ->orWhere('skema', 'like', "%{$search}%");
+            })
+            ->orderBy('created_at', 'desc')
+            ->paginate(10)
+            ->withQueryString();
 
         return view('anggaran_penelitian.index', compact('anggaran'));
     }
@@ -34,23 +35,41 @@ class AnggaranPenelitianController extends Controller
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
+        $request->validate([
             'kode'           => 'required|string|max:100',
             'kegiatan'       => 'required|string|max:255',
             'volume_usulan'  => 'required|integer|min:1',
             'skema'          => 'required|string|max:100',
             'total_anggaran' => 'required|numeric|min:0',
-            'file'           => 'nullable|file|mimes:pdf,doc,docx|max:5120',
+            'file'           => 'required|mimes:pdf,doc,docx|max:2048',
+        ], [
+            'kode.required'           => 'Kode wajib diisi.',
+            'kode.max'                => 'Kode maksimal 100 karakter.',
+            'kegiatan.required'       => 'Kegiatan wajib diisi.',
+            'kegiatan.max'            => 'Kegiatan maksimal 255 karakter.',
+            'volume_usulan.required' => 'Volume usulan wajib diisi.',
+            'volume_usulan.integer'  => 'Volume usulan harus berupa angka.',
+            'volume_usulan.min'      => 'Volume usulan minimal 1.',
+            'skema.required'         => 'Skema wajib diisi.',
+            'skema.max'              => 'Skema maksimal 100 karakter.',
+            'total_anggaran.required'=> 'Total anggaran wajib diisi.',
+            'total_anggaran.numeric' => 'Total anggaran harus berupa angka.',
+            'total_anggaran.min'     => 'Total anggaran minimal 0.',
+            'file.required'          => 'File wajib diunggah.',
+            'file.mimes'             => 'File harus berformat PDF, DOC, atau DOCX.',
+            'file.max'               => 'Ukuran file maksimal 2MB.',
         ]);
 
-        if ($request->hasFile('file')) {
-            $file = $request->file('file');
-            $fileName = time() . '_' . $file->getClientOriginalName();
-            $file->move(public_path('anggaran'), $fileName);
-            $validated['file'] = $fileName;
-        }
+        $path = $request->file('file')->store('anggaran_penelitian', 'public');
 
-        AnggaranPenelitian::create($validated);
+        AnggaranPenelitian::create([
+            'kode'           => $request->kode,
+            'kegiatan'       => $request->kegiatan,
+            'volume_usulan'  => $request->volume_usulan,
+            'skema'          => $request->skema,
+            'total_anggaran' => $request->total_anggaran,
+            'file'           => $path,
+        ]);
 
         return redirect()->route('anggaran_penelitian.index')->with('success', 'Laporan Keuangan Penelitian berhasil ditambahkan.');
     }
@@ -63,31 +82,56 @@ class AnggaranPenelitianController extends Controller
 
     public function edit(AnggaranPenelitian $anggaran_penelitian)
     {
-        return view('anggaran_penelitian.edit', compact('anggaran_penelitian'));
+        $skemas = SkemaPenelitian::all();
+        return view('anggaran_penelitian.edit', [
+            'anggaran' => $anggaran_penelitian,
+            'skemas'   => $skemas,
+        ]);
     }
 
     public function update(Request $request, AnggaranPenelitian $anggaran_penelitian)
     {
-        $validated = $request->validate([
+        $request->validate([
             'kode'           => 'required|string|max:100',
             'kegiatan'       => 'required|string|max:255',
             'volume_usulan'  => 'required|integer|min:1',
             'skema'          => 'required|string|max:100',
             'total_anggaran' => 'required|numeric|min:0',
-            'file'           => 'nullable|file|mimes:pdf,doc,docx|max:5120',
+            'file'           => 'nullable|mimes:pdf,doc,docx|max:2048',
+        ], [
+            'kode.required'           => 'Kode wajib diisi.',
+            'kode.max'                => 'Kode maksimal 100 karakter.',
+            'kegiatan.required'       => 'Kegiatan wajib diisi.',
+            'kegiatan.max'            => 'Kegiatan maksimal 255 karakter.',
+            'volume_usulan.required' => 'Volume usulan wajib diisi.',
+            'volume_usulan.integer'  => 'Volume usulan harus berupa angka.',
+            'volume_usulan.min'      => 'Volume usulan minimal 1.',
+            'skema.required'         => 'Skema wajib diisi.',
+            'skema.max'              => 'Skema maksimal 100 karakter.',
+            'total_anggaran.required'=> 'Total anggaran wajib diisi.',
+            'total_anggaran.numeric' => 'Total anggaran harus berupa angka.',
+            'total_anggaran.min'     => 'Total anggaran minimal 0.',
+            'file.mimes'             => 'File harus berformat PDF, DOC, atau DOCX.',
+            'file.max'               => 'Ukuran file maksimal 2MB.',
+        ]);
+
+        $data = $request->only([
+            'kode',
+            'kegiatan',
+            'volume_usulan',
+            'skema',
+            'total_anggaran',
         ]);
 
         if ($request->hasFile('file')) {
-            if ($anggaran_penelitian->file && file_exists(public_path('anggaran/' . $anggaran_penelitian->file))) {
-                unlink(public_path('anggaran/' . $anggaran_penelitian->file));
+            if ($anggaran_penelitian->file && Storage::disk('public')->exists($anggaran_penelitian->file)) {
+                Storage::disk('public')->delete($anggaran_penelitian->file);
             }
-            $file = $request->file('file');
-            $fileName = time() . '_' . $file->getClientOriginalName();
-            $file->move(public_path('anggaran'), $fileName);
-            $validated['file'] = $fileName;
+
+            $data['file'] = $request->file('file')->store('anggaran_penelitian', 'public');
         }
 
-        $anggaran_penelitian->update($validated);
+        $anggaran_penelitian->update($data);
 
         return redirect()->route('anggaran_penelitian.index')->with('success', 'Laporan Keuangan Penelitian berhasil diperbarui.');
     }
@@ -114,7 +158,7 @@ class AnggaranPenelitianController extends Controller
             abort(404, 'File tidak ditemukan.');
         }
 
-        return response()->download($filePath, $anggaran->file);
+        return response()->download($filePath, basename($filePath));
     }
 
     public function preview($id)
@@ -128,17 +172,17 @@ class AnggaranPenelitianController extends Controller
 
         $extension = strtolower(pathinfo($filePath, PATHINFO_EXTENSION));
 
-        if (in_array($extension, ['pdf'])) {
+        if ($extension === 'pdf') {
             return response()->file($filePath, [
-                'Content-Type' => 'application/pdf',
-                'Content-Disposition' => 'inline; filename="' . basename($filePath) . '"'
+                'Content-Type'        => 'application/pdf',
+                'Content-Disposition' => 'inline; filename="' . basename($filePath) . '"',
             ]);
         } elseif (in_array($extension, ['doc', 'docx'])) {
             $url = asset('anggaran/' . $anggaran->file);
             return redirect("https://docs.google.com/gview?url=$url&embedded=true");
-        } else {
-            abort(415, 'Format file tidak didukung untuk preview.');
         }
+
+        abort(415, 'Format file tidak didukung untuk preview.');
     }
 
     public function metadata(Request $request)
@@ -147,8 +191,8 @@ class AnggaranPenelitianController extends Controller
 
         $anggaran = AnggaranPenelitian::when($search, function ($query, $search) {
                 $query->where('kode', 'like', "%{$search}%")
-                    ->orWhere('kegiatan', 'like', "%{$search}%")
-                    ->orWhere('skema', 'like', "%{$search}%");
+                      ->orWhere('kegiatan', 'like', "%{$search}%")
+                      ->orWhere('skema', 'like', "%{$search}%");
             })
             ->orderBy('created_at', 'desc')
             ->paginate(10)
@@ -160,9 +204,6 @@ class AnggaranPenelitianController extends Controller
     public function exportMetadata(Request $request)
     {
         $search = $request->input('search');
-
         return Excel::download(new AnggaranPenelitianExport($search), 'metadata_anggaran_penelitian.xlsx');
     }
-
-
 }

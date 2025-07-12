@@ -41,22 +41,27 @@ class SkemaPenelitianController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'skema_penelitian' => 'required|string|max:255',
+            'skema_penelitian' => [
+                'required',
+                'string',
+                'max:255',
+                'regex:/^[a-zA-Z\s]+$/',
+            ],
+        ], [
+            'skema_penelitian.required' => 'Nama skema penelitian wajib diisi.',
+            'skema_penelitian.string' => 'Nama skema penelitian harus berupa teks.',
+            'skema_penelitian.max' => 'Nama skema penelitian maksimal 255 karakter.',
+            'skema_penelitian.regex' => 'Nama skema penelitian hanya boleh berisi huruf dan spasi.',
         ]);
 
-        SkemaPenelitian::create($request->only('skema_penelitian'));
+        // Simpan data skema penelitian
+        SkemaPenelitian::create([
+            'skema_penelitian' => $request->skema_penelitian,
+        ]);
 
-        return redirect()->route('skemaPenelitian.index')->with('success', 'Skema berhasil ditambahkan.');
-
+        return redirect()->route('skemaPenelitian.index')->with('success', 'Skema penelitian berhasil ditambahkan.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(SkemaPenelitian $skemaPenelitian)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.
@@ -71,14 +76,28 @@ class SkemaPenelitianController extends Controller
      */
     public function update(Request $request, SkemaPenelitian $skemaPenelitian)
     {
-         $request->validate([
-            'skema_penelitian' => 'required|string|max:255',
+        $request->validate([
+            'skema_penelitian' => [
+                'required',
+                'string',
+                'max:255',
+                'regex:/^[a-zA-Z\s]+$/',
+            ],
+        ], [
+            'skema_penelitian.required' => 'Nama skema penelitian wajib diisi.',
+            'skema_penelitian.string' => 'Nama skema penelitian harus berupa teks.',
+            'skema_penelitian.max' => 'Nama skema penelitian maksimal 255 karakter.',
+            'skema_penelitian.regex' => 'Nama skema penelitian hanya boleh berisi huruf dan spasi.',
         ]);
 
-        $skemaPenelitian->update($request->only('skema_penelitian'));
+        // Perbarui data skema penelitian
+        $skemaPenelitian->update([
+            'skema_penelitian' => $request->skema_penelitian,
+        ]);
 
-        return redirect()->route('skemaPenelitian.index')->with('success', 'Skema berhasil diperbarui.');
+        return redirect()->route('skemaPenelitian.index')->with('success', 'Skema penelitian berhasil diperbarui.');
     }
+
 
     /**
      * Remove the specified resource from storage.

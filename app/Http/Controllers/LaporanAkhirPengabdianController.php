@@ -34,26 +34,40 @@ class LaporanAkhirPengabdianController extends Controller
     }
 
     public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'id_laporan_akhir'   => 'required|string|max:50',
-            'judul_kegiatan'     => 'required|string|max:255',
-            'skema'              => 'required|string|max:100',
-            'tahun_pelaksanaan'  => 'required|string|max:4',
-            'file'               => 'nullable|file|mimes:pdf,doc,docx|max:5120',
-        ]);
+{
+    $request->validate([
+        'id_laporan_akhir'   => 'required|string|max:50',
+        'judul_kegiatan'     => 'required|string|max:255',
+        'skema'              => 'required|string|max:100',
+        'tahun_pelaksanaan'  => 'required|string|max:4',
+        'file'               => 'required|mimes:pdf,doc,docx|max:5120',
+    ], [
+        'id_laporan_akhir.required'   => 'ID laporan wajib diisi.',
+        'id_laporan_akhir.max'        => 'ID laporan maksimal 50 karakter.',
+        'judul_kegiatan.required'     => 'Judul kegiatan wajib diisi.',
+        'judul_kegiatan.max'          => 'Judul kegiatan maksimal 255 karakter.',
+        'skema.required'              => 'Skema wajib diisi.',
+        'skema.max'                   => 'Skema maksimal 100 karakter.',
+        'tahun_pelaksanaan.required'  => 'Tahun pelaksanaan wajib diisi.',
+        'tahun_pelaksanaan.max'       => 'Tahun pelaksanaan maksimal 4 karakter.',
+        'file.required'               => 'File wajib diunggah.',
+        'file.mimes'                  => 'File harus berupa PDF, DOC, atau DOCX.',
+        'file.max'                    => 'Ukuran file maksimal 5MB.',
+    ]);
 
-        if ($request->hasFile('file')) {
-            $file = $request->file('file');
-            $fileName = time() . '_' . $file->getClientOriginalName();
-            $file->move(public_path('laporan_akhirpengabdian'), $fileName);
-            $validated['file'] = $fileName;
-        }
+    $path = $request->file('file')->store('laporan_akhirpengabdian', 'public');
 
-        LaporanAkhirPengabdian::create($validated);
+    LaporanAkhirPengabdian::create([
+        'id_laporan_akhir'   => $request->id_laporan_akhir,
+        'judul_kegiatan'     => $request->judul_kegiatan,
+        'skema'              => $request->skema,
+        'tahun_pelaksanaan'  => $request->tahun_pelaksanaan,
+        'file'               => $path,
+    ]);
 
-        return redirect()->route('laporan_akhir_pengabdian.index')->with('success', 'Laporan Akhir Pengabdian berhasil ditambahkan.');
-    }
+    return redirect()->route('laporan_akhir_pengabdian.index')->with('success', 'Laporan Akhir Pengabdian berhasil ditambahkan.');
+}
+
 
     public function show($id)
     {
@@ -68,30 +82,46 @@ class LaporanAkhirPengabdianController extends Controller
     }
 
     public function update(Request $request, LaporanAkhirPengabdian $laporan_akhir_pengabdian)
-    {
-        $validated = $request->validate([
-            'id_laporan_akhir'   => 'required|string|max:50',
-            'judul_kegiatan'     => 'required|string|max:255',
-            'skema'              => 'required|string|max:100',
-            'tahun_pelaksanaan'  => 'required|string|max:4',
-            'file'               => 'nullable|file|mimes:pdf,doc,docx|max:5120',
-        ]);
+{
+    $request->validate([
+        'id_laporan_akhir'   => 'required|string|max:50',
+        'judul_kegiatan'     => 'required|string|max:255',
+        'skema'              => 'required|string|max:100',
+        'tahun_pelaksanaan'  => 'required|string|max:4',
+        'file'               => 'nullable|mimes:pdf,doc,docx|max:5120',
+    ], [
+        'id_laporan_akhir.required'   => 'ID laporan wajib diisi.',
+        'id_laporan_akhir.max'        => 'ID laporan maksimal 50 karakter.',
+        'judul_kegiatan.required'     => 'Judul kegiatan wajib diisi.',
+        'judul_kegiatan.max'          => 'Judul kegiatan maksimal 255 karakter.',
+        'skema.required'              => 'Skema wajib diisi.',
+        'skema.max'                   => 'Skema maksimal 100 karakter.',
+        'tahun_pelaksanaan.required'  => 'Tahun pelaksanaan wajib diisi.',
+        'tahun_pelaksanaan.max'       => 'Tahun pelaksanaan maksimal 4 karakter.',
+        'file.mimes'                  => 'File harus berupa PDF, DOC, atau DOCX.',
+        'file.max'                    => 'Ukuran file maksimal 5MB.',
+    ]);
 
-        if ($request->hasFile('file')) {
-            if ($laporan_akhir_pengabdian->file && file_exists(public_path('laporan_akhirpengabdian/' . $laporan_akhir_pengabdian->file))) {
-                unlink(public_path('laporan_akhirpengabdian/' . $laporan_akhir_pengabdian->file));
-            }
+    $data = $request->only([
+        'id_laporan_akhir',
+        'judul_kegiatan',
+        'skema',
+        'tahun_pelaksanaan',
+    ]);
 
-            $file = $request->file('file');
-            $fileName = time() . '_' . $file->getClientOriginalName();
-            $file->move(public_path('laporan_akhir_pengabdian'), $fileName);
-            $validated['file'] = $fileName;
+    if ($request->hasFile('file')) {
+        if ($laporan_akhir_pengabdian->file && Storage::disk('public')->exists($laporan_akhir_pengabdian->file)) {
+            Storage::disk('public')->delete($laporan_akhir_pengabdian->file);
         }
 
-        $laporan_akhir_pengabdian->update($validated);
-
-        return redirect()->route('laporan_akhir_pengabdian.index')->with('success', 'Laporan Akhir Pengabdian berhasil diperbarui.');
+        $data['file'] = $request->file('file')->store('laporan_akhirpengabdian', 'public');
     }
+
+    $laporan_akhir_pengabdian->update($data);
+
+    return redirect()->route('laporan_akhir_pengabdian.index')->with('success', 'Laporan Akhir Pengabdian berhasil diperbarui.');
+}
+
 
     public function destroy($id)
     {
@@ -118,29 +148,29 @@ class LaporanAkhirPengabdianController extends Controller
         return response()->download($filePath, $laporan->file);
     }
 
-    public function preview($id)
+   public function preview($id)
     {
         $laporan = LaporanAkhirPengabdian::findOrFail($id);
-        $filePath = public_path('laporan_akhirpengabdian/' . $laporan->file);
 
-        if (!$laporan->file || !file_exists($filePath)) {
+        if (!$laporan->file || !Storage::disk('public')->exists($laporan->file)) {
             abort(404, 'File tidak ditemukan.');
         }
 
+        $filePath = Storage::disk('public')->path($laporan->file);
         $extension = strtolower(pathinfo($filePath, PATHINFO_EXTENSION));
 
         if ($extension === 'pdf') {
             return response()->file($filePath, [
                 'Content-Type' => 'application/pdf',
-                'Content-Disposition' => 'inline; filename="' . basename($filePath) . '"'
             ]);
         } elseif (in_array($extension, ['doc', 'docx'])) {
-            $url = asset('laporan_akhirpengabdian/' . $laporan->file);
+            $url = asset('storage/' . $laporan->file); // sesuaikan dengan lokasi akses publik
             return redirect("https://docs.google.com/gview?url=$url&embedded=true");
         } else {
             abort(415, 'Format file tidak didukung untuk preview.');
         }
     }
+
 
     public function metadata(Request $request)
     {
