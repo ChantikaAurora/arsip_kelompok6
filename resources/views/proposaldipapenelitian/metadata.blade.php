@@ -52,7 +52,6 @@
                     <th>Prodi</th>
                     <th>Tanggal Pengajuan</th>
                     <th>Keterangan</th>
-                    <th>File</th>
                     <th>Tanggal Upload</th>
                 </tr>
             </thead>
@@ -63,21 +62,12 @@
                         <td style="white-space: normal; word-wrap: break-word; max-width: 120px;">{{ $item->kode_klasifikasi }}</td>
                         <td style="white-space: normal; word-wrap: break-word; max-width: 180px;">{{ $item->judul }}</td>
                         <td style="white-space: normal; word-wrap: break-word; max-width: 150px;">{{ $item->peneliti }}</td>
-                        <td>{{ $item->skemaPenelitian->skema_penelitian ?? '-' }}</td>
-                        <td>{{ $item->anggota ?? '-' }}</td>
-                        <td>{{ $item->jurusan->jurusan ?? '-' }}</td>
-                        <td>{{ $item->prodi->prodi ?? '-' }}</td>
-                        <td>{{ \Carbon\Carbon::parse($item->tanggal_pengajuan)->format('d-m-Y') }}</td>
+                        <td style="white-space: normal; word-wrap: break-word; max-width: 150px;">{{ $item->skemaPenelitian->skema_penelitian ?? '-' }}</td>
+                        <td style="white-space: normal; word-wrap: break-word; max-width: 150px;">{{ $item->anggota ?? '-' }}</td>
+                        <td style="white-space: normal; word-wrap: break-word; max-width: 150px;">{{ $item->jurusan->jurusan ?? '-' }}</td>
+                        <td style="white-space: normal; word-wrap: break-word; max-width: 150px;">{{ $item->prodi->prodi ?? '-' }}</td>
+                        <td style="white-space: normal; word-wrap: break-word; max-width: 150px;">{{ \Carbon\Carbon::parse($item->tanggal_pengajuan)->format('d-m-Y') }}</td>
                         <td style="white-space: normal; max-width: 150px;">{{ $item->keterangan ?? '-' }}</td>
-                        <td>
-                            @if($item->file)
-                                <a href="{{ route('proposal_dipa_penelitian.download', $item->id) }}" target="_blank" class="text-decoration-none text-primary">
-                                    📄 Lihat
-                                </a>
-                            @else
-                                <span class="text-muted">-</span>
-                            @endif
-                        </td>
                         <td>{{ $item->created_at->format('d-m-Y H:i:s') }}</td>
                     </tr>
                 @empty

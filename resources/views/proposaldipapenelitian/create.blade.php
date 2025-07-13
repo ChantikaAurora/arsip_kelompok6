@@ -202,7 +202,7 @@
                         <a href="{{ route('proposal_dipa_penelitian.index') }}" class="btn btn-secondary">
                             <i class="icon-action-undo me-1"></i> Kembali
                         </a>
-                        <button type="submit" class="btn btn-primary ms-2">
+                        <button type="submit" class="btn btn-primary ms-2" style="margin-left: 0.5rem;">
                             <i class="bi bi-save me-1"></i> Simpan
                         </button>
                     </div>
