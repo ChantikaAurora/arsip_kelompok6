@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Jurusan;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class JurusanController extends Controller
 {
@@ -11,11 +12,11 @@ class JurusanController extends Controller
     {
         $search = $request->input('search');
         $jurusans = Jurusan::when($search, function ($query, $search) {
-                            return $query->where('jurusan', 'like', "%$search%")
-                                         ->orWhere('kode_jurusan', 'like', "%$search%");
-                        })
-                        ->orderBy('kode_jurusan','asc')
-                        ->get();
+                                return $query->where('jurusan', 'like', "%$search%")
+                                             ->orWhere('kode_jurusan', 'like', "%$search%");
+                            })
+                            ->orderBy('kode_jurusan', 'asc')
+                            ->get();
 
         return view('jurusan.index', compact('jurusans'));
     }
@@ -50,7 +51,6 @@ class JurusanController extends Controller
             'jurusan.regex' => 'Nama jurusan hanya boleh berisi huruf dan spasi.',
         ]);
 
-        // Simpan data jurusan
         Jurusan::create([
             'kode_jurusan' => $request->kode_jurusan,
             'jurusan' => $request->jurusan,
@@ -59,7 +59,11 @@ class JurusanController extends Controller
         return redirect()->route('jurusan.index')->with('success', 'Jurusan berhasil ditambahkan.');
     }
 
-
+    public function show(Jurusan $jurusan)
+    {
+        // Kalau tidak digunakan, redirect saja ke index
+        return redirect()->route('jurusan.index');
+    }
 
     public function edit(Jurusan $jurusan)
     {
@@ -68,18 +72,18 @@ class JurusanController extends Controller
 
     public function update(Request $request, Jurusan $jurusan)
     {
-         $request->validate([
-        'kode_jurusan' => [
-            'required',
-            'max:10',
-            'unique:jurusans,kode_jurusan',
-        ],
-        'jurusan' => [
-            'required',
-            'string',
-            'max:100',
-            'regex:/^[a-zA-Z\s]+$/',
-        ],
+        $request->validate([
+            'kode_jurusan' => [
+                'required',
+                'max:10',
+                Rule::unique('jurusans', 'kode_jurusan')->ignore($jurusan->id),
+            ],
+            'jurusan' => [
+                'required',
+                'string',
+                'max:100',
+                'regex:/^[a-zA-Z\s]+$/',
+            ],
         ], [
             'kode_jurusan.required' => 'Kode jurusan wajib diisi.',
             'kode_jurusan.max' => 'Kode jurusan maksimal 10 karakter.',
@@ -91,13 +95,12 @@ class JurusanController extends Controller
             'jurusan.regex' => 'Nama jurusan hanya boleh berisi huruf dan spasi.',
         ]);
 
-        // Simpan jurusan
-        Jurusan::create([
+        $jurusan->update([
             'kode_jurusan' => $request->kode_jurusan,
             'jurusan' => $request->jurusan,
         ]);
 
-        return redirect()->route('jurusan.index')->with('success', 'Jurusan berhasil ditambahkan.');
+        return redirect()->route('jurusan.index')->with('success', 'Jurusan berhasil diperbarui.');
     }
 
     public function destroy(Jurusan $jurusan)

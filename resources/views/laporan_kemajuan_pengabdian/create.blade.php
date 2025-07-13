@@ -26,7 +26,7 @@
                 {{-- Row 1 --}}
                 <div class="row">
                     <div class="col-md-6">
-                        {{-- Kode Klasifikasi --}}
+                        {{-- Kode Laporan --}}
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Kode Laporan</label>
                             <div class="col-sm-8">
@@ -104,7 +104,7 @@
                         </div>
                     </div>
                     <div class="col-md-6">
-                        {{-- Tahun Pelaksanaan --}}
+                        {{-- Tahun --}}
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Tahun</label>
                             <div class="col-sm-8">
@@ -127,14 +127,14 @@
                             <div class="col-sm-8">
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="bi bi-building"></i></span>
-                                    <select name="jurusan" class="form-control @error('jurusan') is-invalid @enderror">
+                                    <select name="jurusan_id" class="form-control @error('jurusan_id') is-invalid @enderror">
                                         <option value="">-- Pilih Jurusan --</option>
                                         @foreach ($jurusans as $jurusan)
-                                            <option value="{{ $jurusan->id }}" {{ old('jurusan') == $jurusan->id ? 'selected' : '' }}>{{ $jurusan->jurusan }}</option>
+                                            <option value="{{ $jurusan->id }}" {{ old('jurusan_id') == $jurusan->id ? 'selected' : '' }}>{{ $jurusan->jurusan }}</option>
                                         @endforeach
                                     </select>
                                 </div>
-                                @error('jurusan')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
+                                @error('jurusan_id')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
                             </div>
                         </div>
                     </div>
@@ -145,14 +145,12 @@
                             <div class="col-sm-8">
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="bi bi-mortarboard"></i></span>
-                                    <select name="prodi" class="form-control @error('prodi') is-invalid @enderror">
+                                    <select name="prodi_id" class="form-control @error('prodi_id') is-invalid @enderror">
                                         <option value="">-- Pilih Prodi --</option>
-                                        @foreach ($prodis as $prodi)
-                                            <option value="{{ $prodi->id }}" {{ old('prodi') == $prodi->id ? 'selected' : '' }}>{{ $prodi->prodi }}</option>
-                                        @endforeach
+                                        {{-- Akan terisi otomatis oleh AJAX --}}
                                     </select>
                                 </div>
-                                @error('prodi')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
+                                @error('prodi_id')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
                             </div>
                         </div>
                     </div>
@@ -161,16 +159,19 @@
                 {{-- Row 5 --}}
                 <div class="row">
                     <div class="col-md-6">
-                        {{-- Periode Laporan --}}
+                        {{-- Periode --}}
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Periode</label>
                             <div class="col-sm-8">
-                                <select name="periode_laporan" class="form-control @error('periode_laporan') is-invalid @enderror">
-                                    <option value="">-- Pilih Periode --</option>
-                                    @for ($i = 1; $i <= 8; $i++)
-                                        <option value="Semester {{ $i }}" {{ old('periode_laporan') == "Semester $i" ? 'selected' : '' }}>Semester {{ $i }}</option>
-                                    @endfor
-                                </select>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-clock-history"></i></span>
+                                    <select name="periode_laporan" class="form-control @error('periode_laporan') is-invalid @enderror">
+                                        <option value="">-- Pilih Periode --</option>
+                                        @for ($i = 1; $i <= 8; $i++)
+                                            <option value="Semester {{ $i }}" {{ old('periode_laporan') == "Semester $i" ? 'selected' : '' }}>Semester {{ $i }}</option>
+                                        @endfor
+                                    </select>
+                                </div>
                                 @error('periode_laporan')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
                             </div>
                         </div>
@@ -210,9 +211,9 @@
                 <div class="form-group row mt-4">
                     <div class="col-sm-10 offset-sm-2 d-flex">
                         <a href="{{ route('laporan_kemajuan_pengabdian.index') }}" class="btn btn-secondary">
-                           <i class="icon-action-undo me-1"></i> Kembali
+                            <i class="icon-action-undo me-1"></i> Kembali
                         </a>
-                        <button type="submit" class="btn btn-primary ms-2" style="margin-left: 0.5rem;">
+                        <button type="submit" class="btn btn-primary ms-2">
                             <i class="bi bi-save me-1"></i> Simpan
                         </button>
                     </div>
@@ -221,4 +222,33 @@
         </div>
     </div>
 </div>
+
+{{-- AJAX: Load Prodi Berdasarkan Jurusan --}}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('select[name="jurusan_id"]').on('change', function () {
+            let jurusanId = $(this).val();
+            let $prodiSelect = $('select[name="prodi_id"]');
+            $prodiSelect.html('<option value="">-- Pilih Prodi --</option>');
+
+            if (jurusanId) {
+                $.ajax({
+                    url: '/get-prodi/' + jurusanId,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+                        $.each(data, function (index, prodi) {
+                            $prodiSelect.append('<option value="' + prodi.id + '">' + prodi.prodi + '</option>');
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        alert("Gagal memuat Prodi: " + error);
+                        console.log(xhr.responseText);
+                    }
+                });
+            }
+        });
+    });
+</script>
 @endsection

@@ -173,19 +173,20 @@ class LaporanKemajuanPengabdianController extends Controller
     public function download($id)
     {
         $laporan = LaporanKemajuanPengabdian::findOrFail($id);
-        $filePath = public_path('laporan_kemajuan_pengabdians/' . $laporan->file);
+        $filePath = storage_path('app/public/' . $laporan->file);
 
         if (!file_exists($filePath)) {
             abort(404, 'File tidak ditemukan.');
         }
 
-        return response()->download($filePath, $laporan->file);
+        return response()->download($filePath);
     }
+
 
     public function preview($id)
     {
         $laporan = LaporanKemajuanPengabdian::findOrFail($id);
-        $filePath = public_path('laporan_kemajuan_pengabdians/' . $laporan->file);
+        $filePath = storage_path('app/public/' . $laporan->file);
 
         if (!$laporan->file || !file_exists($filePath)) {
             abort(404, 'File tidak ditemukan.');
@@ -199,12 +200,13 @@ class LaporanKemajuanPengabdianController extends Controller
                 'Content-Disposition' => 'inline; filename="' . basename($filePath) . '"'
             ]);
         } elseif (in_array($extension, ['doc', 'docx'])) {
-            $url = asset('laporan_kemajuan_pengabdians/' . $laporan->file);
+            $url = asset('storage/' . $laporan->file);
             return redirect("https://docs.google.com/gview?url=$url&embedded=true");
         } else {
             abort(415, 'Format file tidak didukung untuk preview.');
         }
     }
+
 
     public function metadata(Request $request)
     {

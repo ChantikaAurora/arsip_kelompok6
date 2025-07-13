@@ -32,10 +32,10 @@ class LaporanKemajuanPenelitianController extends Controller
 
     public function create()
     {
-        $skemas = SkemaPenelitian::all();
+        $skemaPenelitians = SkemaPenelitian::all();
         $jurusans = Jurusan::all();
         $prodis = Prodi::all();
-        return view('laporan_kemajuan_penelitian.create', compact('skemas', 'jurusans', 'prodis'));
+        return view('laporan_kemajuan_penelitian.create', compact('skemaPenelitians', 'jurusans', 'prodis'));
     }
 
     public function store(Request $request)

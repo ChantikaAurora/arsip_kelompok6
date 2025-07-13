@@ -7,7 +7,6 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-
 <div class="container mt-4">
     <div class="border-bottom mb-4 pb-2">
         <h3 class="mb-2">Formulir Edit Proposal Mandiri Penelitian</h3>
@@ -23,7 +22,7 @@
 
     <div class="card shadow-sm">
         <div class="card-body px-4 py-4">
-            <form action="{{ route('proposal_mandiri_penelitian.update', $proposal->id) }}" method="POST" enctype="multipart/form-data">
+            <form method="POST" action="{{ route('proposal_mandiri_penelitian.update', $proposal->id) }}" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
 
@@ -31,7 +30,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">No </label>
+                            <label class="col-sm-4 col-form-label">No Proposal</label>
                             <div class="col-sm-8">
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="bi bi-hash"></i></span>
@@ -62,7 +61,7 @@
                             <label class="col-sm-4 col-form-label">Judul</label>
                             <div class="col-sm-8">
                                 <div class="input-group">
-                                    <span class="input-group-text"><i class="bi bi-journal-richtext"></i></span>
+                                    <span class="input-group-text"><i class="bi bi-journal-text"></i></span>
                                     <input type="text" name="judul" class="form-control @error('judul') is-invalid @enderror" value="{{ old('judul', $proposal->judul) }}">
                                 </div>
                                 @error('judul')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
@@ -74,7 +73,7 @@
                             <label class="col-sm-4 col-form-label">Peneliti</label>
                             <div class="col-sm-8">
                                 <div class="input-group">
-                                    <span class="input-group-text"><i class="bi bi-person-badge"></i></span>
+                                    <span class="input-group-text"><i class="bi bi-person"></i></span>
                                     <input type="text" name="peneliti" class="form-control @error('peneliti') is-invalid @enderror" value="{{ old('peneliti', $proposal->peneliti) }}">
                                 </div>
                                 @error('peneliti')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
@@ -89,12 +88,15 @@
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Skema</label>
                             <div class="col-sm-8">
-                                <select name="skema_penelitian_id" class="form-control @error('skema_penelitian_id') is-invalid @enderror">
-                                    <option value="">-- Pilih Skema --</option>
-                                    @foreach ($skemaPenelitians as $skema)
-                                        <option value="{{ $skema->id }}" {{ old('skema_penelitian_id', $proposal->skema_penelitian_id) == $skema->id ? 'selected' : '' }}>{{ $skema->skema_penelitian }}</option>
-                                    @endforeach
-                                </select>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-diagram-3"></i></span>
+                                    <select name="skema_penelitian_id" class="form-control @error('skema_penelitian_id') is-invalid @enderror">
+                                        <option value="">-- Pilih Skema --</option>
+                                        @foreach($skemaPenelitians as $skema)
+                                            <option value="{{ $skema->id }}" {{ old('skema_penelitian_id', $proposal->skema_penelitian_id) == $skema->id ? 'selected' : '' }}>{{ $skema->skema_penelitian }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
                                 @error('skema_penelitian_id')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
                             </div>
                         </div>
@@ -103,7 +105,10 @@
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Anggota</label>
                             <div class="col-sm-8">
-                                <input type="text" name="anggota" class="form-control @error('anggota') is-invalid @enderror" value="{{ old('anggota', $proposal->anggota) }}">
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-people-fill"></i></span>
+                                    <input type="text" name="anggota" class="form-control @error('anggota') is-invalid @enderror" value="{{ old('anggota', $proposal->anggota) }}">
+                                </div>
                                 @error('anggota')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
                             </div>
                         </div>
@@ -116,26 +121,29 @@
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Jurusan</label>
                             <div class="col-sm-8">
-                                <select name="jurusan_id" class="form-control @error('jurusan_id') is-invalid @enderror">
-                                    <option value="">-- Pilih Jurusan --</option>
-                                    @foreach ($jurusans as $jurusan)
-                                        <option value="{{ $jurusan->id }}" {{ old('jurusan_id', $proposal->jurusan_id) == $jurusan->id ? 'selected' : '' }}>{{ $jurusan->jurusan }}</option>
-                                    @endforeach
-                                </select>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-building"></i></span>
+                                    <select name="jurusan_id" class="form-control @error('jurusan_id') is-invalid @enderror">
+                                        <option value="">-- Pilih Jurusan --</option>
+                                        @foreach($jurusans as $jurusan)
+                                            <option value="{{ $jurusan->id }}" {{ old('jurusan_id', $proposal->jurusan_id) == $jurusan->id ? 'selected' : '' }}>{{ $jurusan->jurusan }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
                                 @error('jurusan_id')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Prodi</label>
+                            <label class="col-sm-4 col-form-label">Program Studi</label>
                             <div class="col-sm-8">
-                                <select name="prodi_id" class="form-control @error('prodi_id') is-invalid @enderror">
-                                    <option value="">-- Pilih Prodi --</option>
-                                    @foreach ($prodis as $prodi)
-                                        <option value="{{ $prodi->id }}" {{ old('prodi_id', $proposal->prodi_id) == $prodi->id ? 'selected' : '' }}>{{ $prodi->prodi }}</option>
-                                    @endforeach
-                                </select>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-mortarboard"></i></span>
+                                    <select name="prodi_id" class="form-control @error('prodi_id') is-invalid @enderror">
+                                        <option value="">-- Pilih Prodi --</option>
+                                    </select>
+                                </div>
                                 @error('prodi_id')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
                             </div>
                         </div>
@@ -148,67 +156,23 @@
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Tanggal Pengajuan</label>
                             <div class="col-sm-8">
-                                <input type="date" name="tanggal_pengajuan" class="form-control @error('tanggal_pengajuan') is-invalid @enderror" value="{{ old('tanggal_pengajuan', $proposal->tanggal_pengajuan) }}">
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-calendar-event"></i></span>
+                                    <input type="date" name="tanggal_pengajuan" class="form-control @error('tanggal_pengajuan') is-invalid @enderror" value="{{ old('tanggal_pengajuan', $proposal->tanggal_pengajuan) }}">
+                                </div>
                                 @error('tanggal_pengajuan')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
                             </div>
                         </div>
                     </div>
 
-                </div>
-
-                {{-- Anggota --}}
-                <div class="mb-3 row">
-                    <label class="col-sm-2 col-form-label">Anggota</label>
-                    <div class="col-sm-10">
-                        <input type="text" name="anggota" class="form-control @error('anggota') is-invalid @enderror"
-                            value="{{ old('anggota', $proposal->anggota) }}">
-                        @error('anggota')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                    </div>
-                </div>
-
-
-                {{-- Jurusan --}}
-                <div class="mb-3 row">
-                    <label class="col-sm-2 col-form-label">Jurusan</label>
-                    <div class="col-sm-10">
-                        <select name="jurusan_id" class="form-control @error('jurusan_id') is-invalid @enderror" required>
-                            <option value="">-- Pilih Jurusan --</option>
-                            @foreach ($jurusans as $jurusan)
-                                <option value="{{ $jurusan->id }}" {{ old('jurusan_id', $proposal->jurusan_id) == $jurusan->id ? 'selected' : '' }}>
-                                    {{ $jurusan->jurusan }}
-                                </option>
-                            @endforeach
-                        </select>
-                        @error('jurusan_id')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                    </div>
-                </div>
-
-                {{-- Prodi --}}
-                <div class="mb-3 row">
-                    <label class="col-sm-2 col-form-label">Prodi</label>
-                    <div class="col-sm-10">
-                        <select name="prodi_id" class="form-control @error('prodi_id') is-invalid @enderror" required>
-                            <option value="">-- Pilih Prodi --</option>
-                            {{-- Prodi akan di-load melalui AJAX --}}
-                        </select>
-                        @error('prodi_id')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                    </div>
-                </div>
-
-
-                {{-- Tanggal Pengajuan --}}
-                <div class="mb-3 row">
-                    <label class="col-sm-2 col-form-label">Tanggal Pengajuan</label>
-                    <div class="col-sm-10">
-                        <input type="date" name="tanggal_pengajuan" class="form-control @error('tanggal_pengajuan') is-invalid @enderror"
-                            value="{{ old('tanggal_pengajuan', $proposal->tanggal_pengajuan) }}" required>
-                        @error('tanggal_pengajuan')<div class="invalid-feedback">{{ $message }}</div>@enderror
-
                     <div class="col-md-6">
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Upload File</label>
                             <div class="col-sm-8">
-                                <input type="file" name="file" class="form-control @error('file') is-invalid @enderror">
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-upload"></i></span>
+                                    <input type="file" name="file" class="form-control @error('file') is-invalid @enderror">
+                                </div>
                                 @error('file')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
                                 @if ($proposal->file && file_exists(public_path('storage/' . $proposal->file)))
                                     <div class="mt-2">
@@ -216,14 +180,9 @@
                                             <i class="bi bi-file-earmark-text"></i> Lihat File Saat Ini
                                         </a>
                                     </div>
-                                @else
-                                    <div class="mt-2 text-muted">
-                                        <i class="bi bi-exclamation-circle"></i> File tidak ditemukan atau tidak bisa diakses.
-                                    </div>
                                 @endif
                             </div>
                         </div>
-
                     </div>
                 </div>
 
@@ -233,7 +192,10 @@
                         <div class="form-group row">
                             <label class="col-sm-2 col-form-label">Keterangan</label>
                             <div class="col-sm-10">
-                                <textarea name="keterangan" class="form-control @error('keterangan') is-invalid @enderror" rows="3">{{ old('keterangan', $proposal->keterangan) }}</textarea>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-card-text"></i></span>
+                                    <textarea name="keterangan" class="form-control @error('keterangan') is-invalid @enderror" rows="3">{{ old('keterangan', $proposal->keterangan) }}</textarea>
+                                </div>
                                 @error('keterangan')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
                             </div>
                         </div>
@@ -244,14 +206,13 @@
                 <div class="form-group row mt-4">
                     <div class="col-sm-10 offset-sm-2 d-flex">
                         <a href="{{ route('proposal_mandiri_penelitian.index') }}" class="btn btn-secondary">
-                              <i class="icon-action-undo me-1"></i> Kembali
+                            <i class="icon-action-undo me-1"></i> Kembali
                         </a>
-                        <button type="submit" class="btn btn-primary ms-2" style="margin-left: 0.5rem;">
+                        <button type="submit" class="btn btn-primary ms-2">
                             <i class="bi bi-save me-1"></i> Update
                         </button>
                     </div>
                 </div>
-
             </form>
         </div>
     </div>
@@ -277,17 +238,20 @@
                             let selected = prodi.id == selectedProdiId ? 'selected' : '';
                             $prodiSelect.append('<option value="' + prodi.id + '" ' + selected + '>' + prodi.prodi + '</option>');
                         });
+                    },
+                    error: function () {
+                        alert("Gagal memuat data prodi.");
                     }
                 });
             }
         }
 
-        // Load awal untuk form edit
+        // Load data prodi saat edit
         if (selectedJurusan) {
             loadProdi(selectedJurusan, selectedProdi);
         }
 
-        // Saat jurusan diganti
+        // Saat jurusan berubah
         $('select[name="jurusan_id"]').on('change', function () {
             loadProdi($(this).val());
         });
