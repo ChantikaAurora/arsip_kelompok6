@@ -57,7 +57,7 @@ public function index(Request $request)
             'prodi_id' => 'required|exists:prodis,id',
             'tanggal_pengajuan' => 'required|date',
             'keterangan' => 'nullable|string',
-            'file' => 'nullable|mimes:pdf|max:2048',
+            'file' => 'required|file|mimes:pdf,doc,docx|max:2048',
         ]);
 
         $data = $request->only([

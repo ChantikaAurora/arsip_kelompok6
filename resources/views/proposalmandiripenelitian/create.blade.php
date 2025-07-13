@@ -40,6 +40,7 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="col-md-6">
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Kode Klasifikasi</label>
@@ -53,14 +54,6 @@
                         </div>
                     </div>
                 </div>
-
-
-                {{-- Kode Klasifikasi --}}
-                <div class="mb-3 row">
-                    <label class="col-sm-2 col-form-label">Kode Klasifikasi</label>
-                    <div class="col-sm-10">
-                        <input type="text" name="kode_klasifikasi" class="form-control @error('kode_klasifikasi') is-invalid @enderror" value="{{ old('kode_klasifikasi') }}" placeholder="Contoh: 123/Mandiri">
-                        @error('kode_klasifikasi') <div class="invalid-feedback">{{ $message }}</div> @enderror
 
                 {{-- Row 2 --}}
                 <div class="row">
@@ -76,6 +69,7 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="col-md-6">
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Peneliti</label>
@@ -87,7 +81,6 @@
                                 @error('peneliti')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
                             </div>
                         </div>
-
                     </div>
                 </div>
 
@@ -110,6 +103,7 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="col-md-6">
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Anggota</label>
@@ -143,6 +137,7 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="col-md-6">
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Program Studi</label>
@@ -177,50 +172,6 @@
                         </div>
                     </div>
 
-                </div>
-
-                {{-- Anggota --}}
-                <div class="mb-3 row">
-                    <label class="col-sm-2 col-form-label">Anggota</label>
-                    <div class="col-sm-10">
-                        <input type="text" name="anggota" class="form-control @error('anggota') is-invalid @enderror" value="{{ old('anggota') }}" placeholder="Masukkan nama anggota (jika ada)">
-                        @error('anggota') <div class="invalid-feedback">{{ $message }}</div> @enderror
-                    </div>
-                </div>
-
-                {{-- Jurusan --}}
-                <div class="mb-3 row">
-                    <label class="col-sm-2 col-form-label">Jurusan</label>
-                    <div class="col-sm-10">
-                        <select name="jurusan_id" class="form-control @error('jurusan_id') is-invalid @enderror" required>
-                            <option value="">-- Pilih Jurusan --</option>
-                            @foreach ($jurusans as $jurusan)
-                                <option value="{{ $jurusan->id }}">{{ $jurusan->jurusan }}</option>
-                            @endforeach
-                        </select>
-                        @error('jurusan_id')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                    </div>
-                </div>
-
-                {{-- Prodi --}}
-                <div class="mb-3 row">
-                    <label class="col-sm-2 col-form-label">Prodi</label>
-                    <div class="col-sm-10">
-                        <select name="prodi_id" class="form-control @error('prodi_id') is-invalid @enderror" required>
-                            <option value="">-- Pilih Prodi --</option>
-                        </select>
-                        @error('prodi_id')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                    </div>
-                </div>
-
-
-                {{-- Tanggal Pengajuan --}}
-                <div class="mb-3 row">
-                    <label class="col-sm-2 col-form-label">Tanggal Pengajuan</label>
-                    <div class="col-sm-10">
-                        <input type="date" name="tanggal_pengajuan" class="form-control @error('tanggal_pengajuan') is-invalid @enderror" value="{{ old('tanggal_pengajuan') }}">
-                        @error('tanggal_pengajuan') <div class="invalid-feedback">{{ $message }}</div> @enderror
-
                     <div class="col-md-6">
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Upload File</label>
@@ -232,7 +183,6 @@
                                 @error('file')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
                             </div>
                         </div>
-
                     </div>
                 </div>
 
@@ -258,7 +208,7 @@
                         <a href="{{ route('proposal_mandiri_penelitian.index') }}" class="btn btn-secondary">
                             <i class="icon-action-undo me-1"></i> Kembali
                         </a>
-                        <button type="submit" class="btn btn-primary ms-2" style="margin-left: 0.5rem;">
+                        <button type="submit" class="btn btn-primary ms-2">
                             <i class="bi bi-save me-1"></i> Simpan
                         </button>
                     </div>
@@ -281,7 +231,7 @@
 
             if (jurusanId) {
                 $.ajax({
-                    url: '/get-prodi/' + jurusanId, // pastikan route kamu pakai path ini
+                    url: '/get-prodi/' + jurusanId,
                     type: 'GET',
                     dataType: 'json',
                     success: function (data) {

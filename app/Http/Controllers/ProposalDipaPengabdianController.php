@@ -65,7 +65,7 @@ class ProposalDipaPengabdianController extends Controller
             'prodi_id'             => 'required|exists:prodis,id',
             'tanggal_pengajuan'    => 'required|date',
             'keterangan'           => 'nullable|string|max:1000',
-            'file'                 => 'nullable|mimes:pdf|max:2048',
+            'file'                 => 'required|file|mimes:pdf,doc,docx|max:2048',
         ], [
             'no.required'                   => 'Nomor proposal wajib diisi.',
             'kode_klasifikasi.required'     => 'Kode klasifikasi wajib diisi.',

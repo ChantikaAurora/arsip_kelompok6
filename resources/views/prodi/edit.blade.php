@@ -16,6 +16,8 @@
         <div class="alert alert-danger mt-3">
             <strong><i class="bi bi-exclamation-triangle-fill"></i> Oops!</strong> Terjadi kesalahan dalam pengisian data.
             <ul class="mb-0 mt-2">
+                @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
                 @endforeach
             </ul>
         </div>

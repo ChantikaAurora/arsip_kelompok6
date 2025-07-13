@@ -16,8 +16,6 @@
     @if ($errors->any())
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
             <strong><i class="bi bi-exclamation-triangle-fill"></i> Oops!</strong> Terjadi kesalahan dalam pengisian data. Silakan coba lagi.
-            @foreach ($errors->all() as $error)
-            @endforeach
         </div>
     @endif
 
@@ -123,7 +121,7 @@
                             <div class="col-sm-8">
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="bi bi-building"></i></span>
-                                    <select name="jurusan_id" class="form-control @error('jurusan_id') is-invalid @enderror">
+                                    <select name="jurusan_id" class="form-control @error('jurusan_id') is-invalid @enderror" required>
                                         <option value="">-- Pilih Jurusan --</option>
                                         @foreach($jurusans as $jurusan)
                                             <option value="{{ $jurusan->id }}" {{ old('jurusan_id') == $jurusan->id ? 'selected' : '' }}>{{ $jurusan->jurusan }}</option>
@@ -140,7 +138,7 @@
                             <div class="col-sm-8">
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="bi bi-mortarboard"></i></span>
-                                    <select name="prodi_id" class="form-control @error('prodi_id') is-invalid @enderror">
+                                    <select name="prodi_id" class="form-control @error('prodi_id') is-invalid @enderror" required>
                                         <option value="">-- Pilih Prodi --</option>
                                         @foreach($prodis as $prodi)
                                             <option value="{{ $prodi->id }}" {{ old('prodi_id') == $prodi->id ? 'selected' : '' }}>{{ $prodi->prodi }}</option>
@@ -153,7 +151,7 @@
                     </div>
                 </div>
 
-                {{-- Row 5 --}}
+                {{-- Row 5 (Tanggal Pengajuan dan Upload File) --}}
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group row">
@@ -168,50 +166,6 @@
                         </div>
                     </div>
 
-                </div>
-
-                {{-- Anggota --}}
-                <div class="mb-3 row">
-                    <label class="col-sm-2 col-form-label">Anggota</label>
-                    <div class="col-sm-10">
-                        <input type="text" name="anggota" class="form-control @error('anggota') is-invalid @enderror" value="{{ old('anggota') }}" placeholder="Masukkan nama anggota (jika ada)">
-                        @error('anggota') <div class="invalid-feedback">{{ $message }}</div> @enderror
-                    </div>
-                </div>
-
-                {{-- Jurusan --}}
-                <div class="mb-3 row">
-                    <label class="col-sm-2 col-form-label">Jurusan</label>
-                    <div class="col-sm-10">
-                        <select name="jurusan_id" class="form-control @error('jurusan_id') is-invalid @enderror" required>
-                            <option value="">-- Pilih Jurusan --</option>
-                            @foreach ($jurusans as $jurusan)
-                                <option value="{{ $jurusan->id }}">{{ $jurusan->jurusan }}</option>
-                            @endforeach
-                        </select>
-                        @error('jurusan_id')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                    </div>
-                </div>
-
-                {{-- Prodi --}}
-                <div class="mb-3 row">
-                    <label class="col-sm-2 col-form-label">Prodi</label>
-                    <div class="col-sm-10">
-                        <select name="prodi_id" class="form-control @error('prodi_id') is-invalid @enderror" required>
-                            <option value="">-- Pilih Prodi --</option>
-                        </select>
-                        @error('prodi_id')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                    </div>
-                </div>
-
-
-                {{-- Tanggal Pengajuan --}}
-                <div class="mb-3 row">
-                    <label class="col-sm-2 col-form-label">Tanggal Pengajuan</label>
-                    <div class="col-sm-10">
-                        <input type="date" name="tanggal_pengajuan" class="form-control @error('tanggal_pengajuan') is-invalid @enderror" value="{{ old('tanggal_pengajuan') }}">
-                        @error('tanggal_pengajuan') <div class="invalid-feedback">{{ $message }}</div> @enderror
-
                     <div class="col-md-6">
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Upload File</label>
@@ -223,7 +177,6 @@
                                 @error('file')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
                             </div>
                         </div>
-
                     </div>
                 </div>
 
@@ -249,7 +202,7 @@
                         <a href="{{ route('proposal_dipa_penelitian.index') }}" class="btn btn-secondary">
                             <i class="icon-action-undo me-1"></i> Kembali
                         </a>
-                        <button type="submit" class="btn btn-primary ms-2" style="margin-left: 0.5rem;">
+                        <button type="submit" class="btn btn-primary ms-2">
                             <i class="bi bi-save me-1"></i> Simpan
                         </button>
                     </div>
@@ -262,17 +215,14 @@
 {{-- AJAX Script --}}
 <script>
     $(document).ready(function () {
-        // Pakai name, bukan id
         $('select[name="jurusan_id"]').on('change', function () {
             let jurusanId = $(this).val();
-
-            // Targetkan dropdown Prodi juga pakai name, bukan id
             let $prodiSelect = $('select[name="prodi_id"]');
             $prodiSelect.html('<option value="">-- Pilih Prodi --</option>');
 
             if (jurusanId) {
                 $.ajax({
-                    url: '/get-prodi/' + jurusanId, // pastikan route kamu pakai path ini
+                    url: '/get-prodi/' + jurusanId,
                     type: 'GET',
                     dataType: 'json',
                     success: function (data) {
