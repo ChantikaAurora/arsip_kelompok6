@@ -1,13 +1,13 @@
 @extends('tampilan.navbar')
 @section('page-title', 'Laporan')
-@section('navLaporanKemajuanPengabdian', 'active')
+@section('navLaporanKemajuanPenelitian', 'active')
 @section('content')
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
 
 <div class="container mt-4">
     {{-- Judul --}}
     <div class="border-bottom mb-4 pb-2">
-        <h3 class="mb-2">Formulir Tambah Laporan Kemajuan Pengabdian</h3>
+        <h3 class="mb-2">Formulir Tambah Laporan Kemajuan Penelitian</h3>
         <p class="text-muted mb-0">Silakan lengkapi data laporan kemajuan dengan benar.</p>
     </div>
 
@@ -127,7 +127,7 @@
                             <div class="col-sm-8">
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="bi bi-building"></i></span>
-                                    <select name="jurusan_id" class="form-control @error('jurusan_id') is-invalid @enderror">
+                                    <select name="jurusan" class="form-control @error('jurusan') is-invalid @enderror">
                                         <option value="">-- Pilih Jurusan --</option>
                                         @foreach ($jurusans as $jurusan)
                                             <option value="{{ $jurusan->id }}" {{ old('jurusan_id') == $jurusan->id ? 'selected' : '' }}>{{ $jurusan->jurusan }}</option>
@@ -145,7 +145,7 @@
                             <div class="col-sm-8">
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="bi bi-mortarboard"></i></span>
-                                    <select name="prodi_id" class="form-control @error('prodi_id') is-invalid @enderror">
+                                    <select name="prodi" class="form-control @error('prodi') is-invalid @enderror">
                                         <option value="">-- Pilih Prodi --</option>
                                         {{-- Akan terisi otomatis oleh AJAX --}}
                                     </select>
@@ -227,14 +227,14 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function () {
-        $('select[name="jurusan_id"]').on('change', function () {
-            let jurusanId = $(this).val();
-            let $prodiSelect = $('select[name="prodi_id"]');
+        $('select[name="jurusan"]').on('change', function () {
+            let jurusan = $(this).val();
+            let $prodiSelect = $('select[name="prodi"]');
             $prodiSelect.html('<option value="">-- Pilih Prodi --</option>');
 
-            if (jurusanId) {
+            if (jurusan) {
                 $.ajax({
-                    url: '/get-prodi/' + jurusanId,
+                    url: '/get-prodi/' + jurusan,
                     type: 'GET',
                     dataType: 'json',
                     success: function (data) {

@@ -127,10 +127,10 @@
                             <div class="col-sm-8">
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="bi bi-building"></i></span>
-                                    <select name="jurusan_id" class="form-control @error('jurusan_id') is-invalid @enderror">
+                                    <select name="jurusan" class="form-control @error('jurusan') is-invalid @enderror">
                                         <option value="">-- Pilih Jurusan --</option>
                                         @foreach ($jurusans as $jurusan)
-                                            <option value="{{ $jurusan->id }}" {{ old('jurusan_id') == $jurusan->id ? 'selected' : '' }}>{{ $jurusan->jurusan }}</option>
+                                            <option value="{{ $jurusan->id }}" {{ old('jurusan') == $jurusan->id ? 'selected' : '' }}>{{ $jurusan->jurusan }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -145,7 +145,7 @@
                             <div class="col-sm-8">
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="bi bi-mortarboard"></i></span>
-                                    <select name="prodi_id" class="form-control @error('prodi_id') is-invalid @enderror">
+                                    <select name="prodi" class="form-control @error('prodi') is-invalid @enderror">
                                         <option value="">-- Pilih Prodi --</option>
                                         {{-- Akan terisi otomatis oleh AJAX --}}
                                     </select>
@@ -227,28 +227,29 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function () {
-        $('select[name="jurusan_id"]').on('change', function () {
-            let jurusanId = $(this).val();
-            let $prodiSelect = $('select[name="prodi_id"]');
-            $prodiSelect.html('<option value="">-- Pilih Prodi --</option>');
+$('select[name="jurusan"]').on('change', function () {
+    let jurusanId = $(this).val();
+    let $prodiSelect = $('select[name="prodi"]');
+    $prodiSelect.html('<option value="">-- Pilih Prodi --</option>');
 
-            if (jurusanId) {
-                $.ajax({
-                    url: '/get-prodi/' + jurusanId,
-                    type: 'GET',
-                    dataType: 'json',
-                    success: function (data) {
-                        $.each(data, function (index, prodi) {
-                            $prodiSelect.append('<option value="' + prodi.id + '">' + prodi.prodi + '</option>');
-                        });
-                    },
-                    error: function (xhr, status, error) {
-                        alert("Gagal memuat Prodi: " + error);
-                        console.log(xhr.responseText);
-                    }
+    if (jurusanId) {
+        $.ajax({
+            url: '/get-prodi/' + jurusanId,
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                $.each(data, function (index, prodi) {
+                    $prodiSelect.append('<option value="' + prodi.id + '">' + prodi.prodi + '</option>');
                 });
+            },
+            error: function (xhr, status, error) {
+                alert("Gagal memuat Prodi: " + error);
+                console.log(xhr.responseText);
             }
         });
+    }
+});
+
     });
 </script>
 @endsection
