@@ -1,13 +1,13 @@
 @extends('tampilan.navbar')
 @section('page-title', 'Laporan')
-@section('navLaporanKemajuanPenelitian', 'active')
+@section('navLaporanKemajuanPengabdian', 'active')
 @section('content')
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
 
 <div class="container mt-4">
     {{-- Judul --}}
     <div class="border-bottom mb-4 pb-2">
-        <h3 class="mb-2">Formulir Tambah Laporan Kemajuan Penelitian</h3>
+        <h3 class="mb-2">Formulir Tambah Laporan Kemajuan Pengabdian</h3>
         <p class="text-muted mb-0">Silakan lengkapi data laporan kemajuan dengan benar.</p>
     </div>
 
